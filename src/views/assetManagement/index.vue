@@ -83,7 +83,7 @@ export default {
         width: 916px;
         height: 100%;
         margin-left: 4px;
-        background-color: $blue;
+        // background-color: $blue;
       }
     }
   }

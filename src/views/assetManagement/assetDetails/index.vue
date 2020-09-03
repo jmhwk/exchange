@@ -1,12 +1,19 @@
 <template>
   <div>
-    资产明细
+    <AssetDetailsPanel />
+    <AssetDetailsTabs />
   </div>
 </template>
 
 <script>
+import AssetDetailsPanel from './components/AssetDetailsPanel'
+import AssetDetailsTabs from './components/AssetDetailsTabs'
 export default {
-  name: 'AssetDetails'
+  name: 'AssetDetails',
+  components: {
+    AssetDetailsPanel,
+    AssetDetailsTabs
+  }
 }
 </script>
 
