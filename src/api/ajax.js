@@ -1,0 +1,63 @@
+import axios from 'axios'
+// 1创建axios实例
+const service = axios.create({
+  baseURL: process.env.BASE_API, // 接口地址
+  // 超时时间 单位是ms，这里设置了3s的超时时间
+  timeout: 3 * 1000
+})
+
+// 2 axios的请求拦截
+service.interceptors.request.use(function (config) {
+  //发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等，根据需求去添加
+  config.data = JSON.stringify(config.data); //数据转化,也可以使用qs转换
+  config.headers = {
+    'Content-Type': 'application/x-www-form-urlencoded' //配置请求头
+  }
+  // 一般在这个位置判断token是否存在
+  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjg0MTMxNzg2MTI0ODQ1MDU3IiwiZXhwIjoxNTk5NDQ3MzUxLCJpYXQiOjE1OTg4NDI1NTF9.JVhBgz8WlowXvMGqCA0NkI4QsDyEW4iKT5Cq6u9MbZU';//这里取token之前，你肯定需要先拿到token,存一下
+  if (token) {
+    // config.params = {'token':token} //如果要求携带在参数中
+    config.headers.token = token; //如果要求携带在请求头中
+  }
+  return config
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
+
+// 3 响应的拦截
+service.interceptors.response.use(function (response) {
+  return response
+}, function (error) {
+  // 处理响应失败
+  return Promise.resolve(error.response)
+});
+
+// 4 封装方法
+export default function ajax(url, data = {}, method = 'GET') {
+  return new Promise((resolve, reject) => {
+    let promise
+    // 执行异步ajax请求
+    if (method === 'GET') {
+      promise = service.get(url, { params: data }) // params配置, 指定的是query参数
+    } else {
+      promise = service.post(url, data)
+    }
+
+    promise.then(
+      response => {  // 如果成功了, 调用resolve()
+        resolve(response.data)
+      },
+      error => { // 如果失败了, 不调用reject(), 而是提示错误信息
+        alert('请求异常: ' + error.message)
+      }
+    )
+    // promise.catch(err => {
+    //   reject(err.data)
+    // })
+
+
+  })
+
+
+}  
