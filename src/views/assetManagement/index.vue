@@ -7,24 +7,24 @@
         </div>
         <el-menu
           default-active="1"
-          class="el-menu-vertical-demo"
-          background-color="#545c64"
+          class="el-menu-vertical"
+          background-color="transparent"
+          active-text-color="#fff"
           text-color="#fff"
-          active-text-color="#ffd04b"
         >
           <el-menu-item index="1">
             <i class="el-icon-setting" />
             <span slot="title">资产明细</span>
           </el-menu-item>
-          <el-menu-item index="1">
+          <el-menu-item index="2">
             <i class="el-icon-setting" />
             <span slot="title">委托订单</span>
           </el-menu-item>
-          <el-menu-item index="1">
+          <el-menu-item index="3">
             <i class="el-icon-setting" />
             <span slot="title">持仓订单</span>
           </el-menu-item>
-          <el-menu-item index="1">
+          <el-menu-item index="4">
             <i class="el-icon-setting" />
             <span slot="title">充提记录</span>
           </el-menu-item>
@@ -67,6 +67,17 @@ export default {
           color: #1476FE;
           padding-left: 20px;
           font-size: 16px;
+        }
+        .el-menu-vertical {
+          border-right-width: 0px;
+          .el-menu-item.is-active {
+            background-color:#002658 !important;
+            opacity: 1;
+          }
+          .el-menu-item:focus,.el-menu-item:hover{
+            background-color:#002658 !important;
+            opacity: 1;
+          }
         }
       }
       .right-side{
