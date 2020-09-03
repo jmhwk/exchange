@@ -15,6 +15,10 @@ import Solutions from '../views/log/solutions.vue'
 import Products from '../views/products/products'
 // 资产管理
 import AssetManagement from '../views/assetManagement'
+import AssetDetails from '../views/assetManagement/assetDetails'
+import EntrustOrder from '../views/assetManagement/entrustOrder'
+import PositionOrder from '../views/assetManagement/positionOrder'
+import RechargeAndWithdrawRecord from '../views/assetManagement/rechargeAndWithdrawRecord'
 
 export default [
   {
@@ -67,7 +71,31 @@ export default [
   },
   {
     path: '/assetManagement',
-    component: AssetManagement
+    name: 'assetManagement',
+    component: AssetManagement,
+    redirect: '/assetManagement/assetDetails',
+    children: [
+      {
+        path: '/assetManagement/assetDetails',
+        name: 'assetDetails',
+        component: AssetDetails
+      },
+      {
+        path: '/assetManagement/entrustOrder',
+        name: 'entrustOrder',
+        component: EntrustOrder
+      },
+      {
+        path: '/assetManagement/positionOrder',
+        name: 'positionOrder',
+        component: PositionOrder
+      },
+      {
+        path: '/assetManagement/rechargeAndWithdrawRecord',
+        name: 'rechargeAndWithdrawRecord',
+        component: RechargeAndWithdrawRecord
+      }
+    ]
   },
   {
     path: '/',

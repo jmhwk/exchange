@@ -1,12 +1,12 @@
 <template>
   <div>
-    资产明细
+    委托订单
   </div>
 </template>
 
 <script>
 export default {
-  name: 'AssetDetails'
+
 }
 </script>
 

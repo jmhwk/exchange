@@ -6,34 +6,33 @@
           资产管理
         </div>
         <el-menu
-          default-active="1"
+          :default-active="this.$route.path"
           class="el-menu-vertical"
           background-color="transparent"
           active-text-color="#fff"
           text-color="#fff"
+          router
         >
-          <el-menu-item index="1">
+          <el-menu-item index="/assetManagement/assetDetails">
             <i class="el-icon-setting" />
             <span slot="title">资产明细</span>
           </el-menu-item>
-          <el-menu-item index="2">
+          <el-menu-item index="/assetManagement/entrustOrder">
             <i class="el-icon-setting" />
             <span slot="title">委托订单</span>
           </el-menu-item>
-          <el-menu-item index="3">
+          <el-menu-item index="/assetManagement/positionOrder">
             <i class="el-icon-setting" />
             <span slot="title">持仓订单</span>
           </el-menu-item>
-          <el-menu-item index="4">
+          <el-menu-item index="/assetManagement/rechargeAndWithdrawRecord">
             <i class="el-icon-setting" />
             <span slot="title">充提记录</span>
           </el-menu-item>
         </el-menu>
       </div>
       <div class="right-side">
-        <div class="title">
-          aaa
-        </div>
+        <router-view />
       </div>
     </div>
   </div>
