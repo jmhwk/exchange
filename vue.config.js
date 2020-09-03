@@ -37,6 +37,9 @@ module.exports = {
         globalVars: {
           primary: '#333'
         }
+      },
+      scss: {
+        additionalData: `@import "~@/styles/index.scss";`
       }
     }
   },

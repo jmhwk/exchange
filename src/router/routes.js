@@ -13,6 +13,9 @@ import Password from '../views/log/password.vue'
 import Solutions from '../views/log/solutions.vue'
 // 合约交易
 import Products from '../views/products/products'
+// 资产管理
+import AssetManagement from '../views/assetManagement'
+
 export default [
   {
     path: '/index',
@@ -61,6 +64,10 @@ export default [
   {
     path: '/products',
     component: Products
+  },
+  {
+    path: '/assetManagement',
+    component: AssetManagement
   },
   {
     path: '/',
