@@ -3,10 +3,10 @@
     <div class="popupWindow flexzxlist">
       <h1>我要登录</h1>
       <div class="inputbox">
-        <el-input v-model="input" placeholder="请输入手机号码" clearable></el-input>
-        <el-input v-model="input" placeholder="请输入密码" type="password" clearable></el-input>
+        <el-input v-model="input" placeholder="请输入手机号码" clearable />
+        <el-input v-model="input" placeholder="请输入密码" type="password" clearable />
         <div class="yzm-box flexcenter">
-          <el-input v-model="input" placeholder="请输入图形验证码" style="width: 304px;" clearable></el-input>
+          <el-input v-model="input" placeholder="请输入图形验证码" style="width: 304px;" clearable />
           <div class="yzm">fefds</div>
         </div>
       </div>
@@ -26,17 +26,17 @@
 export default {
   data() {
     return {
-      input: ""
-    };
+      input: ''
+    }
   },
   created() {},
   methods: {
     goTo(path) {
       // 编程式路由跳转
-      this.$router.replace(path);
+      this.$router.replace(path)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped="">

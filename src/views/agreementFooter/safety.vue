@@ -1,35 +1,35 @@
 <template>
-	<div class="contextpage">
-    <div class="tits">{{$t('safety.safety_h1')}}</div>
-    <div class="author"><span>{{$t('dashboard.footer_agreementhzz')}}：AUTEX</span><span>{{$t('dashboard.footer_agreementhtime')}}：2020/4/17</span></div>
-    <div class="content"><p>{{$t('safety.safetyp1')}}</p>
-                <h1>{{$t('safety.safetyp2')}}</h1>
-                <p>
-                    {{$t('safety.safetyp3')}}
-                    <br>{{$t('safety.safetyp4')}}
-                    <br>{{$t('safety.safetyp5')}}
-                    <br>{{$t('safety.safetyp6')}}
-                </p>
-                <h1>{{$t('safety.safetyp7')}}</h1>
-                <p>
-                   {{$t('safety.safetyp8')}}
-                    <br>{{$t('safety.safetyp9')}}</p>
-                <h1>{{$t('safety.safetyp10')}}</h1>
-                <p>{{$t('safety.safetyp11')}}</p></div>
-	</div>
+  <div class="contextpage">
+    <div class="tits">{{ $t('safety.safety_h1') }}</div>
+    <div class="author"><span>{{ $t('dashboard.footer_agreementhzz') }}：AUTEX</span><span>{{ $t('dashboard.footer_agreementhtime') }}：2020/4/17</span></div>
+    <div class="content"><p>{{ $t('safety.safetyp1') }}</p>
+      <h1>{{ $t('safety.safetyp2') }}</h1>
+      <p>
+        {{ $t('safety.safetyp3') }}
+        <br>{{ $t('safety.safetyp4') }}
+        <br>{{ $t('safety.safetyp5') }}
+        <br>{{ $t('safety.safetyp6') }}
+      </p>
+      <h1>{{ $t('safety.safetyp7') }}</h1>
+      <p>
+        {{ $t('safety.safetyp8') }}
+        <br>{{ $t('safety.safetyp9') }}</p>
+      <h1>{{ $t('safety.safetyp10') }}</h1>
+      <p>{{ $t('safety.safetyp11') }}</p></div>
+  </div>
 
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			};
-		},
-		methods:{
-		}
-	}
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+  }
+}
 </script>
 
 <style lang="scss">

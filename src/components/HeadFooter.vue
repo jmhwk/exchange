@@ -5,21 +5,21 @@
     </div>
     <div class="footer-right">
       <div class="foter1">
-        <p>{{$t('footer.footer_service_user1')}}</p>
-        <router-link to="/">{{$t('footer.footer_help')}}</router-link>
-        <div><router-link to="/footer/pneumatic">{{$t('footer.footer_service_user2')}}</router-link></div>
+        <p>{{ $t('footer.footer_service_user1') }}</p>
+        <router-link to="/">{{ $t('footer.footer_help') }}</router-link>
+        <div><router-link to="/footer/pneumatic">{{ $t('footer.footer_service_user2') }}</router-link></div>
       </div>
       <div class="foter1">
-        <p>{{$t('footer.footer_about_us')}}</p>
-        <div><router-link to="/footer/security">{{$t('footer.footer_about_us')}} AUTEX</router-link></div>
-        <div>{{$t('footer.footer_service_user3')}}</div>
+        <p>{{ $t('footer.footer_about_us') }}</p>
+        <div><router-link to="/footer/security">{{ $t('footer.footer_about_us') }} AUTEX</router-link></div>
+        <div>{{ $t('footer.footer_service_user3') }}</div>
       </div>
       <div class="foter1">
-        <p>{{$t('footer.footer_service_user4')}}</p>
-        <div><router-link to="/footer/safety">{{$t('footer.footer_service_user5')}}</router-link></div>
-        <div><router-link to="/footer/user">{{$t('footer.footer_service_agreement')}}</router-link></div>
-        <div><router-link to="/footer/legislation">{{$t('footer.footer_service_user6')}}</router-link></div>
-        <div><router-link to="/footer/privacy">{{$t('footer.footer_privacy_policy')}}</router-link></div>
+        <p>{{ $t('footer.footer_service_user4') }}</p>
+        <div><router-link to="/footer/safety">{{ $t('footer.footer_service_user5') }}</router-link></div>
+        <div><router-link to="/footer/user">{{ $t('footer.footer_service_agreement') }}</router-link></div>
+        <div><router-link to="/footer/legislation">{{ $t('footer.footer_service_user6') }}</router-link></div>
+        <div><router-link to="/footer/privacy">{{ $t('footer.footer_privacy_policy') }}</router-link></div>
       </div>
     </div>
   </div>
@@ -28,12 +28,12 @@
 export default {
   data() {
     return {
-     
+
     }
   },
   methods: {
-  },
- 
+  }
+
 }
 </script>
 <style lang="scss" scoped>
@@ -65,7 +65,6 @@ export default {
       }
     }
   }
-  
-</style>
 
+</style>
 

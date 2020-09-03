@@ -1,30 +1,30 @@
 <template>
-	<div class="contextpage">
-    <div class="tits">{{$t('legislatio.legislatio_h1')}}</div>
-    <div class="author"><span>{{$t('dashboard.footer_agreementhzz')}}：AUTEX</span><span>{{$t('dashboard.footer_agreementhtime')}}：2020/4/17</span></div>
-  <div class="content"><h1>{{$t('legislatio.legislatiop1')}}</h1>
-                  <p>{{$t('legislatio.legislatiop2')}}</p>
-                  <h1>{{$t('legislatio.legislatiop3')}}</h1>
-                  <p>{{$t('legislatio.legislatiop4')}} </p>
-                  <h1>{{$t('legislatio.legislatiop5')}}</h1>
-                  <p>{{$t('legislatio.legislatiop6')}}</p>
-                  <h1>{{$t('legislatio.legislatiop7')}}</h1>
-                  <p>{{$t('legislatio.legislatiop8')}}</p>
-                  <h1>{{$t('legislatio.legislatiop9')}}</h1>
-                  <p>{{$t('legislatio.legislatiop10')}}</p></div>
-	</div>
+  <div class="contextpage">
+    <div class="tits">{{ $t('legislatio.legislatio_h1') }}</div>
+    <div class="author"><span>{{ $t('dashboard.footer_agreementhzz') }}：AUTEX</span><span>{{ $t('dashboard.footer_agreementhtime') }}：2020/4/17</span></div>
+    <div class="content"><h1>{{ $t('legislatio.legislatiop1') }}</h1>
+      <p>{{ $t('legislatio.legislatiop2') }}</p>
+      <h1>{{ $t('legislatio.legislatiop3') }}</h1>
+      <p>{{ $t('legislatio.legislatiop4') }} </p>
+      <h1>{{ $t('legislatio.legislatiop5') }}</h1>
+      <p>{{ $t('legislatio.legislatiop6') }}</p>
+      <h1>{{ $t('legislatio.legislatiop7') }}</h1>
+      <p>{{ $t('legislatio.legislatiop8') }}</p>
+      <h1>{{ $t('legislatio.legislatiop9') }}</h1>
+      <p>{{ $t('legislatio.legislatiop10') }}</p></div>
+  </div>
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				
-			};
-		},
-		methods:{
-		}
-	}
+export default {
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+  }
+}
 </script>
 
 <style lang="scss">

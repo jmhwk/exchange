@@ -15,12 +15,12 @@ const router = new VueRouter({
   // mode: 'history', // 去除路径中的#
   // 应用中所有路由
   routes,
-  scrollBehavior(to, from,savedPosition) {
-      return {
-        x: 0,
-        y: 0
-      }
-}
+  scrollBehavior(to, from, savedPosition) {
+    return {
+      x: 0,
+      y: 0
+    }
+  }
 
 })
 

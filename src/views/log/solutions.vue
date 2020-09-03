@@ -35,7 +35,7 @@
             </div>
           </div>
         </div>
-        <div class="solt-line"></div>
+        <div class="solt-line" />
         <div class="solft-bg">
           <div class="solut-rebate">
             <h1>获得返佣（USDT）</h1>
@@ -47,7 +47,7 @@
                 <h1>邀请人数(含间接邀请）</h1>
                 <P>0.00</P>
               </el-col>
-              <el-col :span="1" style="height: 210px;background: #010e20;width: 3px;"></el-col>
+              <el-col :span="1" style="height: 210px;background: #010e20;width: 3px;" />
               <el-col :span="9">
                 <h1>返佣比例</h1>
                 <P>0.00</P>
@@ -58,29 +58,29 @@
       </div>
       <div class="sol-top soltop-bg">
         <el-row class="tit">
-          <el-col :span="12" v-for="(item,index) in invite" :key="index">
-            <span :class="{active:active==index}" @click="tabcut(index)">{{item.name}}</span>
+          <el-col v-for="(item,index) in invite" :key="index" :span="12">
+            <span :class="{active:active==index}" @click="tabcut(index)">{{ item.name }}</span>
           </el-col>
         </el-row>
-        <div class="tab1"  v-if="!active">
-          <el-row  class="tits">
+        <div v-if="!active" class="tab1">
+          <el-row class="tits">
             <el-col :span="12"><span>被邀请人的账号</span></el-col>
             <el-col :span="12"><span>邀请时间</span></el-col>
           </el-row>
-          <el-row  class="titslist" v-for="(item,index) in account" :key="index">
-             <el-col :span="12"><span>{{item.name}}</span></el-col>
-             <el-col :span="12"><span>{{item.time}}</span></el-col>
-          </el-row >
+          <el-row v-for="(item,index) in account" :key="index" class="titslist">
+            <el-col :span="12"><span>{{ item.name }}</span></el-col>
+            <el-col :span="12"><span>{{ item.time }}</span></el-col>
+          </el-row>
         </div>
-        <div class="tab1" v-else>
-          <el-row  class="tits">
+        <div v-else class="tab1">
+          <el-row class="tits">
             <el-col :span="12"><span>被邀请人的账号</span></el-col>
             <el-col :span="12"><span>返佣</span></el-col>
           </el-row>
-          <el-row  class="titslist" v-for="(item,index) in account" :key="index">
-             <el-col :span="12"><span>{{item.name}}</span></el-col>
-             <el-col :span="12"><span>{{item.time}}</span></el-col>
-          </el-row >
+          <el-row v-for="(item,index) in account" :key="index" class="titslist">
+            <el-col :span="12"><span>{{ item.name }}</span></el-col>
+            <el-col :span="12"><span>{{ item.time }}</span></el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -88,32 +88,32 @@
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        invite: [{
-          name: '邀请记录'
-        }, {
-          name: '返佣记录'
-        }],
-        account:[{name:'188****6890',time:'2020-08-20 16:47:03'},{name:'188****1234',time:'2020-08-20 16:47:03'}],
-        active: false,
-      };
-    },
-    created() {
+export default {
+  data() {
+    return {
+      invite: [{
+        name: '邀请记录'
+      }, {
+        name: '返佣记录'
+      }],
+      account: [{ name: '188****6890', time: '2020-08-20 16:47:03' }, { name: '188****1234', time: '2020-08-20 16:47:03' }],
+      active: false
+    }
+  },
+  created() {
+
+  },
+  methods: {
+    // 复制
+    copy() {
 
     },
-    methods: {
-      // 复制
-      copy() {
-
-      },
-      // tabs切换
-      tabcut(index) {
-        this.active = index;
-      },
-    },
+    // tabs切换
+    tabcut(index) {
+      this.active = index
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped="">

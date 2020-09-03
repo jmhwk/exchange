@@ -2,13 +2,13 @@
   <div class="head flexcenter">
     <div class="head-left">
       <ul class="flexcenterlist">
-        <img src="../assets/imgaes/logo.png" alt @click="goTo('/index')" />
+        <img src="../assets/imgaes/logo.png" alt @click="goTo('/index')">
         <li
-          :class="{active:active2==index}"
           v-for="(item,index) in tablis"
           :key="index"
+          :class="{active:active2==index}"
           @click="tabcut(index,item.path)"
-        >{{item.name}}</li>
+        >{{ item.name }}</li>
       </ul>
     </div>
     <div class="head-right flexcenterlist">
@@ -18,7 +18,7 @@
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
             资产管理
-            <i class="el-icon-arrow-down el-icon--right"></i>
+            <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="a">资产明细</el-dropdown-item>
@@ -28,12 +28,12 @@
       </div>
 
       <div>
-        <i class="el-icon-user-solid" style="font-size: 20px; padding: 0 10px 0 20px;"></i>188****7673
+        <i class="el-icon-user-solid" style="font-size: 20px; padding: 0 10px 0 20px;" />188****7673
       </div>
-      <img src="../assets/imgaes/xz.png" alt />
-      <div @click="handlen(1)" :class="{active:active}">{{$t('navbar.Language')}}</div>
-      <div class="xian"></div>
-      <div @click="handlen(2)" :class="{active:active1}">English</div>
+      <img src="../assets/imgaes/xz.png" alt>
+      <div :class="{active:active}" @click="handlen(1)">{{ $t('navbar.Language') }}</div>
+      <div class="xian" />
+      <div :class="{active:active1}" @click="handlen(2)">English</div>
     </div>
   </div>
 </template>
@@ -45,45 +45,46 @@ export default {
       active1: false,
       active2: 0,
       tablis: [
-        { name: this.$t("navbar.HOME"), path: "/index" },
-        { name: this.$t("navbar.PRODUCTS"), path: "/products" },
-        { name: this.$t("navbar.SOLUTIONS"), path: "/solutions" },
-        { name: this.$t("navbar.SERVICES"), path: "/services" },
-        { name: this.$t("navbar.ABOUT"), path: "/about" }
+        { name: this.$t('navbar.HOME'), path: '/index' },
+        { name: this.$t('navbar.PRODUCTS'), path: '/products' },
+        { name: this.$t('navbar.SOLUTIONS'), path: '/solutions' },
+        { name: this.$t('navbar.SERVICES'), path: '/services' },
+        { name: this.$t('navbar.ABOUT'), path: '/about' }
       ]
-    };
+    }
   },
+  mounted() {},
   methods: {
     handlen(lag) {
       // 语言切换
       if (lag == 1) {
-        this.$i18n.locale = "cn";
-        this.active1 = false;
-        this.active = true;
+        this.$i18n.locale = 'cn'
+        this.active1 = false
+        this.active = true
         this.tablis = [
-          { name: this.$t("navbar.HOME"), path: "/index" },
-          { name: this.$t("navbar.PRODUCTS"), path: "/products" },
-          { name: this.$t("navbar.SOLUTIONS"), path: "/solutions" },
-          { name: this.$t("navbar.SERVICES"), path: "/services" },
-          { name: this.$t("navbar.ABOUT"), path: "/about" }
-        ];
+          { name: this.$t('navbar.HOME'), path: '/index' },
+          { name: this.$t('navbar.PRODUCTS'), path: '/products' },
+          { name: this.$t('navbar.SOLUTIONS'), path: '/solutions' },
+          { name: this.$t('navbar.SERVICES'), path: '/services' },
+          { name: this.$t('navbar.ABOUT'), path: '/about' }
+        ]
       } else {
-        this.$i18n.locale = "en";
-        this.active1 = true;
-        this.active = false;
+        this.$i18n.locale = 'en'
+        this.active1 = true
+        this.active = false
         this.tablis = [
-          { name: this.$t("navbar.HOME"), path: "/index" },
-          { name: this.$t("navbar.PRODUCTS"), path: "/products" },
-          { name: this.$t("navbar.SOLUTIONS"), path: "/solutions" },
-          { name: this.$t("navbar.SERVICES"), path: "/services" },
-          { name: this.$t("navbar.ABOUT"), path: "/about" }
-        ];
+          { name: this.$t('navbar.HOME'), path: '/index' },
+          { name: this.$t('navbar.PRODUCTS'), path: '/products' },
+          { name: this.$t('navbar.SOLUTIONS'), path: '/solutions' },
+          { name: this.$t('navbar.SERVICES'), path: '/services' },
+          { name: this.$t('navbar.ABOUT'), path: '/about' }
+        ]
       }
     },
     // tab切换
     tabcut(index, path) {
-      this.active2 = index;
-      this.goTo(path);
+      this.active2 = index
+      this.goTo(path)
     },
     goTo(path) {
       // 编程式路由跳转
@@ -91,11 +92,10 @@ export default {
         { path: path },
         onComplete => {},
         onAbort => {}
-      );
+      )
     }
-  },
-  mounted() {}
-};
+  }
+}
 </script>
 <style lang="scss" scoped>
 .head {

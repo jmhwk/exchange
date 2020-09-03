@@ -2,64 +2,64 @@
   <div class="dashboard">
     <div class="dashboard-head">
       <div class="dash-center flexzxlist">
-        <h1>{{$t('dashboard.dashboard_title')}}</h1>
-        <p>{{$t('dashboard.dashboard_h1')}}</p>
-        <div class="aure-btns">{{$t('dashboard.dashboard_app')}}</div>
-<!--        <el-button type="primary" size="medium" class="aure-btns"></el-button> -->
+        <h1>{{ $t('dashboard.dashboard_title') }}</h1>
+        <p>{{ $t('dashboard.dashboard_h1') }}</p>
+        <div class="aure-btns">{{ $t('dashboard.dashboard_app') }}</div>
+        <!--        <el-button type="primary" size="medium" class="aure-btns"></el-button> -->
       </div>
       <div class="dash-bottom flexcentercenter">
         <div class="dashb-1">
-          <div>{{$t('dashboard.dashboard_btc')}} BTC/USDT</div>
+          <div>{{ $t('dashboard.dashboard_btc') }} BTC/USDT</div>
           <p>16587.5</p>
-          <div>24H{{$t('dashboard.dashboard_btc')}}22,376</div>
+          <div>24H{{ $t('dashboard.dashboard_btc') }}22,376</div>
         </div>
-        <div class="dashlin"></div>
+        <div class="dashlin" />
         <div class="dashb-1">
-          <div>{{$t('dashboard.dashboard_vol')}} ETH/USDT</div>
+          <div>{{ $t('dashboard.dashboard_vol') }} ETH/USDT</div>
           <p>16587.5</p>
-          <div>24H{{$t('dashboard.dashboard_vol')}}22,376</div>
+          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
         </div>
-        <div class="dashlin"></div>
+        <div class="dashlin" />
         <div class="dashb-1">
-          <div>{{$t('dashboard.dashboard_btc')}} BTC/USDT</div>
+          <div>{{ $t('dashboard.dashboard_btc') }} BTC/USDT</div>
           <p>16587.5</p>
-          <div>24H{{$t('dashboard.dashboard_vol')}}22,376</div>
+          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
         </div>
-        <div class="dashlin"></div>
+        <div class="dashlin" />
         <div class="dashb-1">
-          <div>{{$t('dashboard.dashboard_eth')}} ETH/USDT</div>
+          <div>{{ $t('dashboard.dashboard_eth') }} ETH/USDT</div>
           <p>16587.5</p>
-          <div>24H{{$t('dashboard.dashboard_vol')}}22,376</div>
+          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
         </div>
       </div>
       <div class="dash-lb">
-        <i></i>
+        <i />
         <span>关于AUTEX V1.0.0版本更新的公告   /   警惕假冒AUTEX官网的风险提示公告   /   运营周报(2020/07/07-2020/07/07)</span>
       </div>
     </div>
     <div class="dashboard-center flexzxlist">
-      <h1>{{$t('dashboard.dashboard_scale')}}</h1>
-      <p>{{$t('dashboard.dashboard_scale1')}}</p>
+      <h1>{{ $t('dashboard.dashboard_scale') }}</h1>
+      <p>{{ $t('dashboard.dashboard_scale1') }}</p>
       <div class="dasc-flex flexcentercenter">
         <div class="dasc-flexliet">
           <img src="../images/flex2.png" alt="">
-          <p>{{$t('dashboard.dashboard_list1')}}</p>
-          <div>{{$t('dashboard.dashboard_p1')}}</div>
+          <p>{{ $t('dashboard.dashboard_list1') }}</p>
+          <div>{{ $t('dashboard.dashboard_p1') }}</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex3.png" alt="">
-          <p>{{$t('dashboard.dashboard_list2')}}</p>
-          <div>{{$t('dashboard.dashboard_p2')}}</div>
+          <p>{{ $t('dashboard.dashboard_list2') }}</p>
+          <div>{{ $t('dashboard.dashboard_p2') }}</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex1.png" alt="">
-          <p>{{$t('dashboard.dashboard_list3')}}</p>
-          <div>{{$t('dashboard.dashboard_p3')}}</div>
+          <p>{{ $t('dashboard.dashboard_list3') }}</p>
+          <div>{{ $t('dashboard.dashboard_p3') }}</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex4.png" alt="">
-          <p>{{$t('dashboard.dashboard_list4')}}</p>
-          <div>{{$t('dashboard.dashboard_p4')}}</div>
+          <p>{{ $t('dashboard.dashboard_list4') }}</p>
+          <div>{{ $t('dashboard.dashboard_p4') }}</div>
         </div>
       </div>
     </div>
@@ -68,54 +68,54 @@
         <img src="../images/bgleft.png" alt="">
       </div>
       <div class="dashd-right">
-        <h1>{{$t('dashboard.dashboard_p6')}}</h1>
-        <p>{{$t('dashboard.dashboard_p7')}}</p>
+        <h1>{{ $t('dashboard.dashboard_p6') }}</h1>
+        <p>{{ $t('dashboard.dashboard_p7') }}</p>
         <img src="../images/bgright.png" alt="">
         <div class="dash-icon">
           <div class="dashi-left">
-            <i></i>
-            <span>{{$t('dashboard.anzhuo')}}</span>
-            
+            <i />
+            <span>{{ $t('dashboard.anzhuo') }}</span>
+
           </div>
-            <div class="dashi-left">
-            <i class="ios"></i>
-            <span>{{$t('dashboard.ios')}}</span>
-           
+          <div class="dashi-left">
+            <i class="ios" />
+            <span>{{ $t('dashboard.ios') }}</span>
+
           </div>
         </div>
       </div>
     </div>
     <div class="dashboard-input flexzxlist">
-      <h1>{{$t('dashboard.dashboard_p8')}}</h1>
+      <h1>{{ $t('dashboard.dashboard_p8') }}</h1>
       <div class="inp flexcenterlist">
-        <input type="text" :placeholder="$t('dashboard.dashboard_table_search')" v-model="searchkey">
-        <div class="btns"><router-link :to="{name: 'register'}">{{$t('dashboard.dashboard_p9')}}</router-link></div>
+        <input v-model="searchkey" type="text" :placeholder="$t('dashboard.dashboard_table_search')">
+        <div class="btns"><router-link :to="{name: 'register'}">{{ $t('dashboard.dashboard_p9') }}</router-link></div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import {getUser,reqCategorys,} from '../../api'
-  export default {
-    data(){
-      return {
-        searchkey:''
-      }
-    },
-    mounted (){
-      this.reqCategorys()
-    },
-    methods:{
-      async reqCategorys () {
-        const result = await reqCategorys()
-        if(result.code===200) {
-          const user = result.data
-          console.log('数据',user);
-        }
+import { getUser, reqCategorys } from '../../api'
+export default {
+  data() {
+    return {
+      searchkey: ''
+    }
   },
-    },
+  mounted() {
+    this.reqCategorys()
+  },
+  methods: {
+    async reqCategorys() {
+      const result = await reqCategorys()
+      if (result.code === 200) {
+        const user = result.data
+        console.log('数据', user)
+      }
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -156,7 +156,7 @@ import {getUser,reqCategorys,} from '../../api'
           padding: 20px 0;
         }
       }
-      
+
     }
       .dash-bottom {
         .dashlin{
@@ -276,7 +276,7 @@ import {getUser,reqCategorys,} from '../../api'
               height: 43px;
               background:url(../images/anzhou.png) no-repeat center;
               background-size: cover;
-            
+
             }
             .ios{
               background:url(../images/ios.png) no-repeat center;
