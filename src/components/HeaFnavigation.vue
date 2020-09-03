@@ -17,7 +17,9 @@
       <div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link">
-            资产管理
+            <router-link :to="{path:'/assetManagement'}">
+              资产管理
+            </router-link>
             <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
