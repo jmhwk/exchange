@@ -17,7 +17,7 @@
       <div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link" style="color: #FFFFFF;">
-            <router-link :to="{path:'/assetManagement'}">
+            <router-link :to="{path:'/assetManagement'}" git push origin master>
               资产管理
             </router-link>
             <i class="el-icon-arrow-down el-icon--right" />
