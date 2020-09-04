@@ -17,7 +17,8 @@ import {
   DropdownItem,
   TabPane,
   Menu,
-  MenuItem
+  MenuItem,
+  Switch
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -44,6 +45,7 @@ Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
 Vue.use(Menu)
 Vue.use(MenuItem)
+Vue.use(Switch)
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件
