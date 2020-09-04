@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.AssetDetailsPanel-container {
   width: 100%;
   height: 224px;
   margin-bottom: 4px;
