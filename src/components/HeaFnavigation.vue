@@ -16,7 +16,7 @@
       <div class="btns btns-zc"  @click="goTo('/regist')">{{$t('navbar.Sign')}}</div>-->
       <div>
         <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">
+          <span class="el-dropdown-link" style="color: #FFFFFF;">
             <router-link :to="{path:'/assetManagement'}">
               资产管理
             </router-link>
