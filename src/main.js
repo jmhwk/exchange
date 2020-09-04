@@ -18,7 +18,10 @@ import {
   TabPane,
   Menu,
   MenuItem,
-  Switch
+  Switch,
+  Table,
+  TableColumn,
+  Pagination
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -46,6 +49,9 @@ Vue.use(DropdownItem)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Switch)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Pagination)
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件
