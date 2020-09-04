@@ -1,6 +1,6 @@
 <template>
   <div class="products">
-    <div class="products-top" />
+    <div class="products-top" />  
     <div class="products-bottom" />
   </div>
 </template>
@@ -24,6 +24,6 @@ export default {
 	.products{
 		height: 1669px;
 		background: #031937;
-
+    padding: 1;
 	}
 </style>

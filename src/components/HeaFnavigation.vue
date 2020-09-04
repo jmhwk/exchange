@@ -16,8 +16,8 @@
       <div class="btns btns-zc"  @click="goTo('/regist')">{{$t('navbar.Sign')}}</div>-->
       <div>
         <el-dropdown @command="handleCommand">
-          <span class="el-dropdown-link">
-            <router-link :to="{path:'/assetManagement'}">
+          <span class="el-dropdown-link" style="color: #FFFFFF;">
+            <router-link :to="{path:'/assetManagement'}" git push origin master>
               资产管理
             </router-link>
             <i class="el-icon-arrow-down el-icon--right" />
