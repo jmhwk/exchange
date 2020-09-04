@@ -13,56 +13,72 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="8">
-        a
-      </el-col>
-      <el-col :span="8">
-        a
-      </el-col>
-      <el-col :span="8">
-        a
+      <el-col v-for="(item,i) in items" :key="i" :span="8">
+        <AssetDetailsPanelItem :item="item" />
+        <div v-if="(++i)%3!==0" class="line" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import AssetDetailsPanelItem from './AssetDetailsPanelItem'
 export default {
-
+  name: 'AssetDetailsPanel',
+  components: {
+    AssetDetailsPanelItem
+  },
+  data() {
+    return {
+      items: [
+        { title: '交易账户' },
+        { title: '全仓账户' },
+        { title: '逐仓账户' }
+      ]
+    }
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-  .container{
-    width: 100%;
-    height: 224px;
-    margin-bottom: 4px;
-    background-color: $blue;
-    .top{
-      height: 106px;
-      line-height: 106px;
-      padding-left: 20px;
-      .money-title{
-        font-size: 22px;
-        color: #fff;
-      }
-      .money{
-        font-size: 22px;
-        color: #1476FE;
-      }
-      .money1{
-        color: #fff;
-        font-size: 16px;
-        opacity: 0.61;
-      }
-      .btn{
-        width: 74px;
-        height: 34px;
-        padding:unset;
-        background-color: transparent;
-        color: #1476FE;
-        border-color: #1476FE;
-      }
+.container {
+  width: 100%;
+  height: 224px;
+  margin-bottom: 4px;
+  background-color: $blue;
+  .line {
+    float: left;
+    width: 1px;
+    height: 40px;
+    margin-top: 27px;
+    margin-left: 31px;
+    border-left: 1px solid #fff;
+  }
+  .top {
+    height: 106px;
+    line-height: 106px;
+    padding-left: 20px;
+    .money-title {
+      font-size: 22px;
+      color: #fff;
+    }
+    .money {
+      font-size: 22px;
+      color: $money-blue;
+    }
+    .money1 {
+      color: #fff;
+      font-size: 16px;
+      opacity: 0.61;
+    }
+    .btn {
+      width: 74px;
+      height: 34px;
+      padding: unset;
+      background-color: transparent;
+      color: $money-blue;
+      border-color: $money-blue;
     }
   }
+}
 </style>

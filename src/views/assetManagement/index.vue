@@ -63,7 +63,7 @@ export default {
           height: 70px;
           width: 100%;
           line-height: 70px;
-          color: #1476FE;
+          color: $money-blue;
           padding-left: 20px;
           font-size: 16px;
         }
