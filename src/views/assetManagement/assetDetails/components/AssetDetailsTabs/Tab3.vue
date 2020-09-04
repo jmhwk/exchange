@@ -1,5 +1,5 @@
 <template>
-  <div class="subcontainer height678">
+  <div class="Tab3-subcontainer height678">
     <div class="subcontainer-top">
       <div class="subcontainer-top-left">
         <span class="subcontainer-top-left1">资产折合</span>
@@ -101,7 +101,7 @@ export default {
 .height678 {
   height: 678px;
 }
-.subcontainer {
+.Tab3-subcontainer {
   display: flex;
   flex-direction: column;
   .subcontainer-top {

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="AssetDetailsTabs-container">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="交易账户" name="tab1"><Tab1 /></el-tab-pane>
       <el-tab-pane label="全仓账户" name="tab2"><Tab2 /></el-tab-pane>
@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
-.container {
+.AssetDetailsTabs-container {
   width: 100%;
   height: 733px;
   background-color: $blue;

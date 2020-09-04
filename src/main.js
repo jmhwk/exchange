@@ -21,7 +21,11 @@ import {
   Switch,
   Table,
   TableColumn,
-  Pagination
+  Pagination,
+  Select,
+  Option,
+  RadioButton,
+  RadioGroup
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -52,6 +56,10 @@ Vue.use(Switch)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Pagination)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件

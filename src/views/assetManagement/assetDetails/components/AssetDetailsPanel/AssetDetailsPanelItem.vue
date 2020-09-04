@@ -1,5 +1,5 @@
 <template>
-  <div class="subcontainer">
+  <div class="AssetDetailsPanelItem-subcontainer">
     <el-row class="top">
       {{ item.title }}
     </el-row>
@@ -18,6 +18,7 @@
 
 <script>
 export default {
+  name: 'AssetDetailsPanelItem',
   props: {
     item: {
       type: Object,
@@ -29,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.subcontainer {
+.AssetDetailsPanelItem-subcontainer {
   padding-left: 20px;
   padding-top: 13px;
   float: left;

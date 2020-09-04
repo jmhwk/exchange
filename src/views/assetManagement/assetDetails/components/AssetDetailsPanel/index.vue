@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="AssetDetailsPanel-container">
     <el-row class="top">
       <el-col :span="17">
         <span class="money-title">总资产</span>&nbsp;
@@ -7,7 +7,7 @@
         <span class="money1">≈0.00CNY</span>
       </el-col>
       <el-col :span="7">
-        <el-button class="btn">充值</el-button>
+        <el-button class="btn" @click="$router.push({name:'rechargeCurrency'})">充币</el-button>
         <el-button class="btn">提币</el-button>
         <el-button class="btn">资金划转</el-button>
       </el-col>
