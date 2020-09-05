@@ -17,14 +17,14 @@
       <div>
         <el-dropdown @command="handleCommand">
           <span class="el-dropdown-link" style="color: #FFFFFF;">
-            <router-link :to="{path:'/assetManagement'}" git push origin master>
+            <router-link :to="{path:'/assetManagement'}" style="color: #FFFFFF;">
               资产管理
             </router-link>
             <i class="el-icon-arrow-down el-icon--right" />
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="a">资产明细</el-dropdown-item>
-            <el-dropdown-item command="b">委托订单</el-dropdown-item>
+            <el-dropdown-item command="assetDetails">资产明细</el-dropdown-item>
+            <el-dropdown-item command="entrustOrder">委托订单</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -86,6 +86,11 @@ export default {
     // tab切换
     tabcut(index, path) {
       this.active2 = index
+      this.goTo(path)
+    },
+    // 资产管理
+    handleCommand(command) {
+      let path = '/assetManagement/'+command
       this.goTo(path)
     },
     goTo(path) {

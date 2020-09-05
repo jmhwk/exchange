@@ -25,7 +25,9 @@ import {
   Select,
   Option,
   RadioButton,
-  RadioGroup
+  RadioGroup,
+  Tooltip,
+  Dialog,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -60,6 +62,8 @@ Vue.use(Select)
 Vue.use(Option)
 Vue.use(RadioButton)
 Vue.use(RadioGroup)
+Vue.use(Tooltip);
+Vue.use(Dialog);
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件

@@ -94,7 +94,9 @@ button {
   overflow: visible;
   outline: none; 
 }
-
+input{
+  outline: none;
+}
 /*显示省略号*/
 .ellipsis{
   overflow: hidden;
