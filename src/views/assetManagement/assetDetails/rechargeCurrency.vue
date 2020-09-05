@@ -28,6 +28,17 @@
           <el-radio-button label="ERC50" />
         </el-radio-group>
       </div>
+      <div class="image-box">
+        <el-image
+          style="width: 150px; height: 150px"
+          :src="require('@/assets/imgaes/assetManagement/erweuna.png')"
+          fit="fill"
+        />
+      </div>
+      <div class="input-box">
+        <el-input v-model="input" placeholder="请输入内容" />
+        <el-button type="primary">复制</el-button>
+      </div>
     </div>
     <div class="subcontainer-bottom">
       <p>温馨提示：</p>
@@ -56,7 +67,8 @@ export default {
         label: 'USDT1'
       }],
       value: 'USDT',
-      radio1: 'ERC20'
+      radio1: 'ERC20',
+      input: '0xe16c0825cd324e7eacf915fe6803b10535308fcd'
     }
   }
 }
@@ -88,13 +100,13 @@ export default {
       align-items: center;
       font-size: 14px;
       line-height: 24px;
-    }
-    .el-select {
-      padding: 0px 15px;
-      .el-input__inner {
-        height: 30px !important;
-        background-color: $blue;
-        color: rgba($color: #fff, $alpha: 0.81);
+      .el-select {
+        padding: 0px 15px;
+        .el-input__inner {
+          height: 30px !important;
+          background-color: $blue;
+          color: rgba($color: #fff, $alpha: 0.81);
+        }
       }
     }
     .el-radio-group {
@@ -107,13 +119,12 @@ export default {
           background-color: $blue;
         }
       }
-      .el-radio-button.is-active{
-        .el-radio-button__inner{
+      .el-radio-button.is-active {
+        .el-radio-button__inner {
           border-color: $money-blue;
         }
-
       }
-      .el-radio-button.is-active::before{
+      .el-radio-button.is-active::before {
         width: 25px;
         height: 26px;
         background: url("../../../assets/imgaes/assetManagement/gouxuan.png");
@@ -122,6 +133,28 @@ export default {
         top: 0px;
         content: "";
         z-index: 10;
+      }
+    }
+    .image-box {
+      display: flex;
+      justify-content: center;
+      margin: 149px 0px 154px 0px;
+    }
+    .input-box {
+      .el-input {
+        width: 350px;
+        margin-left: 228px;
+        input {
+          background-color: rgba($color: #243b5d, $alpha: 0.41);
+          border: none;
+          height: 45px !important;
+        }
+      }
+      .el-button {
+        margin-left: 30px;
+        width: 80px;
+        height: 45px;
+        font-size: 14px;
       }
     }
   }
