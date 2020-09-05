@@ -17,6 +17,7 @@ import Products from '../views/products/products'
 import AssetManagement from '../views/assetManagement'
 import AssetDetails from '../views/assetManagement/assetDetails'
 import RechargeCurrency from '../views/assetManagement/assetDetails/rechargeCurrency'
+import Withdrawal from '../views/assetManagement/assetDetails/withdrawal'
 import EntrustOrder from '../views/assetManagement/entrustOrder'
 import PositionOrder from '../views/assetManagement/positionOrder'
 import RechargeAndWithdrawRecord from '../views/assetManagement/rechargeAndWithdrawRecord'
@@ -85,6 +86,11 @@ export default [
         path: '/assetManagement/assetDetails/rechargeCurrency',
         name: 'rechargeCurrency',
         component: RechargeCurrency
+      },
+      {
+        path: '/assetManagement/assetDetails/withdrawal',
+        name: 'withdrawal',
+        component: Withdrawal
       },
       {
         path: '/assetManagement/entrustOrder',
