@@ -31,13 +31,27 @@
       <div class="form">
         <el-form ref="form" :model="form" label-width="96px">
           <el-form-item label="提币地址">
-            <el-select v-model="form.region" popper-class="withdrawal-select-down2" placeholder="请选择提币地址">
+            <el-select
+              v-model="form.region"
+              popper-class="withdrawal-select-down2"
+              placeholder="请选择提币地址"
+            >
               <el-option label="地址一" value="shanghai" />
               <el-option label="地址二" value="beijing" />
             </el-select>
+            <span><a href="javascript:;">新增地址</a></span>
           </el-form-item>
           <el-form-item label="提币数量">
-            <el-input v-model="form.name" placeholder="请输入提币数量" />
+            <el-input v-model="form.name" placeholder="请输入提币数量">
+              <template slot="append">
+                <span>USDT |</span>
+                <span><a href="javascript:;">全部提出</a></span>
+              </template>
+            </el-input>
+            <div class="number-warn">
+              <span>手续费：0.00</span>
+              <span>实际到账：0.00</span>
+            </div>
           </el-form-item>
           <el-form-item label="备注">
             <el-input v-model="form.name" placeholder="请输入备注" />
@@ -46,7 +60,11 @@
             <el-input v-model="form.name" placeholder="请输入交易密码" />
           </el-form-item>
           <el-form-item label="验证码">
-            <el-input v-model="form.name" placeholder="请输入验证码" />
+            <el-input v-model="form.name" placeholder="请输入验证码">
+              <template slot="append">
+                <span><a href="javascript:;">获取验证码</a></span>
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit">提交</el-button>
@@ -166,20 +184,76 @@ export default {
     .form {
       margin-top: 110px;
       margin-left: 141px;
-      .el-form-item__label{
-        color: rgba($color: #fff, $alpha: 0.8);
+      .el-form {
+        .el-form-item {
+          margin-bottom: 20px;;
+          .el-form-item__label {
+            color: rgba($color: #fff, $alpha: 0.8);
+            padding: 0px 20px;
+            text-align: justify;
+            text-align-last: justify;
+          }
+          .el-form-item__content {
+            width: 470px;
+            // .el-select {
+            //   width: 100%;
+            // }
+            span {
+              padding-left: 16px;
+              > a {
+                font-size: 14px;
+                color: $money-blue;
+              }
+            }
+            input {
+              width: 100%;
+              background-color: rgba($color: #243b5d, $alpha: 0.41);
+              height: 40px !important;
+            }
+            .el-button {
+              width: 100%;
+            }
+          }
+        }
       }
-      .el-form-item__content {
-        width: 470px;
-        .el-select{
-          width: 100%;
+      .el-form-item:first-child .el-form-item__content {
+        width: unset;
+        .el-select {
+          width: 470px;
         }
+      }
+      .el-form-item:nth-child(2) .el-form-item__content {
         input {
-          background-color: rgba($color: #243b5d, $alpha: 0.41);
-          height: 40px !important;
+          border-right: none;
         }
-        .el-button{
-          width: 100%;
+        .el-input-group__append {
+          padding: unset;
+          font-size: 14px;
+          background-color: rgba($color: #243b5d, $alpha: 0.41);
+          span:nth-child(2) {
+            padding: 0px 15px 0px 10px;
+          }
+        }
+        .number-warn {
+          > span {
+            padding: unset;
+          }
+          color: rgba($color: #fff, $alpha: 0.8);
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+      .el-form-item:nth-child(5) .el-form-item__content {
+        input {
+          border-right: none;
+        }
+        .el-input-group__append {
+          padding: unset;
+          font-size: 14px;
+          background-color: rgba($color: #243b5d, $alpha: 0.41);
+          span:nth-child(1) {
+            padding: 0px 15px 0px 10px;
+          }
         }
       }
     }
@@ -196,7 +270,8 @@ export default {
     }
   }
 }
-.withdrawal-select-down,.withdrawal-select-down2 {
+.withdrawal-select-down,
+.withdrawal-select-down2 {
   .el-scrollbar__view {
     background-color: $blue;
     .el-select-dropdown__item {
