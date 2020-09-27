@@ -11,8 +11,12 @@ import Log from '../views/log/log'
 import Regist from '../views/log/regist.vue'
 import Password from '../views/log/password.vue'
 import Solutions from '../views/log/solutions.vue'
+import Contactus from '../views/log/contactus.vue'
+
 // 合约交易
 import Products from '../views/products/products'
+// 币币交易
+import Currency from '../views/currencyTrading/currencyTrading'
 // 资产管理
 import AssetManagement from '../views/assetManagement'
 import AssetDetails from '../views/assetManagement/assetDetails'
@@ -20,7 +24,13 @@ import RechargeCurrency from '../views/assetManagement/assetDetails/rechargeCurr
 import Withdrawal from '../views/assetManagement/assetDetails/withdrawal'
 import EntrustOrder from '../views/assetManagement/entrustOrder'
 import PositionOrder from '../views/assetManagement/positionOrder'
+import FundsTransfer from '../views/assetManagement/fundsTransfer/index'
 import RechargeAndWithdrawRecord from '../views/assetManagement/rechargeAndWithdrawRecord'
+// 用户管理
+import UserManagement from '../views/userManagement/index'
+import Authentication from '../views/userManagement/authentication'
+import Passwordmodify from '../views/userManagement/passwordmodify'
+import Replacephone from '../views/userManagement/replacephone'
 
 export default [
   {
@@ -56,6 +66,10 @@ export default [
     component: Log
   },
   {
+    path: '/contactus',
+    component: Contactus
+  },
+  {
     path: '/regist',
     component: Regist
   },
@@ -71,6 +85,36 @@ export default [
     path: '/products',
     component: Products
   },
+  // 币币交易
+  {
+    path: '/currency',
+    component: Currency
+  },
+  // 用户管理
+  {
+    path: '/userManagement',
+    name: 'userManagement',
+    component: UserManagement,
+    redirect: '/userManagement/authentication',
+    children:[
+      {
+        path: '/userManagement/authentication',
+        name: 'authentication',
+        component: Authentication
+      },
+      {
+        path: '/userManagement/passwordmodify',
+        name: 'passwordmodify',
+        component: Passwordmodify
+      },
+      {
+        path: '/userManagement/replacephone',
+        name: 'replacephone',
+        component: Replacephone
+      },
+    ]
+  },
+  // 资产管理
   {
     path: '/assetManagement',
     name: 'assetManagement',
@@ -101,6 +145,11 @@ export default [
         path: '/assetManagement/positionOrder',
         name: 'positionOrder',
         component: PositionOrder
+      },
+      {
+        path: '/assetManagement/fundsTransfer',
+        name: 'fundsTransfer',
+        component: FundsTransfer
       },
       {
         path: '/assetManagement/rechargeAndWithdrawRecord',

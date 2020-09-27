@@ -28,6 +28,8 @@ import {
   RadioGroup,
   Tooltip,
   Dialog,
+  Popover,
+  Upload,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -64,6 +66,8 @@ Vue.use(RadioButton)
 Vue.use(RadioGroup)
 Vue.use(Tooltip);
 Vue.use(Dialog);
+Vue.use(Popover);
+Vue.use(Upload);
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件

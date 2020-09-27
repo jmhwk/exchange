@@ -96,3 +96,11 @@ export function checkURLAddr(str){
   var reg = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
   return reg.test(str);
 }
+export function fmtLength(row, column){
+  const arr = row[column.property]
+  if(arr === null || arr === '' || arr === undefined){
+    return '—'
+  } else {
+    return arr
+  }
+}

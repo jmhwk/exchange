@@ -135,7 +135,7 @@
       </el-row>
     </div>
     <div class="products-bottom">
-        <record></record>
+      <record></record>
     </div>
   </div>
 </template>
@@ -143,24 +143,45 @@
 <script>
   import record from './components/record.vue'
   import centerkline from './components/centerkline.vue'
+  import { getSocket } from '../../assets/js/websocket.js'
+  import {
+    mapState
+  } from 'vuex'
   export default {
     data() {
       return {
-
+        websock: null,
       }
     },
-    created() {
-
-    },
-    components:{
+    components: {
       record,
       centerkline
     },
-    methods: {}
+    computed: {
+      ...mapState({
+        allMarketList: state => state.websocket.allMarketList
+      })
+    },
+    created() {
+      this.getSocketData() // 开启webSocket;
+    },
+    destroyed() {
+      this.wsData.close(); // 关闭 websocket
+    },
+    methods: {
+      getSocketData() {
+        let params = {
+          channel: "marketById", 
+          marketId: "10"
+        }
+        getSocket(JSON.stringify(params), (data, ws) => {
+        });
+      },
+    },
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .products {
     padding: 75px 0 5px;
     background: #010E20;
@@ -168,6 +189,7 @@
 
     .products-top {
       padding-bottom: 5px;
+
       .red {
         color: #e2505b !important;
       }
@@ -193,9 +215,9 @@
       .title {
         font-size: 14px;
         color: #fff;
-        background: #212f46;
+        background: #002658;
         padding: 10px;
-        border-bottom: 1px solid #1f314d;
+        // border-bottom: 1px solid #1f314d;
       }
 
       .grid-content {
@@ -236,36 +258,44 @@
             span {
               display: block;
               padding-top: 5px;
+
             }
 
             span:first-of-type {
               color: #dfdfdf;
+              width: 100%;
+              padding-left: 0;
+            }
+
+            span:last-of-type {
+              color: #dfdfdf;
+              text-align: left;
+              padding-left: 0;
             }
 
             .name {
               font-size: 13px;
               color: #7fa6fb;
-              display: -webkit-box;
-              display: -ms-flexbox;
               display: flex;
-              -webkit-box-pack: justify;
-              -ms-flex-pack: justify;
               justify-content: space-between;
             }
           }
 
           li.active,
           li:hover {
-            background: #182841;
+            background: #021e43;
           }
         }
       }
+
       .bg-purple4 {
         overflow: auto;
       }
+
       .bg-purple3 {
         .t_tbs {
           width: 100%;
+
           .t_tits {
             display: -webkit-box;
             display: -ms-flexbox;

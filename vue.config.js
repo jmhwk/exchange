@@ -26,6 +26,7 @@ module.exports = {
       .set('@components', resolve('src/components'))
       .set('@views', resolve('src/views'))
       .set('@store', resolve('src/store'))
+      .set('@api', resolve('src/api'))
   },
   css: {
     extract: IS_PROD,
@@ -57,7 +58,7 @@ module.exports = {
     // proxy: 'http://localhost:8080'   // 配置跨域处理,只有一个代理
     proxy: { // 配置多个跨域
       '/api': {
-        target: 'http://172.11.11.11:7071',
+        target: 'http://47.242.81.154',
         changeOrigin: true,
         // ws: true,//websocket支持
         secure: false,
@@ -66,7 +67,7 @@ module.exports = {
         }
       },
       '/api2': {
-        target: 'http://172.12.12.12:2018',
+        target: 'http://47.242.81.154',
         changeOrigin: true,
         // ws: true,//websocket支持
         secure: false,

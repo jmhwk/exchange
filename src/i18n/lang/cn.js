@@ -2,6 +2,7 @@ export default {
   navbar: {
     HOME: '首页',
     PRODUCTS: '合约交易',
+    CURRENCY: '币币交易',
     SOLUTIONS: '邀请返佣',
     SERVICES: '联系我们',
     ABOUT: '帮助中心',

@@ -1,39 +1,25 @@
 <template>
   <div class="rechargeCurrency-subcontainer">
-    <div class="subcontainer-top">
-      充币
-    </div>
+    <div class="subcontainer-top">充币</div>
     <div class="subcontainer-mid">
       <div class="subcontainer-mid-select">
         <div>币种</div>
-        <el-select
-          v-model="value"
-          popper-class="rechargeCurrency-select-down"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
+        <el-select v-model="value" placeholder="请选择"  @change="fullName(value)">
+          <el-option v-for="(item,index) in serveOptions" :key="index" :label="item.shortName" :value="item.shortName" />
         </el-select>
         <div>可用：0.00</div>
       </div>
       <div>
         <el-radio-group v-model="radio1">
           <el-radio-button label="ERC20" />
-          <el-radio-button label="ERC30" />
+      <!--    <el-radio-button label="ERC30" />
           <el-radio-button label="ERC40" />
-          <el-radio-button label="ERC50" />
+          <el-radio-button label="ERC50" /> -->
         </el-radio-group>
       </div>
-      <div class="image-box">
-        <el-image
-          style="width: 150px; height: 150px"
-          :src="require('@/assets/imgaes/assetManagement/erweuna.png')"
-          fit="fill"
-        />
+      <div class="image-box flexzxlist">
+        <img src="../../images/erweuna@2x(1).png" alt="">
+        <p>充币地址</p>
       </div>
       <div class="input-box">
         <el-input v-model="input" placeholder="请输入内容" />
@@ -55,21 +41,29 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { SERVE_OPTIONS } from '@/store/mutation-types.js'
 export default {
   data() {
     return {
-      options: [{
-        value: 'USDT',
-        label: 'USDT'
-      },
-      {
-        value: 'USDT1',
-        label: 'USDT1'
-      }],
+      url:'../../images/erweuna@2x(1).png',
       value: 'USDT',
       radio1: 'ERC20',
       input: '0xe16c0825cd324e7eacf915fe6803b10535308fcd'
     }
+  },
+  created() {
+    this.$store.dispatch('accountList', 1)
+  },
+  computed: {
+    ...mapState({
+      serveOptions :state => state.property.serveOptions
+    })
+  },
+  methods: {
+    fullName(v){
+      
+    },
   }
 }
 </script>
@@ -90,10 +84,16 @@ export default {
     line-height: 55px;
     color: $money-blue;
   }
+  // .el-input{
+  //   i{
+  //     line-height: 30px!important;
+  //   }
+  // }
   .subcontainer-mid {
     padding-left: 34px;
     padding-top: 12px;
     flex: 1;
+    position: relative;
     .subcontainer-mid-select {
       color: rgba($color: #fff, $alpha: 0.81);
       display: flex;
@@ -136,11 +136,19 @@ export default {
       }
     }
     .image-box {
-      display: flex;
-      justify-content: center;
-      margin: 149px 0px 154px 0px;
+      padding-top: 15%;
+      img{
+        width: 150px;
+        height: 150px;
+      }
+      p{
+        padding: 20px 0;
+        color:#ffffffcc;
+      }
     }
     .input-box {
+      position: absolute;
+      bottom: 16%;
       .el-input {
         width: 350px;
         margin-left: 228px;
@@ -148,6 +156,9 @@ export default {
           background-color: rgba($color: #243b5d, $alpha: 0.41);
           border: none;
           height: 45px !important;
+        }
+        i{
+          line-height: 30px;
         }
       }
       .el-button {

@@ -1,4 +1,6 @@
 import axios from 'axios'
+import store from '../store'
+import qs from 'qs'
 // 1创建axios实例
 const service = axios.create({
   baseURL: process.env.BASE_API, // 接口地址
@@ -8,17 +10,31 @@ const service = axios.create({
 
 // 2 axios的请求拦截
 service.interceptors.request.use(function(config) {
-  // 发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等，根据需求去添加
-  config.data = JSON.stringify(config.data) // 数据转化,也可以使用qs转换
-  config.headers = {
-    'Content-Type': 'application/x-www-form-urlencoded' // 配置请求头
+  if(config.data){
+    if(typeof(config.data)=='string'){
+      config.headers = {
+        'content-type': 'application/x-www-form-urlencoded' // 配置请求头
+      }
+    }else{
+      config.headers = {
+        'Content-Type': "application/json; charset=utf-8"// 配置请求头
+       }
+    }
   }
+
+  // 发请求前做的一些处理，数据转化，配置请求头，设置token,设置loading等，根据需求去添加
+  // config.data = JSON.stringify(config.data) // 数据转化,也可以使用qs转换
+  // config.headers = {
+  //   'content-type': 'application/x-www-form-urlencoded' // 配置请求头
+  // }
   // 一般在这个位置判断token是否存在
-  const token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjg0MTMxNzg2MTI0ODQ1MDU3IiwiZXhwIjoxNTk5NDQ3MzUxLCJpYXQiOjE1OTg4NDI1NTF9.JVhBgz8WlowXvMGqCA0NkI4QsDyEW4iKT5Cq6u9MbZU'// 这里取token之前，你肯定需要先拿到token,存一下
+  let tokens = store.state.user.token
+  const token = tokens// 这里取token之前，你肯定需要先拿到token,存一下
   if (token) {
     // config.params = {'token':token} //如果要求携带在参数中
     config.headers.token = token // 如果要求携带在请求头中
   }
+  config.headers.lang='lang'
   return config
 }, function(error) {
   // 对请求错误做些什么
@@ -41,7 +57,14 @@ export default function ajax(url, data = {}, method = 'GET') {
     if (method === 'GET') {
       promise = service.get(url, { params: data }) // params配置, 指定的是query参数
     } else {
-      promise = service.post(url, data)
+      if(data.index === 1){
+        let params = qs.stringify(data.params)
+        promise = service.post(url, params)
+      }else{
+        promise = service.post(url, data)
+      }
+
+      
     }
 
     promise.then(

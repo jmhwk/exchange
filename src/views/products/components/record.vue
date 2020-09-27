@@ -1,6 +1,6 @@
 <template>
   <div class="AssetDetailsTabs-container">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="我的持仓" name="tab1"><Tab1 /></el-tab-pane>
       <el-tab-pane label="委托记录" name="tab2"><Tab2 /></el-tab-pane>
       <el-tab-pane label="平仓记录" name="tab3"><Tab3 /></el-tab-pane>
@@ -28,9 +28,6 @@ export default {
     }
   },
   methods: {
-    handleClick(tab, event) {
-      console.log(tab, event)
-    }
   }
 }
 </script>

@@ -4,12 +4,12 @@
       <h1>欢迎注册</h1>
       <div class="inputbox">
         <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" class="demo-ruleForm">
-          <el-form-item prop="tel">
-            <el-input v-model="ruleForm.tel" placeholder="请输入手机号码" clearable />
+          <el-form-item prop="phone">
+            <el-input v-model="ruleForm.phone" placeholder="请输入手机号码" clearable />
           </el-form-item>
-          <el-form-item prop="pass">
+          <el-form-item prop="password">
             <el-input
-              v-model="ruleForm.pass"
+              v-model="ruleForm.password"
               type="password"
               autocomplete="off"
               placeholder="8-24位，字母/数字组合密码"
@@ -33,18 +33,22 @@
           </el-form-item>
           <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
-              <el-input v-model="ruleForm.code" placeholder="请输入手机验证码" clearable />
+              <el-input v-model="ruleForm.phoneCode" placeholder="请输入手机验证码" clearable />
             </el-col>
             <el-col :span="4">
-              <button
+              <!-- <button
                 class="btns"
                 :class="{disabled: !this.canClick}"
                 @click="countDown"
-              >{{ content }}</button>
+              >{{ content }}</button> -->
+              <button :disabled="computeTime>0" class="btns"
+                      @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </el-col>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="ruleForm.invite" placeholder="请输邀请码（选填）" clearable />
+            <el-input v-model="ruleForm.inviteCode" placeholder="请输邀请码（选填）" clearable />
           </el-form-item>
           <el-form-item>
             <div>
@@ -69,6 +73,8 @@
 
 <script>
 import { isvalidatemobile, isPassword } from '../../assets/js/validate'
+import { reqCode, reqSmsLogin } from '../../api'
+import {RECEIVE_USER} from '../../store/mutation-types' // 存储用户信息
 export default {
   data() {
     const istel = (rule, value, callback) => {
@@ -96,7 +102,7 @@ export default {
     const validatePass2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
@@ -104,36 +110,59 @@ export default {
     }
     return {
       checked: true, // 单选
+      computeTime: 0, // 倒计时剩余的时间
       ruleForm: {
-        tel: '',
-        pass: '',
-        checkPass: '',
-        imgpassword: '',
-        code: '',
-        invite: ''
+        phone: '',
+        password: '',
+        checkPass: '', // 再次输入密码
+        imgpassword: '', // 图形验证码
+        phoneCode: '', // 短信验证码
+        inviteCode: '' // 邀请码
       },
       rules: {
-        tel: [
+        phone: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
           { validator: istel, trigger: 'blur' }
         ],
-        pass: [
+        password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
           { validator: validatePass, trigger: 'blur' }
         ],
         checkPass: [{ validator: validatePass2, trigger: 'blur' }]
       },
-      canClick: true, // 添加canClick
-      content: '发送验证码', // 按钮里显示的内容
-      totalTime: 60 // 记录具体倒计时时间
     }
   },
-  created() {},
+  created() {
+  },
   methods: {
-    // 提交
+    // 注册接口
+    async zc (){
+      let that = this
+      const { inviteCode, password, phone, phoneCode } = that.ruleForm
+      console.log(inviteCode, password, phone, phoneCode);
+      let result = await reqSmsLogin({inviteCode, password, phone, phoneCode})
+      if(result.code==200){
+      const user = result.data.user
+      const token = result.data.token
+      // 保存user(vuex的state中)
+      that.$store.commit(RECEIVE_USER, user) // 查找所有vuex模块中的mutation调用
+      that.$store.commit(RECEIVE_USER, token)
+      this.$router.push('/index')
+      // 跳转到个人中心
+      // this.$router.replace('/profile')
+        // that.goTo('/index')
+      }else{
+          that.$message({
+          message: result.msg,
+          type: 'error'
+        })
+      }
+    },
+    // 注册
     submitForm(formName) {
-      if (!this.checked) {
-        this.$message({
+      let that = this
+      if (!that.checked) {
+        that.$message({
           message: '请勾选用户协议',
           type: 'warning'
         })
@@ -141,9 +170,9 @@ export default {
       } else {
         this.$refs[formName].validate(valid => {
           if (valid) {
-            alert('submit!')
+            that.zc()
           } else {
-            console.log('error submit!!')
+            that.$message.error('注册失败');
             return false
           }
         })
@@ -153,21 +182,36 @@ export default {
       // 编程式路由跳转
       this.$router.replace(path)
     },
-    countDown() {
-      if (!this.canClick) return // 改动的是这两行代码
-      this.canClick = false
-      this.content = this.totalTime + 's后重发'
-      const clock = window.setInterval(() => {
-        this.totalTime--
-        this.content = this.totalTime + 's后重发'
-        if (this.totalTime < 0) {
-          window.clearInterval(clock)
-          this.content = '重发送验证码'
-          this.totalTime = 10
-          this.canClick = true // 这里重新开启
+    /*发送短信验证*/
+    async sendCode () {
+      // alert('----')
+      this.computeTime = 60
+      // 启动循环定时器, 每隔1s, 将计时减1
+      const intervalId = setInterval(() => {
+        // 一旦变为了0, 停止计时
+        if(this.computeTime===0) {
+          clearInterval(intervalId)
+        } else {
+          this.computeTime--
         }
+
       }, 1000)
-    }
+    const {phone} = this.ruleForm
+    let type =0
+      // 请求发送验证码
+      const result = await reqCode({phone, type})
+      if(result.code === 200) { // 成功
+        this.$message({
+        message: '发送短信验证码成功',
+        type: 'success'
+      });
+      } else { //失败
+        // 停止计时
+        clearInterval(this.intervalId)
+        this.computeTime = 0
+        this.$message.error('发送短信验证码失败');
+      }
+    },
   }
 }
 </script>

@@ -6,7 +6,8 @@
           <div class="soltle-yq">
             <h1>我的专属二维码</h1>
             <div class="solte-ma flexzx">
-              <img src="../images/bgright.png" class="imgma"></img>
+              <vue-qr :text="userInvite" :size="200"></vue-qr>
+<!--              <img src="../images/bgright.png" class="imgma"></img> -->
               <div>
                 <img src="../images/logo.png" class="imgma1"></img>
                 <p>专业可靠的资产交易平台</p>
@@ -17,21 +18,33 @@
           <div class="solte-connection ">
             <div class="soltec-left">
               <h2>我的专属邀请码</h2>
-              <el-row :gutter="20">
-                <el-col :span="18" class="soltecle-input">w896o367</el-col>
-                <el-col :span="4">
-                  <el-button type="primary" class="jys-btns" @click="copy">点击复制</el-button>
-                </el-col>
-              </el-row>
+              <div class="invite flexcenterlist">
+                <div class="invite-left">
+                  {{user.code}}
+                </div>
+                <div class="invite-right">
+                    <el-button type="primary" class="jys-btns"  
+                      v-clipboard:copy="user.code"  
+                      v-clipboard:success="onCopy" 
+                      v-clipboard:error="onError"
+                    >点击复制</el-button>
+                </div>
+              </div>
             </div>
             <div class="soltec-left">
               <h2>我的专属邀请链接</h2>
-              <el-row :gutter="20">
-                <el-col :span="18" class="soltecle-input">https://www.boxex.io/pcact/register?rcode=w896o367</el-col>
-                <el-col :span="4">
-                  <el-button type="primary" class="jys-btns">点击复制</el-button>
-                </el-col>
-              </el-row>
+              <div class="invite flexcenterlist">
+                <div class="invite-left">
+                  {{userInvite}}
+                </div>
+                <div class="invite-right">
+                    <el-button type="primary" class="jys-btns" 
+                      v-clipboard:copy="userInvite" 
+                      v-clipboard:success="onCopy" 
+                      v-clipboard:error="onError"
+                    >点击复制</el-button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -39,13 +52,13 @@
         <div class="solft-bg">
           <div class="solut-rebate">
             <h1>获得返佣（USDT）</h1>
-            <P>0.00</P>
+            <P>{{myTeam.refereeAmount}}</P>
           </div>
           <div class="solut-invite">
             <el-row>
               <el-col :span="12">
                 <h1>邀请人数(含间接邀请）</h1>
-                <P>0.00</P>
+                <P>{{refereeTotal}}</P>
               </el-col>
               <el-col :span="1" style="height: 210px;background: #010e20;width: 3px;" />
               <el-col :span="9">
@@ -68,8 +81,8 @@
             <el-col :span="12"><span>邀请时间</span></el-col>
           </el-row>
           <el-row v-for="(item,index) in account" :key="index" class="titslist">
-            <el-col :span="12"><span>{{ item.name }}</span></el-col>
-            <el-col :span="12"><span>{{ item.time }}</span></el-col>
+            <el-col :span="12"><span>{{ item.phone }}</span></el-col>
+            <el-col :span="12"><span>{{ timestampToTime(item.updateTime) }}</span></el-col>
           </el-row>
         </div>
         <div v-else class="tab1">
@@ -88,9 +101,25 @@
 </template>
 
 <script>
+import {
+  getRefeRee,
+  refereeTotal,
+  userInvite,
+  myTeam
+} from '@/api'
+import {timestampToTime} from '@/assets/js/time.js'
+import { mapState } from 'vuex'
+import vueQr from 'vue-qr'
+import Vue from 'vue'
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard);
 export default {
   data() {
     return {
+      refereeTotal:0, // 邀请人数
+      userInvite :'',// 邀请连接
+      myTeam:{}, // 返佣
+      timestampToTime:timestampToTime,
       invite: [{
         name: '邀请记录'
       }, {
@@ -100,14 +129,46 @@ export default {
       active: false
     }
   },
+  computed: {
+    ...mapState({
+      user: state => state.user.user
+    })
+  },
+  // 二维码
+  components: { vueQr },
   created() {
-
+    this.getRefeRee()
   },
   methods: {
-    // 复制
-    copy() {
-
+    // 复制成功时的回调函数
+    onCopy (e) {
+       this.$message.success("内容已复制到剪切板！")
     },
+    // 复制失败时的回调函数
+    onError (e) {
+       this.$message.error("抱歉，复制失败！")
+    },
+    // 我的邀请
+    async getRefeRee() {
+      const result = await getRefeRee()
+      const resultlist = await refereeTotal()
+      const reslist = await myTeam()
+      let type = 2
+      const res = await userInvite(type)
+      if (result.code == 200 || resultlist.code == 200) {
+        this.account=result.data
+        this.refereeTotal = resultlist.data
+        this.userInvite = res.data
+        this.myTeam = reslist.data
+      } else {
+        that.$message({
+          message: result.msg,
+          type: 'error'
+        })
+      }
+      
+    },
+
     // tabs切换
     tabcut(index) {
       this.active = index
@@ -171,21 +232,23 @@ export default {
           }
 
           .solte-connection {
-            width: 350px;
+            width: 400px;
 
             .soltec-left {
               h2 {
                 font-size: 16px;
                 padding: 20px 0;
               }
-
-              .soltecle-input {
-                // width: 230px;
-                padding: 20px 0;
-                border: 1px solid #30425b;
-                border-radius: 4px;
-                text-align: center;
-                word-break: break-all;
+              .invite{
+                .invite-left{
+                  width: 100%;
+                  padding: 20px 10px;
+                  border: 1px solid #30425b;
+                  border-radius: 4px;
+                  text-align: center;
+                  word-break: break-all;
+                  margin: 0 15px;
+                }
               }
             }
           }

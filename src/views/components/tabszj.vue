@@ -112,7 +112,6 @@
         this.$emit("sortChange", argu)
       },
       CellClick(row, col, cell) {
-        // console.log(row,col,cell)
         this.$emit("CellClick", {
           row,
           col,
@@ -125,7 +124,6 @@
 
       // <!--      handleExpandRow: 展开行-->
       handleExpandRow(row, expandRows) {
-        // console.log(row,expandRows)
         if (this.isExpandOne) {
           this.$refs.raw_table.store.states.expandRows = expandRows.length !== 0 ? [row] : []
         } else {

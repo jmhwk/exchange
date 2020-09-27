@@ -198,6 +198,15 @@
 
 <style lang="scss">
   .centerkline {
+      input::-webkit-input-placeholder {
+          color: #ffffffcc;
+        }
+        input::-moz-input-placeholder {
+          color: #ffffffcc;
+        }
+        input::-ms-input-placeholder {
+          color: #ffffffcc;
+        }
     .lbtns {
       width: 100%;
       border-radius: 2px;
@@ -211,6 +220,12 @@
       padding: 7px 0;
       font-size: 12px;
       color: #bfc5cd;
+      span {
+        padding-left:0!important;
+        i{
+          padding-left: 3px;
+        }
+      }
     }
 
     .center-row1 {
@@ -250,7 +265,7 @@
           color: #1476FE;
           line-height: 100px;
           padding: 0 20px;
-          width: 140px;
+          width: 150px;
         }
       }
 
@@ -268,7 +283,7 @@
 
         .deal {
           background: #031937;
-          padding: 30px;
+          padding: 43px;
 
           .deal-top {
             width: 40%;
@@ -276,7 +291,7 @@
               font-size: 12px;
               display: block;
               margin-bottom: 5px;
-              color: #61688a;
+              color: #ffffff99;
             }
 
             .ints {
@@ -311,7 +326,7 @@
             .rate{
               margin-bottom: 35px;
               a {
-                  color: #979fc3;
+                  color: #ffffff99;
                   font-size: 12px;
                   cursor: none;
               }
@@ -324,7 +339,6 @@
             }
           }
         }
-
         .explain {
           // padding: 20px 30px;
           font-size: 12px;
@@ -332,6 +346,9 @@
           left: 240px;
           top: 20px;
           color: #495c77;
+          i{
+            padding-left: 3px;
+          }
           .el-dialog {
             background: #e6e9ed;
             width: 480px;

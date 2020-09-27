@@ -4,39 +4,38 @@
       <h1>重置密码</h1>
       <div class="inputbox">
         <el-form ref="ruleForm" :model="ruleForm" status-icon :rules="rules" class="demo-ruleForm">
-          <el-form-item prop="tel">
-            <el-input v-model="ruleForm.tel" placeholder="请输入手机号码" clearable />
+          <el-form-item prop="phone">
+            <el-input v-model="ruleForm.phone" placeholder="请输入手机号码" clearable />
           </el-form-item>
           <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
-              <el-input v-model="ruleForm.imgpassword" placeholder="请输入图形验证码" clearable />
+              <el-input v-model="ruleForm.imgpasswordword" placeholder="请输入图形验证码" clearable />
             </el-col>
             <el-col :span="4" class="yzm">feds</el-col>
           </el-form-item>
           <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
-              <el-input v-model="ruleForm.code" placeholder="请输入手机验证码" clearable />
+              <el-input v-model="ruleForm.phoneCode" placeholder="请输入手机验证码" clearable />
             </el-col>
             <el-col :span="4">
-              <button
-                class="btns"
-                :class="{disabled: !this.canClick}"
-                @click="countDown"
-              >{{ content }}</button>
+              <button :disabled="computeTime>0" class="btns"
+                      @click.prevent="sendCode">
+                {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}
+              </button>
             </el-col>
           </el-form-item>
-          <el-form-item prop="pass">
+          <el-form-item prop="password">
             <el-input
-              v-model="ruleForm.pass"
+              v-model="ruleForm.password"
               type="password"
               autocomplete="off"
               placeholder="8-24位，字母/数字组合密码"
               clearable
             />
           </el-form-item>
-          <el-form-item prop="checkPass">
+          <el-form-item prop="repeatPassword">
             <el-input
-              v-model="ruleForm.checkPass"
+              v-model="ruleForm.repeatPassword"
               type="password"
               autocomplete="off"
               placeholder="请再次输入密码"
@@ -60,9 +59,10 @@
 
 <script>
 import { isvalidatemobile, isPassword } from '../../assets/js/validate'
+import { reqCode, forget } from '../../api'
 export default {
   data() {
-    const istel = (rule, value, callback) => {
+    const isphone = (rule, value, callback) => {
       if (value != '') {
         if (!isvalidatemobile(value)) {
           callback(new Error('请输入正确手机格式'))
@@ -73,7 +73,7 @@ export default {
         callback()
       }
     }
-    const validatePass = (rule, value, callback) => {
+    const validatepassword = (rule, value, callback) => {
       if (value != '') {
         if (!isPassword(value)) {
           callback(new Error('请输入8-24位，字母/数字组合密码'))
@@ -84,50 +84,66 @@ export default {
         callback()
       }
     }
-    const validatePass2 = (rule, value, callback) => {
+    const validatepassword2 = (rule, value, callback) => {
       if (value === '') {
         callback(new Error('请再次输入密码'))
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.password) {
         callback(new Error('两次输入密码不一致!'))
       } else {
         callback()
       }
     }
     return {
+      computeTime: 0, // 倒计时剩余的时间
       checked: true, // 单选
       ruleForm: {
-        tel: '',
-        pass: '',
-        checkPass: '',
-        imgpassword: '',
-        code: '',
+        phone: '',
+        password: '',
+        repeatPassword: '',
+        imgpasswordword: '',
+        phoneCode: '',
         invite: ''
       },
       rules: {
-        tel: [
+        phone: [
           { required: true, message: '请输入手机号码', trigger: 'blur' },
-          { validator: istel, trigger: 'blur' }
+          { validator: isphone, trigger: 'blur' }
         ],
-        pass: [
+        password: [
           { required: true, message: '请输入密码', trigger: 'blur' },
-          { validator: validatePass, trigger: 'blur' }
+          { validator: validatepassword, trigger: 'blur' }
         ],
-        checkPass: [{ validator: validatePass2, trigger: 'blur' }]
+        repeatPassword: [{ validator: validatepassword2, trigger: 'blur' }]
       },
-      canClick: true, // 添加canClick
-      content: '发送验证码', // 按钮里显示的内容
-      totalTime: 60 // 记录具体倒计时时间
     }
   },
   created() {},
   methods: {
+    // 提交忘记密码
+    async forget(){
+      let that = this
+      const {password,phone,phoneCode, repeatPassword } = that.ruleForm
+      let result = await forget({password,phone,phoneCode, repeatPassword })
+      if(result.code==200){
+        that.$message({
+          message:'修改成功',
+          type: 'success'
+        })
+      this.goTo('/log')  
+      }else{
+          that.$message({
+          message: result.msg,
+          type: 'error'
+        })
+      }
+    },
+    
     // 提交
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert('submit!')
+          this.forget()
         } else {
-          console.log('error submit!!')
           return false
         }
       })
@@ -136,21 +152,36 @@ export default {
       // 编程式路由跳转
       this.$router.replace(path)
     },
-    countDown() {
-      if (!this.canClick) return // 改动的是这两行代码
-      this.canClick = false
-      this.content = this.totalTime + 's后重发'
-      const clock = window.setInterval(() => {
-        this.totalTime--
-        this.content = this.totalTime + 's后重发'
-        if (this.totalTime < 0) {
-          window.clearInterval(clock)
-          this.content = '重发送验证码'
-          this.totalTime = 10
-          this.canClick = true // 这里重新开启
+    /*发送短信验证*/
+    async sendCode () {
+      // alert('----')
+      this.computeTime = 60
+      // 启动循环定时器, 每隔1s, 将计时减1
+      const intervalId = setInterval(() => {
+        // 一旦变为了0, 停止计时
+        if(this.computeTime===0) {
+          clearInterval(intervalId)
+        } else {
+          this.computeTime--
         }
+
       }, 1000)
-    }
+    const {phone} = this.ruleForm
+    let type =0
+      // 请求发送验证码
+      const result = await reqCode({phone, type})
+      if(result.code === 200) { // 成功
+        this.$message({
+        message: '发送短信验证码成功',
+        type: 'success'
+      });
+      } else { //失败
+        // 停止计时
+        clearInterval(this.intervalId)
+        this.computeTime = 0
+        this.$message.error('发送短信验证码失败');
+      }
+    },
   }
 }
 </script>

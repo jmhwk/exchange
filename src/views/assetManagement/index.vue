@@ -14,20 +14,24 @@
           router
         >
           <el-menu-item index="/assetManagement/assetDetails">
-            <i class="el-icon-setting" />
+            <img src="../images/icon/zc1.png" alt="">
             <span slot="title">资产明细</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/entrustOrder">
-            <i class="el-icon-setting" />
+            <img src="../images/icon/zc2.png" alt="">
             <span slot="title">委托订单</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/positionOrder">
-            <i class="el-icon-setting" />
+            <img src="../images/icon/zc3.png" alt="">
             <span slot="title">持仓订单</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/rechargeAndWithdrawRecord">
-            <i class="el-icon-setting" />
+            <img src="../images/icon/zc4.png" alt="">
             <span slot="title">充提记录</span>
+          </el-menu-item>
+          <el-menu-item index="/assetManagement/fundsTransfer">
+            <img src="../images/icon/hz.png" alt="">
+            <span slot="title">划转记录</span>
           </el-menu-item>
         </el-menu>
       </div>
@@ -59,6 +63,11 @@ export default {
         width: 280px;
         height: 100%;
         background-color: $blue;
+        img{
+          width: 20px;
+          height: 20px;
+          padding-right: 10px;
+        }
         .left-side-title{
           height: 70px;
           width: 100%;
@@ -80,10 +89,10 @@ export default {
         }
       }
       .right-side{
-        width: 916px;
+        width: 1000px;
         height: 100%;
         margin-left: 4px;
-        // background-color: $blue;
+        background-color: $blue;
       }
     }
   }

@@ -6,68 +6,48 @@
     <div class="subcontainer-mid">
       <div class="subcontainer-mid-select">
         <div>币种</div>
-        <el-select
-          v-model="value"
-          popper-class="withdrawal-select-down"
-          placeholder="请选择"
-        >
-          <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
+        <el-select v-model="value" placeholder="请选择"  @change="fullName(value)">
+          <el-option v-for="(item,index) in bringOptions" :key="index" :label="item.shortName" :value="index" />
         </el-select>
-        <div>可用：0.00</div>
+        <div style="color: #ffffff99;">可用：{{accountList.walletBalance|numFilter}}</div>
       </div>
       <div>
         <el-radio-group v-model="radio1">
           <el-radio-button label="ERC20" />
-          <el-radio-button label="ERC30" />
+<!--          <el-radio-button label="ERC30" />
           <el-radio-button label="ERC40" />
-          <el-radio-button label="ERC50" />
+          <el-radio-button label="ERC50" /> -->
         </el-radio-group>
       </div>
       <div class="form">
         <el-form ref="form" :model="form" label-width="96px">
           <el-form-item label="提币地址">
-            <el-select
-              v-model="form.region"
-              popper-class="withdrawal-select-down2"
-              placeholder="请选择提币地址"
-            >
-              <el-option label="地址一" value="shanghai" />
-              <el-option label="地址二" value="beijing" />
-            </el-select>
-            <span><a href="javascript:;">新增地址</a></span>
+            <el-input v-model="form.toAddress" placeholder="仅支持USDT地址" />
           </el-form-item>
           <el-form-item label="提币数量">
-            <el-input v-model="form.name" placeholder="请输入提币数量">
+            <el-input v-model="form.amount" placeholder="请输入提币数量">
               <template slot="append">
                 <span>USDT |</span>
                 <span><a href="javascript:;">全部提出</a></span>
               </template>
             </el-input>
             <div class="number-warn">
-              <span>手续费：0.00</span>
-              <span>实际到账：0.00</span>
+              <span>手续费：{{withdrawFee}}</span>
+           <!--   <span>实际到账：0.00</span> -->
             </div>
           </el-form-item>
-          <el-form-item label="备注">
-            <el-input v-model="form.name" placeholder="请输入备注" />
-          </el-form-item>
           <el-form-item label="交易密码">
-            <el-input v-model="form.name" placeholder="请输入交易密码" />
+            <el-input v-model="form.txPassword" placeholder="请输入交易密码" />
           </el-form-item>
           <el-form-item label="验证码">
-            <el-input v-model="form.name" placeholder="请输入验证码">
+            <el-input v-model="form.phoneCode" placeholder="请输入验证码" clearable>
               <template slot="append">
-                <span><a href="javascript:;">获取验证码</a></span>
+                <span  @click.prevent="sendCode"><a href="javascript:;"> {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}</a></span>
               </template>
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button type="primary" @click="withDrawOut(form)">提交</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -87,35 +67,104 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+// import { ACCOUNT_LIST } from '@/store/mutation-types.js'
+import { reqCode,withDrawOut } from '@/api'
 export default {
   data() {
     return {
-      options: [{
-        value: 'USDT',
-        label: 'USDT'
-      },
-      {
-        value: 'USDT1',
-        label: 'USDT1'
-      }],
-      value: 'USDT',
+      computeTime: 0, // 倒计时剩余的时间
+      options: [],
+      value: 0,
       radio1: 'ERC20',
+      withdrawFee:'',// 手续费
       form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        toAddress:'',
+        amount: '',
+        phoneCode:'',
+        txPassword:'',
+        coinName:''
       }
     }
   },
-  methods: {
-    onSubmit() {
-      console.log('submit!')
+  filters: {
+    numFilter (value) {
+      // 截取当前数据到小数点后两位
+      let realVal = parseFloat(value).toFixed(2)
+      return realVal
     }
+  },
+  mounted() {
+    this.$store.dispatch('accountList', 2)
+  },
+  computed: {
+    ...mapState({
+      // bringOptions :state => state.property.bringOptions,
+      bringOptions:function (state){
+        let bringOptions = state.property.bringOptions
+        if(bringOptions.length>0){
+          this.form.coinName=bringOptions.fullName
+          this.withdrawFee = bringOptions[0].withdrawFee
+          let id = bringOptions[0].id
+         this.$store.dispatch('getAccountlist', id)   
+        }
+        return bringOptions
+      },
+      accountList :state => state.property.accountList,
+      user:state => state.user.user
+    })
+  },
+  methods: {
+    
+    // 提币接口
+    async withDrawOut(from) {
+      let fee = 1
+      const {amount,phoneCode,toAddress,coinName,txPassword} = this.form
+      let result = await withDrawOut ({amount,coinName,fee,phoneCode,toAddress,txPassword})
+      if (result.code == 200) {
+      } else {
+        this.$message({
+          message: result.msg,
+          type: 'error'
+        })
+      }
+    },
+    /*发送短信验证*/
+    async sendCode () {
+      // alert('----')
+      this.computeTime = 60
+      // 启动循环定时器, 每隔1s, 将计时减1
+      const intervalId = setInterval(() => {
+        // 一旦变为了0, 停止计时
+        if(this.computeTime===0) {
+          clearInterval(intervalId)
+        } else {
+          this.computeTime--
+        }
+
+      }, 1000)
+      let type =0
+      let phone = this.user.phone
+      // 请求发送验证码
+      const result = await reqCode({phone, type})
+      if(result.code === 200) { // 成功
+        this.$message({
+        message: '发送短信验证码成功',
+        type: 'success'
+      });
+      } else { //失败
+        // 停止计时
+        clearInterval(this.intervalId)
+        this.computeTime = 0
+        this.$message.error('发送短信验证码失败');
+      }
+    },
+    fullName(v){
+      let id = this.bringOptions[v].id
+      this.withdrawFee = this.bringOptions[0].withdrawFee
+      this.form.coinName =this.bringOptions[v].coinName
+      this.$store.dispatch('getAccountlist', id)  
+    },
   }
 }
 </script>
@@ -136,6 +185,11 @@ export default {
     line-height: 55px;
     color: $money-blue;
   }
+  .el-input{
+    i{
+      line-height: 30px;
+    }
+  }
   .subcontainer-mid {
     padding-left: 34px;
     padding-top: 12px;
@@ -152,6 +206,7 @@ export default {
           height: 30px !important;
           background-color: $blue;
           color: rgba($color: #fff, $alpha: 0.81);
+
         }
       }
     }
@@ -184,9 +239,13 @@ export default {
     .form {
       margin-top: 110px;
       margin-left: 141px;
+      width: 567px;
       .el-form {
         .el-form-item {
-          margin-bottom: 20px;;
+          margin-bottom: 20px;
+          .el-input-group__append {
+            background-color: #031937!important;
+          }
           .el-form-item__label {
             color: rgba($color: #fff, $alpha: 0.8);
             padding: 0px 20px;
@@ -207,7 +266,7 @@ export default {
             }
             input {
               width: 100%;
-              background-color: rgba($color: #243b5d, $alpha: 0.41);
+              background-color: #031937;
               height: 40px !important;
             }
             .el-button {
@@ -229,12 +288,13 @@ export default {
         .el-input-group__append {
           padding: unset;
           font-size: 14px;
-          background-color: rgba($color: #243b5d, $alpha: 0.41);
+          background-color: #031937;
           span:nth-child(2) {
             padding: 0px 15px 0px 10px;
           }
         }
         .number-warn {
+          height: 30px;
           > span {
             padding: unset;
           }
@@ -250,7 +310,7 @@ export default {
         .el-input-group__append {
           padding: unset;
           font-size: 14px;
-          background-color: rgba($color: #243b5d, $alpha: 0.41);
+          background-color:#031937;
           span:nth-child(1) {
             padding: 0px 15px 0px 10px;
           }

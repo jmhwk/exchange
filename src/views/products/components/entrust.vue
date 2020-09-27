@@ -66,9 +66,9 @@
         />
       </el-table>
     </div>
-    <div class="pagination">
+  <!--  <div class="pagination">
       <el-pagination layout="prev, pager, next" :total="50" />
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -92,12 +92,6 @@ export default {
     }
   },
   methods: {
-    handleEdit(index, row) {
-      console.log(index, row)
-    },
-    handleDelete(index, row) {
-      console.log(index, row)
-    }
   }
 }
 </script>

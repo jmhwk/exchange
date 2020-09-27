@@ -3,6 +3,7 @@ export default {
     HOME: 'Home',
     PRODUCTS: 'Margin',
     SOLUTIONS: 'Invite',
+    CURRENCY: 'Exchange',
     SERVICES: 'Contact',
     ABOUT: 'Help',
     Language: 'Chinese',

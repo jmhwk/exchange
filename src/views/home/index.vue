@@ -8,33 +8,17 @@
         <!--        <el-button type="primary" size="medium" class="aure-btns"></el-button> -->
       </div>
       <div class="dash-bottom flexcentercenter">
-        <div class="dashb-1">
-          <div>{{ $t('dashboard.dashboard_btc') }} BTC/USDT</div>
-          <p>16587.5</p>
-          <div>24H{{ $t('dashboard.dashboard_btc') }}22,376</div>
-        </div>
-        <div class="dashlin" />
-        <div class="dashb-1">
-          <div>{{ $t('dashboard.dashboard_vol') }} ETH/USDT</div>
-          <p>16587.5</p>
-          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
-        </div>
-        <div class="dashlin" />
-        <div class="dashb-1">
-          <div>{{ $t('dashboard.dashboard_btc') }} BTC/USDT</div>
-          <p>16587.5</p>
-          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
-        </div>
-        <div class="dashlin" />
-        <div class="dashb-1">
-          <div>{{ $t('dashboard.dashboard_eth') }} ETH/USDT</div>
-          <p>16587.5</p>
-          <div>24H{{ $t('dashboard.dashboard_vol') }}22,376</div>
+        <div class="dashb-1" v-for="(item,index) in recommendMarketList" :key='index'>
+          <div>{{item.marketCoin.coinName}}/{{item.marketCoin.marketCoinName}}</div>
+          <p>{{item.marketCoin.lastTradePrice.toFixed(2)}}</p>
+          <div class="isred" v-if="item.marketCoin.incRate<0">{{item.marketCoin.incRate.toFixed(2)}}%</div>
+          <div class="isgreen" v-else>+{{item.marketCoin.incRate.toFixed(2)}}%</div>
         </div>
       </div>
       <div class="dash-lb">
         <i />
-        <span>关于AUTEX V1.0.0版本更新的公告   /   警惕假冒AUTEX官网的风险提示公告   /   运营周报(2020/07/07-2020/07/07)</span>
+        <span>{{articlelist.cnTitle}}</span>
+        <!--  <span></span> -->
       </div>
     </div>
     <div class="dashboard-center flexzxlist">
@@ -89,140 +73,189 @@
       <h1>{{ $t('dashboard.dashboard_p8') }}</h1>
       <div class="inp flexcenterlist">
         <input v-model="searchkey" type="text" :placeholder="$t('dashboard.dashboard_table_search')">
-        <div class="btns"><router-link :to="{name: 'register'}">{{ $t('dashboard.dashboard_p9') }}</router-link></div>
+        <div class="btns">
+          <router-link to="/regist">{{ $t('dashboard.dashboard_p9') }}</router-link>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getUser, reqCategorys } from '../../api'
-export default {
-  data() {
-    return {
-      searchkey: ''
-    }
-  },
-  mounted() {
-    this.reqCategorys()
-  },
-  methods: {
-    async reqCategorys() {
-      const result = await reqCategorys()
-      if (result.code === 200) {
-        const user = result.data
-        console.log('数据', user)
+  import {
+    article
+  } from '../../api'
+  import {
+    mapState
+  } from 'vuex'
+  export default {
+    data() {
+      return {
+        searchkey: '',
+        websock: null,
+        articlelist: {} // 公告
       }
-    }
+    },
+    created() {
+      this.getSocketData();
+      this.article()
+    },
+    destroyed() {
+      this.websock.close() //离开路由之后断开websocket连接
+    },
+    computed: {
+      ...mapState({
+        recommendMarketList: state => state.websocket.recommendMarketList
+      })
+    },
+    methods: {
+      // 公告
+      async article() {
+        let type = 2
+        const result = await article(type)
+        if (result.code == 200) {
+          this.articlelist = result.data[0]
+        }
+      },
+      getSocketData() {
+        this.$store.dispatch('getSocketData')
+      },
+    },
   }
-}
 </script>
 
 <style lang="scss" scoped>
-  .dashboard{
+  .dashboard {
     width: 100%;
     height: 100%;
     color: #fff;
-    h1{
-      font-size:34px;
+
+    h1 {
+      font-size: 34px;
     }
-    .aure-btns{
+
+    .isred {
+      color: #e2505b;
+    }
+
+    .isgreen {
+      color: #01bd8b;
+    }
+
+    .aure-btns {
       width: 188px;
       padding: 20px 0;
-      background:rgba(20,118,254,1);
-      border:2px solid rgba(20,118,254,1);
-      opacity:1;
-      border-radius:8px;
+      background: rgba(20, 118, 254, 1);
+      border: 2px solid rgba(20, 118, 254, 1);
+      opacity: 1;
+      border-radius: 8px;
       text-align: center;
-      font-size:24px;
+      font-size: 24px;
       margin-top: 50px;
     }
-    .dashboard-head{
+
+    .dashboard-head {
       box-sizing: border-box;
-      width:100%;
-      height:1080px;
+      width: 100%;
+      height: 1080px;
       // margin:0;
       position: relative;
-      background:url(../images/home_banner_bg@3x.png) no-repeat center;
+      background: url(../images/home_banner_bg@3x.png) no-repeat center;
       background-size: cover;
-      .dash-center{
-        padding: 300px 0;
-        h1{
-          font-size:56px;
+
+      .dash-center {
+        padding: 270px 0;
+
+        h1 {
+          font-size: 56px;
           font-weight: bold;
         }
-        p{
-          font-size:24px;
+
+        p {
+          font-size: 24px;
           padding: 20px 0;
         }
       }
 
     }
-      .dash-bottom {
-        .dashlin{
-          width:1px;
-          height:115px;
-          background:rgba(243,243,243,1);
-          opacity:1;
 
-        }
-        .dashb-1{
-          font-size: 18px;
-          padding: 0 70px;
-          p{
-            font-size: 38px;
-            color:#F33E3F;
-            padding: 20px 0;
-          }
+    .dash-bottom {
+      .dashlin {
+        width: 1px;
+        height: 115px;
+        background: rgba(243, 243, 243, 1);
+        opacity: 1;
+
+      }
+
+      .dashb-1 {
+        font-size: 18px;
+        padding: 0 100px;
+
+        p {
+          font-size: 38px;
+          color: #F33E3F;
+          padding: 20px 0;
         }
       }
-      .dash-lb{
-        background: #000000;
-        text-align: center;
-        padding: 13px 0;
-        font-size: 14px;
-        position: absolute;
-        bottom: 0;
-        width: 100%;
-        i{
-          vertical-align: middle;
-          display: inline-block;
-          width: 22px;
-          height: 22px;
-          background:url(../images/laba.png) no-repeat center;
-          background-size: cover;
-          // padding-right: 10px;
-        }
-        span{
-          padding-left: 10px;
-        }
     }
-    .dashboard-center{
+
+    .dash-lb {
+      background: #00000047;
+      text-align: center;
+      padding: 13px 0;
+      font-size: 14px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+
+      i {
+        vertical-align: middle;
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: url(../images/laba.png) no-repeat center;
+        background-size: cover;
+        // padding-right: 10px;
+      }
+
+      span {
+        padding-left: 10px;
+      }
+    }
+
+    .dashboard-center {
       text-align: center;
       height: 580px;
       color: #333;
+
       // padding: 100px;
-      p{
-        font-size:20px;
+      p {
+        font-size: 20px;
         color: #A5A5A5;
       }
-      h1{
+
+      h1 {
         font-size: 34px;
       }
-      .dasc-flex{
-        .dasc-flexliet{
+
+      .dasc-flex {
+        .dasc-flexliet {
           line-height: 40px;
           padding: 0 50px;
-          img{
+
+          img {
             width: 120px;
             height: 120px;
           }
-          p{
-            font-size:24px;
+
+          p {
+            font-size: 24px;
             color: #333333;
           }
-          div{
-            font-size:14px;
+
+          div {
+            font-size: 14px;
             color: #A5A5A5;
             text-align: center;
           }
@@ -230,34 +263,42 @@ export default {
 
       }
     }
-    .dashboard-download{
+
+    .dashboard-download {
       height: 900px;
-      background:url(../images/bg1.png) no-repeat center;
+      background: url(../images/bg1.png) no-repeat center;
       background-size: cover;
-      .dashd-left{
+
+      .dashd-left {
         height: 830px;
         padding-top: 65px;
-        img{
+
+        img {
           width: 852px;
           height: 830px;
         }
       }
-      .dashd-right{
+
+      .dashd-right {
         height: 830px;
         padding-top: 180px;
-        img{
+
+        img {
           width: 190px;
           height: 190px;
           margin: auto;
           display: block;
         }
-        p{
+
+        p {
           font-size: 20px;
           padding: 20px 0 60px;
         }
-        .dash-icon{
+
+        .dash-icon {
           padding-top: 80px;
-          .dashi-left{
+
+          .dashi-left {
             width: 231px;
             height: 63px;
             line-height: 63px;
@@ -265,34 +306,39 @@ export default {
             border-radius: 8px;
             text-align: center;
             margin: 15px auto;
-            span{
+
+            span {
               width: 140px;
               display: inline-block;
             }
-            i{
+
+            i {
               vertical-align: middle;
               display: inline-block;
               width: 43px;
               height: 43px;
-              background:url(../images/anzhou.png) no-repeat center;
+              background: url(../images/anzhou.png) no-repeat center;
               background-size: cover;
 
             }
-            .ios{
-              background:url(../images/ios.png) no-repeat center;
+
+            .ios {
+              background: url(../images/ios.png) no-repeat center;
               background-size: cover;
             }
           }
         }
       }
     }
-    .dashboard-input{
+
+    .dashboard-input {
       text-align: center;
       color: #333;
       height: 300px;
       padding: 100px 0;
       background: #fff;
-      .btns{
+
+      .btns {
         width: 142px;
         height: 72px;
         background: #1476FE;
@@ -302,19 +348,21 @@ export default {
         margin-left: 60px;
         font-size: 20px;
       }
-      a{
+
+      a {
         color: #fff;
       }
-      .inp{
-        input{
-         width: 510px;
-         height:72px;
-         background:rgba(255,255,255,1);
-         border:1px solid rgba(165,165,165,1);
-         opacity:1;
-         border-radius:4px;
-         font-size: 20px;
-         padding: 0 30px;
+
+      .inp {
+        input {
+          width: 510px;
+          height: 72px;
+          background: rgba(255, 255, 255, 1);
+          border: 1px solid rgba(165, 165, 165, 1);
+          opacity: 1;
+          border-radius: 4px;
+          font-size: 20px;
+          padding: 0 30px;
         }
       }
     }

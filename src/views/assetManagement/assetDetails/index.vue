@@ -1,19 +1,22 @@
 <template>
   <div>
-    <AssetDetailsPanel />
-    <AssetDetailsTabs />
+    <AssetDetailsPanel/>
+    <AssetDetailsTabs/>
   </div>
 </template>
 
 <script>
-import AssetDetailsPanel from './components/AssetDetailsPanel'
+const AssetDetailsPanel = () => import('./components/AssetDetailsPanel')
 import AssetDetailsTabs from './components/AssetDetailsTabs'
 export default {
   name: 'AssetDetails',
   components: {
     AssetDetailsPanel,
     AssetDetailsTabs
-  }
+  },
+  // created() {
+  //   this.$store.dispatch('accountList', 3)
+  // },
 }
 </script>
 

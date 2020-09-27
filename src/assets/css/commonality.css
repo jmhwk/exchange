@@ -74,7 +74,39 @@
   max-width: 400px;
   line-height: 25px;
 }
+.el-table__empty-block{
+  background: #031937;
+}
 
+    /*漏洞*/
+    .statusSty{
+      color: #fff;
+      width: 50px;
+      display: inline-block;
+      text-align: center;
+      height: 20px;
+      line-height: 20px;
+      border-radius: 3px;
+      font-size: 12px;
+    }
+    .color_one{
+      background: #ffcd3c;
+    }
+    .color_two{
+      background: #1BAF82;
+    }
+    .color_three{
+      background: #F33E3F;
+    }
+    .color_four{
+      background: #ff8309;
+    }
+    .color_five{
+      background: #1296db;
+    }
+    .lsk-text{
+      vertical-align: middle;
+    }
 /*媒体查询*/
 @media screen and (max-width:1366px) {
   .pro_screen {
