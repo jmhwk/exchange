@@ -1,7 +1,7 @@
 <template>
   <div class="AssetDetailsTabs-container">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="当前委托" name="tab1"><Tab1 /></el-tab-pane>
+      <el-tab-pane label="限价委托" name="tab1"><Tab1 /></el-tab-pane>
     </el-tabs>
   </div>
 </template>

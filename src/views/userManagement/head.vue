@@ -7,7 +7,7 @@
           <h1>Hi {{user.phone}}</h1>
           <i>UID：{{user.uid|| '——'}}</i>
         </div>
-        <span>最后登录时间：{{user.updateTime}}<label>IP：{{user.id|| '——'}}</label></span>
+        <span>最后登录时间：{{timestampToTime(user.updateTime)}}</span>
       </div>
     </div>
   </div>
@@ -19,7 +19,8 @@
   export default {
     data() {
       return {
-        time:''
+        time:'',
+        timestampToTime:timestampToTime
       };
     },
     created() {

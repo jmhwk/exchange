@@ -12,7 +12,8 @@
       <div class="foter1">
         <p>{{ $t('footer.footer_about_us') }}</p>
         <div><router-link to="/footer/security">{{ $t('footer.footer_about_us') }} AUTEX</router-link></div>
-        <div>{{ $t('footer.footer_service_user3') }}</div>
+      <div> <router-link :to="{path:'/footer/announcement',query:{n:0}}">{{ $t('footer.footer_service_user3') }}</router-link></div>
+      <!--   <div>{{ $t('footer.footer_service_user3') }}</div> -->
       </div>
       <div class="foter1">
         <p>{{ $t('footer.footer_service_user4') }}</p>

@@ -199,7 +199,6 @@
         // let handImage = this.form.handImage[0].url
         let cardType = 0
         let country = 'chinese'
-        console.log(cardNo, handImage, idImageA, idImageB, idName, country);
         let result = await identityAuthen({
           cardNo,
           handImage,
@@ -209,7 +208,6 @@
           cardType,
           country
         })
-        console.log('返回值', result);
         if (result.code == 200) {
           this.$message.success("上传成功");
           this.goTo('/log')
@@ -241,7 +239,7 @@
       //选择文件方法
       selectFiles(file, fileList) {
         let _this = this;
-        console.log(file, fileList);
+        // console.log(file, fileList);
         if (_this.fileType == "fd_0") {
           this.getBase64(file.raw).then(res => {
             this.uploadBase64(res, 1)
@@ -265,7 +263,7 @@
       //文件移除方法
       handleRemove(file, fileList) {
         let _this = this;
-        console.log(file, fileList);
+        // console.log(file, fileList);
         if (_this.fileType == "fd_0") {
           _this.form.idImageA = [];
         } else if (_this.fileType == "fd_1") {
@@ -304,7 +302,6 @@
           return
         }
         // let formData = formData.append("idImageA", this.form.idImageA[0].url);
-        console.log(this.from)
         this.forget()
       }
     }

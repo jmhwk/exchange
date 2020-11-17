@@ -30,6 +30,8 @@ import {
   Dialog,
   Popover,
   Upload,
+  Slider,
+  Cascader,
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/commonality.css'
@@ -38,6 +40,12 @@ import locale from 'element-ui/lib/locale/lang/en'
 import i18n from './i18n'
 import router from './router'
 import store from './store'
+// import socketApi  from '@/assets/js/socket.js' //引入socket.js文件
+// Vue.prototype.socketApi = socketApi //设为全局对象
+//WebSocket封装方法
+import * as socketApi from '@/assets/js/socket.js'
+Vue.prototype.socketApi = socketApi
+// Vue.prototype.baseWsUrllist = 'ws://47.242.81.154:8086/ws';
 // import Headnav from './components/Head/Headnav'
 // 设置语言
 Vue.use({ locale })
@@ -68,6 +76,8 @@ Vue.use(Tooltip);
 Vue.use(Dialog);
 Vue.use(Popover);
 Vue.use(Upload);
+Vue.use(Slider);
+Vue.use(Cascader);
 Vue.prototype.$message = Message
 Vue.config.productionTip = false
 // 注册全局组件

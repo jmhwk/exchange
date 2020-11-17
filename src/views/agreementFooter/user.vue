@@ -1,8 +1,9 @@
 <template>
   <div class="contextpage">
     <div class="tits">{{ $t('user.userh1') }}</div>
-    <div class="author"><span>{{ $t('dashboard.footer_agreementhzz') }}：AUTEX</span><span>{{ $t('dashboard.footer_agreementhtime') }}：2020/3/17</span></div>
-    <div class="content"><p>{{ $t('user.userp1') }}</p>
+    <div class="author"><span>{{ $t('dashboard.footer_agreementhzz') }}：AUTEX</span>
+    <span>{{ $t('dashboard.footer_agreementhtime') }}：2020/3/17</span></div>
+    <div class="content"><p>AUTEX公司是一个专门供用户进行区块链相关服务（以下称“该服务”或“服务”）的平台，其根据美国相关法律在美国注册成立并运营，该公司运营网站为 <a href="www.autex.cc">www.autex.cc</a>（以下称“本网站”或“网站”）。为了本协议表述之方便，公司和该网站在本协议中合称使用“我们”或其他第一人称称呼。只要登陆该网站的自然人或其他主体均为本网站的用户，本协议表述之便利，以下使用“您”或其他第二人称。为了本协议表述之便利，我们和您在本协议中合称为“双方”，我们或您单称为“一方”。本网站所有内容，为便利用户，可能提供多个语言版本，若有冲突或遗漏等情况，以中文内容为准。</p>
       <h1>{{ $t('user.userpp1') }}</h1>
       <p>{{ $t('user.userp2') }}<br>
         {{ $t('user.userp3') }}<br>
@@ -14,7 +15,7 @@
         {{ $t('user.userp8') }}<br>
         {{ $t('user.userp9') }}<br>
         {{ $t('user.userp10') }}<br>
-        {{ $t('user.userp11') }}<br>
+        4 <a href="www.autex.cc">www.autex.cc</a>为本网站唯一官方对外信息公布平台；<br>
         {{ $t('user.userp12') }}<br>
         {{ $t('user.userp13') }}
       </p>
@@ -44,11 +45,13 @@
         {{ $t('user.userp34') }}<br>
         {{ $t('user.userp35') }}
       </p>
-      <h1> {{ $t('user.userp36') }}</h1>
+      <p> {{ $t('user.userp36') }}</p>
       <p>
         {{ $t('user.userp37') }}<br>
         {{ $t('user.userp38') }}<br>
-        {{ $t('user.userp39') }}<br>
+      </p>
+        <h1>{{ $t('user.userp39') }}</h1>
+        <p>
         {{ $t('user.userp40') }}<br>
         {{ $t('user.userp41') }}<br>
         {{ $t('user.userpp41') }}<br>
@@ -117,10 +120,10 @@
         {{ $t('user.userp99') }}<br>
         {{ $t('user.userp100') }}<br>
         {{ $t('user.userp101') }}<br>
-        {{ $t('user.userp102') }}
       </p>
-      <h1>{{ $t('user.userp103') }}</h1>
+      <h1>{{ $t('user.userp102') }}</h1>
       <p>
+        {{ $t('user.userp103') }}<br/>
         {{ $t('user.userp104') }}<br>
         {{ $t('user.userp105') }}<br>
         {{ $t('user.userp106') }}
@@ -135,7 +138,6 @@
       </p>
       <h1>{{ $t('user.userp113') }}</h1>
       <p>
-        {{ $t('user.userp113') }}<br>
         {{ $t('user.userp114') }}<br>
         {{ $t('user.userp115') }}<br>
         {{ $t('user.userp116') }}<br>

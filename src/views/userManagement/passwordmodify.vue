@@ -114,7 +114,6 @@
         }, 1000)
         let type =0
         let phone = this.user.phone
-        console.log(11111,phone)
         // 请求发送验证码
         const result = await reqCode({phone, type})
         if(result.code === 200) { // 成功

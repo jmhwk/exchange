@@ -1,133 +1,78 @@
 <template>
   <div class="products">
     <div class="products-top">
-      <el-row :gutter="5">
+      <el-row :gutter="8">
         <el-col :span="3">
           <div class="grid-content bg-purple1">
             <div class="title">USDT合约</div>
             <ul class="currencynav n_hight">
-              <li class="active">
-                <div class="name"><label>BTC</label><label class="red">-3.95%</label></div><span>10247.6446 ≈ ￥
-                  70367.50</span><span>-421.9573</span>
-              </li>
-              <li class="">
-                <div class="name"><label>ETH</label><label class="red">-4.83%</label></div><span>384.0528 ≈ ￥ 2637.17</span><span>-19.5056</span>
-              </li>
-              <li class="">
-                <div class="name"><label>EOS</label><label class="red">-7.41%</label></div><span>2.6730 ≈ ￥ 18.35</span><span>-0.2139</span>
-              </li>
-              <li class="">
-                <div class="name"><label>LTC</label><label class="red">-9.42%</label></div><span>48.3497 ≈ ￥ 332.00</span><span>-5.0296</span>
-              </li>
-              <li class="">
-                <div class="name"><label>BCH</label><label class="red">-7.72%</label></div><span>222.5741 ≈ ￥ 1528.34</span><span>-18.6223</span>
-              </li>
-              <li class="">
-                <div class="name"><label>ETC</label><label class="red">-11.10%</label></div><span>5.1000 ≈ ￥ 35.02</span><span>-0.6374</span>
+              <li v-for="(item,index) in lendMaeketAll" :key="index" @click="handleClick(item,index)">
+                <div :class="{activelist:index ==num}" v-if="item.coinName=='BTC'||item.coinName=='ETH'" class="active listnum" >
+                  <div class="name"><label>{{item.coinName}}/{{item.marketCoinName}} 永续合约</label>
+                    <label class="red" v-if="item.incRate<0">{{item.incRate}}%</label>
+                    <label class="green" v-else>+{{item.incRate}}%</label>
+                  </div>
+                  <span>{{item.lastTradePrice.toFixed(2)}} ≈
+                    {{item.cnyPrice.toFixed(2)}} CNY</span>
+                </div>
+
               </li>
             </ul>
           </div>
         </el-col>
-        <el-col :span="13">
-          <div class=" bg-purple2">
-            <centerkline></centerkline>
+        <el-col :span="15">
+          <div class=" bg-purple2" style="width: 100%;height: 1110px;background: #031937;">
+           <centerkline ref="child" v-if="flg" ></centerkline>
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <div class="grid-content bg-purple3">
-            <div class="title">USDT合约</div>
+            <div class="title">盘口</div>
             <div class="t_tbs">
-              <div class="t_tits"><span>方向</span><span>价格(USDT)</span><span>数量(BTC)</span></div>
-              <ul id="handicap" class="menu_nav p_hight">
-                <li><span class="red">做空</span><span>10263.0338</span><span>35.7682</span>
-                  <div class="reds" style="width: 35.7682%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10262.5781</span><span>20.9804</span>
-                  <div class="reds" style="width: 20.9804%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10261.8127</span><span>49.8045</span>
-                  <div class="reds" style="width: 49.8045%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10261.2926</span><span>32.8264</span>
-                  <div class="reds" style="width: 32.8264%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10260.6966</span><span>24.5277</span>
-                  <div class="reds" style="width: 24.5277%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10260.3912</span><span>46.0728</span>
-                  <div class="reds" style="width: 46.0728%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10259.9449</span><span>29.0891</span>
-                  <div class="reds" style="width: 29.0891%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10259.8132</span><span>21.4549</span>
-                  <div class="reds" style="width: 21.4549%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10259.6620</span><span>35.5204</span>
-                  <div class="reds" style="width: 35.5204%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10259.5537</span><span>27.2001</span>
-                  <div class="reds" style="width: 27.2001%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10258.8993</span><span>34.4928</span>
-                  <div class="reds" style="width: 34.4928%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10257.9773</span><span>42.0149</span>
-                  <div class="reds" style="width: 42.0149%;"></div>
-                </li>
-                <li><span class="red">做空</span><span>10257.5679</span><span>40.0967</span>
-                  <div class="reds" style="width: 40.0967%;"></div>
-                </li>
-              </ul>
-              <div class="title">最新价：<label class="red">10247.6446</label></div>
-              <ul class="menu_nav p_hight">
-                <li><span class="green">做多</span><span>10247.5127</span><span>20.1364</span>
-                  <div class="greens" style="width: 20.1364%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10246.8603</span><span>21.4204</span>
-                  <div class="greens" style="width: 21.4204%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10246.2502</span><span>41.8055</span>
-                  <div class="greens" style="width: 41.8055%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10245.9943</span><span>24.2325</span>
-                  <div class="greens" style="width: 24.2325%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10245.5457</span><span>21.3150</span>
-                  <div class="greens" style="width: 21.315%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10244.6370</span><span>39.5064</span>
-                  <div class="greens" style="width: 39.5064%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10243.7575</span><span>34.6670</span>
-                  <div class="greens" style="width: 34.667%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10243.3297</span><span>44.9915</span>
-                  <div class="greens" style="width: 44.9915%;"></div>
-                </li>
-                <li><span class="green">做多</span><span>10243.2235</span><span>39.4935</span>
-                  <div class="greens" style="width: 39.4935%;"></div>
-                </li>
-              </ul>
+              <el-row class="t_tits">
+                <el-col :span="12">价格(USDT)</el-col>
+                <el-col :span="12">数量(BTC)</el-col>
+              </el-row>
+              <div style="max-height: 586px;overflow: auto;">
+                <ul id="handicap" class="menu_nav">
+                  <li v-for="(t,i) in lendallList.sellList" :key="i" @click="pricelist(t.price)">
+                    <span class="red">{{t.price}}</span>
+                    <span>{{t.qty}}</span>
+                   <!-- <span>{{t.amount}}</span> -->
+                   <div class="reds" :style="{width: (t.qty)/proportionList.proportionred*100 + '%' }"></div>
+                  </li>
+                </ul>
+              </div>
+              <el-row class="t_tits"><el-col :span="24">最新价格(USDT)</el-col></el-row>
+              <div style="height: 660px;">
+                <ul class="menu_nav p_hight">
+                  <li v-for="(t,i) in lendallList.buyList" :key="i" @click="pricelist(t.price)">
+                    <span class="green">{{t.price}}</span>
+                    <span>{{t.qty}}</span>
+                <!--    <span>{{t.amount}}</span> -->
+                   <div class="greens" :style="{width: (t.qty)/proportionList.proportiongreen*100 + '%' }"></div>
+                    <!-- <div class="greens" style="width: 20.1364%;"></div> -->
+                  </li>
+                </ul>
+              </div>
+
             </div>
           </div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="3">
           <div class="grid-content bg-purple3 bg-purple4">
             <div class="title">最新成交</div>
             <div class="t_tbs">
-              <div class="t_tits">
-                <span>时间</span><span>价格(USDT)</span><span>数量(BTC)</span>
-              </div>
+              <el-row class="t_tits" :gutter="10">
+                <el-col :span="7">时间</el-col>
+                <el-col :span="9">价格(USDT)</el-col>
+                <el-col :span="8">数量(BTC)</el-col>
+              </el-row>
               <ul class="menu_nav n_hight">
-                <li><span>14:56:08</span><span class="tr-mName thead-color green">10247.6446</span><span>0.1339</span></li>
-                <li><span>14:56:08</span><span class="tr-mName thead-color green">10247.6446</span><span>0.1286</span></li>
-                <li><span>14:56:08</span><span class="tr-mName thead-color green">10247.6446</span><span>0.1385</span></li>
-                <li><span>14:56:08</span><span class="tr-mName thead-color green">10247.6446</span><span>0.1404</span></li>
-                <li><span>14:56:08</span><span class="tr-mName thead-color green">10247.6446</span><span>0.1217</span></li>
-                <li><span>14:56:07</span><span class="tr-mName thead-color green">10248.2908</span><span>0.0602</span></li>
-                <li><span>14:56:07</span><span class="tr-mName thead-color green">10248.2908</span><span>0.0558</span></li>
-                <li><span>14:56:07</span><span class="tr-mName thead-color green">10248.4266</span><span>0.0601</span></li>
+                <li v-for="(item, index) in lendallList.tradeList" :key="index" @click="pricelist(item.price)"><span>{{item.createTime}}</span>
+                <span class="tr-mName thead-color green" v-if="item.type==1">{{item.price}}</span>
+                <span class="tr-mName thead-color red" v-else>{{item.price}}</span>
+                <span>{{item.qty}}</span></li>
               </ul>
             </div>
           </div>
@@ -135,22 +80,37 @@
       </el-row>
     </div>
     <div class="products-bottom">
-      <record></record>
+      <record v-if="flg"></record>
     </div>
   </div>
 </template>
 
 <script>
-  import record from './components/record.vue'
-  import centerkline from './components/centerkline.vue'
-  import { getSocket } from '../../assets/js/websocket.js'
-  import {
-    mapState
-  } from 'vuex'
+  const record = () => import ('./components/record.vue')
+  const centerkline = () => import('./components/centerkline.vue')
+  import { mapState } from 'vuex'
+  import { LENDMAEKET_ALL,LATES_TCONTRACT,LENDALL_LIST,PROPORTION_LIST,CONTRA_FORM } from '../../store/mutation-types' // 存储深度
   export default {
     data() {
       return {
         websock: null,
+        moneylist:[],
+        // all:[{show:isshow}],
+        // isshow:false,
+        flg:false,
+        // marketList: {}, // 深度
+        sellList:[], // 卖出
+        buyList:[], // 买入
+        tradeList:[], // 交易
+        // market:{} ,// 市场
+        // proportion:0,// 比例
+        // proportionlist:0,
+        // recent:0,// 最新价格第一个
+        id:0,
+        idlist:0,
+        newlist:0,
+        timer:null,// 清除定时器
+        num:0,
       }
     },
     components: {
@@ -159,34 +119,95 @@
     },
     computed: {
       ...mapState({
-        allMarketList: state => state.websocket.allMarketList
-      })
+        allMarketList: state => state.websocket.allMarketList,
+        lendMaeketAll: state => state.websocket.lendMaeketAll,
+        lendallList: state => state.websocket.lendallList ,// 所有数据
+        proportionList: state => state.websocket.proportionList // 所有数据比例
+      }),
+    },
+    beforeDestroy(){
+      clearInterval(this.timer);　　// 清除定时器
+      this.timer = null;
     },
     created() {
-      this.getSocketData() // 开启webSocket;
-    },
-    destroyed() {
-      this.wsData.close(); // 关闭 websocket
+      const data = {
+        channel: "lendMarketAll", 
+      };
+      this.socketApi.sendSock(data, this.getConfigResult);
     },
     methods: {
-      getSocketData() {
-        let params = {
-          channel: "marketById", 
-          marketId: "10"
+      pricelist(money){
+        let contraForm={
+          Buying:money,
+          selling:money
         }
-        getSocket(JSON.stringify(params), (data, ws) => {
-        });
+        // let contraForm = {price:money}
+        this.$store.commit(CONTRA_FORM, contraForm)
+      },
+      // 接收socket回调函数返回数据的方法
+      getConfigResult(data) {
+        // console.log('实时数据',data.channel)
+        if(data.channel== "lendMarketAll"){
+           this.moneylist = data.marketAll
+           this.$store.commit(LENDMAEKET_ALL, data.marketAll)
+           // let a = res.marketAll[0].marketId
+           let ids = data.marketAll[0].marketId
+           if(ids !=this.id){
+            this.idlist = ids
+            let data = {channel: "lendMarketById",marketId: ids,event:'add',};
+            this.socketApi.sendSock(data, this.getConfigResult);
+            // this.id = data.marketAll[0].marketId
+           }
+           this.id = data.marketAll[0].marketId
+          // console.log(res);//服务端返回的数据
+        }else if (data.channel== "lendMarketById"){
+          this.$store.commit(LATES_TCONTRACT, data.tradeList[0].price)
+          this.$store.commit(LENDALL_LIST, data)
+          // this.market = data.market ||{}
+          // this.marketList = data || {}
+          // this.buyList = data.buyList || []
+          // this.sellList = data.sellList||[]
+          // this.tradeList = data.tradeList||[]
+          let b = data.sellList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let c = data.buyList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let proportionList={
+                proportionred:b,
+                proportiongreen:c
+              }// 比例
+          this.$store.commit(PROPORTION_LIST, proportionList)
+          this.flg = true
+        }
+      },
+      handleClick(item,index){
+        // this.handicap(this.idlist,'remove')
+        this.num = index
+        let data = {channel: "lendMarketById",marketId: this.idlist,event:'remove',};
+        this.socketApi.sendSock(data, this.getConfigResult);
+        this.newlist = item.marketId
+        this.timer=setTimeout(()=>{
+          let data = {channel: "lendMarketById",marketId: this.newlist,event:'add',};
+          this.socketApi.sendSock(data, this.getConfigResult);
+          // this.$refs.child.marketAllid(item,index);
+        }, 2000);
+           this.$refs.child.marketAllid(item,index);
+        // this.timer=setTimeout(()=>{
+        //   this.$refs.child.marketAllid(item,index);
+        // }, 1000);
+        // this.$refs.child.marketAllid(item,index);
       },
     },
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .products {
     padding: 75px 0 5px;
     background: #010E20;
     color: #fff;
-
     .products-top {
       padding-bottom: 5px;
 
@@ -195,7 +216,7 @@
       }
 
       .reds {
-        background-color: rgba(250, 82, 15, .1);
+        background-color: #332038;
         height: 30px;
         position: absolute;
         right: 0;
@@ -206,7 +227,7 @@
       }
 
       .greens {
-        background-color: rgba(1, 174, 103, .1);
+        background-color: #073746;
         height: 30px;
         position: absolute;
         right: 0;
@@ -222,7 +243,7 @@
 
       .grid-content {
         background: #031937;
-        height: 1095px;
+        height: 1232px;
       }
 
       span:first-of-type {
@@ -236,19 +257,20 @@
       }
 
       span {
-        width: 33.3%;
+        width: 38%;
         text-align: center;
         padding: 8px 0;
         font-size: 12px;
         color: #9eaebd;
+        z-index: 2;
       }
 
       .bg-purple1 {
         .currencynav {
           width: 100%;
-          overflow: auto;
+          // overflow: auto;
 
-          li {
+          .listnum {
             padding: 15px 10px;
             color: #919598;
             cursor: pointer;
@@ -280,16 +302,21 @@
               justify-content: space-between;
             }
           }
-
-          li.active,
-          li:hover {
+          li.active{
             background: #021e43;
+          }
+          .activelist{
+            background: #002658!important;
+          }
+          li:hover {
+            background: #002658;
           }
         }
       }
 
       .bg-purple4 {
         overflow: auto;
+        overflow-x: hidden;
       }
 
       .bg-purple3 {
@@ -297,19 +324,23 @@
           width: 100%;
 
           .t_tits {
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
+            padding: 10px 8px;
             background: #1a2639;
+            font-size: 12px;
+            color: #9eaebd;
           }
-
+          #handicap{
+            display: flex;
+            flex-direction:column;
+            width: 100%;
+          }
           .p_hight {
-            height: 453px;
+            height: 586px;
           }
 
           .menu_nav {
             overflow: auto;
-
+            height: 100%;
             li {
               display: flex;
               position: relative;

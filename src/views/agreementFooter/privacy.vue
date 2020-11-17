@@ -8,11 +8,10 @@
     <div class="content">
       <h1>{{ $t('privacy.privacyp1') }}</h1>
       <p>
-        {{ $t('privacy.privacyp2') }}
+        1.1 AUTEX是一家根据美国相关法律在美国注册成立的公司，该公司运营网站<a href=" www.autex.cc"> www.autex.cc</a>（以下称“本网站”或“网站”），该网站是一个专门供用户进行区块链相关服务（以下称“该服务”或“服务”）的平台。为了本协议表述之方便，公司和该网站在本协议中合称使用“我们”或其他第一人称称呼。        <br>
+        1.2 只要登陆该网站的自然人或其他主体均为本网站的用户，本协议表述之便利，以下使用“您”或其他第二人称。
         <br>
-        {{ $t('privacy.privacyp3') }}
-        <br>
-        {{ $t('privacy.privacyp4') }}
+        1.3 为了本协议表述之便利，我们和您在本协议中合称为“双方”，我们或您单称为“一方”。
       </p>
       <h1>{{ $t('privacy.privacyp5') }}</h1>
       <p>{{ $t('privacy.privacyp6') }}</p>
@@ -115,7 +114,7 @@ export default {
     p {
       font-size: 14px;
       display: block;
-      margin: 30px 0;
+      margin: 10px 0 !important;
       line-height: 35px;
     }
   }

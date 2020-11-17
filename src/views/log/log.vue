@@ -10,12 +10,12 @@
           <el-form-item>
             <el-input v-model="ruleForm.password" placeholder="请输入密码" type="password" clearable />
           </el-form-item>
-          <el-form-item>
+<!--          <el-form-item>
             <div class="yzm-box flexcenter">
               <el-input v-model="ruleForm.phoneCode" placeholder="请输入图形验证码" style="width: 304px;" clearable />
               <div class="yzm">fefds</div>
             </div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-button
               type="primary"
@@ -91,29 +91,11 @@ export default {
         password:password,
         phone:phone,
         phoneCode:phoneCode,
+        $router:this.$router,
+        $message:this.$message
       }
       this.$store.dispatch('Login', params)
-      this.$router.push('/index')
-      // let result = await reqTelLogin({ password, phone})
-      // if(result.code==200){
-      //   const user = result.data.user
-      //   const token = result.data.token
-      // // 保存user(vuex的state中)
-      // 
-      // this.$store.commit(RECEIVE_USER, user) // 查找所有vuex模块中的mutation调用
-      // // this.$store.commit(TOKEN_USER, token)
-      // // localStorage.setItem("user", user);
-      // localStorage.setItem("token", token);
-      // localStorage.setItem("hasLoginlist", false);
-      // // 跳转到首页
       // this.$router.push('/index')
-      // window.location.reload();
-      // }else{
-      //     this.$message({
-      //     message: result.msg,
-      //     type: 'error'
-      //   })
-      // }
     }
   }
 }

@@ -25,12 +25,12 @@
               clearable
             />
           </el-form-item>
-          <el-form-item>
+<!--          <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
               <el-input v-model="ruleForm.imgpassword" placeholder="请输入图形验证码" clearable />
             </el-col>
             <el-col :span="4" class="yzm">feds</el-col>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
               <el-input v-model="ruleForm.phoneCode" placeholder="请输入手机验证码" clearable />
@@ -48,7 +48,7 @@
             </el-col>
           </el-form-item>
           <el-form-item>
-            <el-input v-model="ruleForm.inviteCode" placeholder="请输邀请码（选填）" clearable />
+            <el-input v-model="ruleForm.inviteCode" placeholder="请输邀请码（必填）" clearable />
           </el-form-item>
           <el-form-item>
             <div>
@@ -133,13 +133,14 @@ export default {
     }
   },
   created() {
+    this.ruleForm.phone = this.$route.query.searchkey
   },
   methods: {
     // 注册接口
     async zc (){
       let that = this
       const { inviteCode, password, phone, phoneCode } = that.ruleForm
-      console.log(inviteCode, password, phone, phoneCode);
+      // console.log(inviteCode, password, phone, phoneCode);
       let result = await reqSmsLogin({inviteCode, password, phone, phoneCode})
       if(result.code==200){
       const user = result.data.user

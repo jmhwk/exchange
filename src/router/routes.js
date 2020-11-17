@@ -4,7 +4,8 @@ import Legislation from '../views/agreementFooter/legislation.vue'
 import Privacy from '../views/agreementFooter/privacy.vue'
 import Pneumatic from '../views/agreementFooter/pneumatic.vue'
 import Safety from '../views/agreementFooter/safety.vue'
-import Security from '../views/agreementFooter/security.vue'
+import Security from '../views/agreementFooter/security.vue'  // 安全性
+import Announcement from '../views/agreementFooter/announcement.vue' // 公告
 import User from '../views/agreementFooter/user.vue'
 // 登录注册邀请
 import Log from '../views/log/log'
@@ -12,26 +13,27 @@ import Regist from '../views/log/regist.vue'
 import Password from '../views/log/password.vue'
 import Solutions from '../views/log/solutions.vue'
 import Contactus from '../views/log/contactus.vue'
-
+ 
+ // 币币交易
+ import Currency from '../views/currencyTrading/currencyTrading'
 // 合约交易
 import Products from '../views/products/products'
-// 币币交易
-import Currency from '../views/currencyTrading/currencyTrading'
 // 资产管理
 import AssetManagement from '../views/assetManagement'
-import AssetDetails from '../views/assetManagement/assetDetails'
+import AssetDetails from '../views/assetManagement/assetDetails' // 资产明细
 import RechargeCurrency from '../views/assetManagement/assetDetails/rechargeCurrency'
 import Withdrawal from '../views/assetManagement/assetDetails/withdrawal'
 import EntrustOrder from '../views/assetManagement/entrustOrder'
-import PositionOrder from '../views/assetManagement/positionOrder'
+import PositionOrder from '../views/assetManagement/positionOrder' 
+import HoldOrder from '../views/assetManagement/holdOrder' // 持仓订单
 import FundsTransfer from '../views/assetManagement/fundsTransfer/index'
 import RechargeAndWithdrawRecord from '../views/assetManagement/rechargeAndWithdrawRecord'
 // 用户管理
 import UserManagement from '../views/userManagement/index'
 import Authentication from '../views/userManagement/authentication'
 import Passwordmodify from '../views/userManagement/passwordmodify'
-import Replacephone from '../views/userManagement/replacephone'
-
+import Replacephone from '../views/userManagement/replacephone' // 更换手机
+import Replacepemal from '../views/userManagement/replacepemal' // 绑定邮箱
 export default [
   {
     path: '/index',
@@ -56,6 +58,10 @@ export default [
   {
     path: '/footer/security',
     component: Security
+  },
+  {
+    path: '/footer/announcement',
+    component: Announcement
   },
   {
     path: '/footer/user',
@@ -112,6 +118,11 @@ export default [
         name: 'replacephone',
         component: Replacephone
       },
+      {
+        path: '/userManagement/replacepemal',
+        name: 'replacepemal',
+        component: Replacepemal
+      },
     ]
   },
   // 资产管理
@@ -145,6 +156,11 @@ export default [
         path: '/assetManagement/positionOrder',
         name: 'positionOrder',
         component: PositionOrder
+      },
+      {
+        path: '/assetManagement/holdOrder',
+        name: 'holdOrder',
+        component: HoldOrder
       },
       {
         path: '/assetManagement/fundsTransfer',

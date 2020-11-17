@@ -21,12 +21,12 @@
             </div>
             <div class="subcontainer-bottom">
               <el-table :data="tableData" style="width: 100%">
+                <el-table-column prop="coinName" label="币种" min-width="100" align="center" />
                 <el-table-column prop="createTime" label="时间" min-width="100" align="center" >
                   <template slot-scope="scope1" align="center">
                     <span>{{timestampToTime(scope1.row.createTime,'all')}}</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="coinName" label="币种" min-width="100" align="center" />
                 <el-table-column prop="amount" label="数量" min-width="100" align="center" />
     
                 <el-table-column prop="remark" label="转向" min-width="130" align="center">
@@ -135,75 +135,5 @@ export default {
 }
 .height678 {
     height: 100%;
-  }
-
-  .Tab1-subcontainer {
-    display: flex;
-    flex-direction: column;
-    h1{
-      padding: 15px 0;
-    }
-    .subcontainer-bottom {
-      flex: 1;
-      .el-table::before {
-        background-color: $blue;
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-
-      .el-table__header {
-        background-color: $blue;
-      }
-
-      .el-table th {
-        opacity: 0.61;
-      }
-
-      .el-table th,
-      .el-table tr {
-        color: #fff;
-        background-color: $blue;
-      }
-
-      .el-table td,
-      .el-table th.is-leaf {
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-
-      .el-table--enable-row-hover .el-table__body tr:hover>td {
-        background-color: #002658 !important;
-        opacity: 1;
-      }
-
-      .btn {
-        width: 46px;
-        height: 21px;
-        padding: unset;
-        font-size: 12px;
-        background-color: $blue;
-        color: $money-blue;
-        border-color: $money-blue;
-      }
-    }
-
-    .pagination {
-      padding: 50px 0;
-      display: flex;
-      justify-content: center;
-
-      .el-pagination {
-        background-color: $blue;
-        display: inline-block;
-
-        >button,
-        >ul li {
-          color: rgba($color: #fefefe, $alpha: 0.8);
-          background-color: $blue;
-        }
-
-        .active {
-          color: #1476FE;
-        }
-      }
-    }
   }
 </style>

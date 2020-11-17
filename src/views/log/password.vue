@@ -7,12 +7,12 @@
           <el-form-item prop="phone">
             <el-input v-model="ruleForm.phone" placeholder="请输入手机号码" clearable />
           </el-form-item>
-          <el-form-item>
+<!--          <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
               <el-input v-model="ruleForm.imgpasswordword" placeholder="请输入图形验证码" clearable />
             </el-col>
             <el-col :span="4" class="yzm">feds</el-col>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
             <el-col :span="16" style="margin-right: 45px;">
               <el-input v-model="ruleForm.phoneCode" placeholder="请输入手机验证码" clearable />

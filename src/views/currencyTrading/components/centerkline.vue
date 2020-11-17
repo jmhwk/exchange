@@ -4,23 +4,23 @@
       <div class="centerk-nav">
         <el-row>
           <el-col :span="4">
-           <!-- <h1>BTC/USDT</h1> -->
-           <el-select v-model="value" placeholder="请选择"  @visible-change="selectchange(value)" @change="listchange(value)">
-             <el-option v-for="(item,index) in options" :key="index" :label="(item.coinName+'/'+item.marketCoinName)" :value="index">
+            <!-- <h1>BTC/USDT</h1> -->
+            <!-- <el-select v-model="value" placeholder="请选择" @change="listchange(value)">
+             <el-option v-for="(item,index) in marketAll" :key="index" :label="(item.coinName+'/'+item.marketCoinName)" :value="index">
              </el-option>
-           </el-select>
+           </el-select> -->
+            {{currency.title}}
           </el-col>
-          <el-col :span="4">开盘价</el-col>
-          <el-col :span="4">涨跌额</el-col>
+          <el-col :span="4">24H量</el-col>
           <el-col :span="4">24H最高</el-col>
           <el-col :span="4">24H最低</el-col>
         </el-row>
         <el-row class="center-row1">
-          <el-col :span="4">涨跌幅+0.50%</el-col>
-          <el-col :span="4">{{market.openPrice}}</el-col>
-          <el-col :span="4">{{market.maxPrice}}</el-col>
-          <el-col :span="4">{{market.closePrice}}</el-col>
-          <el-col :span="4">{{market.qty}}</el-col>
+          <el-col :span="4">
+            <span>{{numFor(currency.coinl)}} ≈ {{numFor(currency.cny)}} CNY</span></el-col>
+          <el-col :span="4">{{market.qty || '0.00'}}</el-col>
+          <el-col :span="4">{{market.maxPrice || '0.00'}}</el-col>
+          <el-col :span="4">{{market.closePrice || '0.00'}}</el-col>
         </el-row>
       </div>
       <div class="centerk-subject">
@@ -28,14 +28,14 @@
         <Vue-kline :klineParams="klineParams" :klineData="klineData" ref="callMethods" @refreshKlineData="refreshKlineData"></Vue-kline>
       </div>
     </div>
-    <div class="center-bottom">
+    <div class="center-bottom" style="height: 553px;">
       <div class="AssetDetailsTabs-container">
         <el-tabs v-model="activeName">
           <el-tab-pane label="币币交易" name="tab1">
             <div class="deal flexcenterlist">
               <div class="deal-top">
                 <div class="ints">
-                  <h5>委托类型</h5>
+                  <h5>委托类型</h5><span style="color: #031937;">{{coinsForm.Buying}}</span>
                   <div class="its">
                     <input type="text" disabled="disabled">
                     <div class="lever">
@@ -51,17 +51,17 @@
                 <div class="ints">
                   <h5>价格(USDT)</h5>
                   <div class="its">
-                    <input type="text" maxlength="12"  v-model="form.price" placeholder="请输入买入价格" readonly >
-                  <span> ≈ ${{form.price}}</span>
+                    <input type="text" maxlength="12" v-model="form.price" placeholder="请输入买入价格" readonly>
+                    <span> ≈ ${{form.price}}</span>
                   </div>
                 </div>
                 <div class="ints">
                   <h5>数量(BTC)</h5>
                   <div class="its">
-                    <input type="text" maxlength="12" v-model="form.qty"  placeholder="请输入买入数量" readonly></div>
+                    <input type="text" maxlength="12" v-model="form.qty" placeholder="请输入买入数量" readonly></div>
                 </div>
                 <div class="rate flexcenter">
-                  <a>可用<label>{{numFilter(accountList.balance)}}</label></a>
+                  <a>可用<label>{{numFor(accountList.balance)}}</label></a>
                   <a>交易额：<label>{{form.price*form.qty}}</label></a>
                 </div>
                 <input type="button" value="买入AUTT" class="lbtns" @click="add(1,form)">
@@ -85,15 +85,15 @@
                 <div class="ints">
                   <h5>价格(USDT)</h5>
                   <div class="its">
-                    <input type="text" maxlength="12"  v-model="form1.price" placeholder="请输入卖出价格"></div>
+                    <input type="text" maxlength="12" v-model="form1.price" placeholder="请输入卖出价格"></div>
                 </div>
                 <div class="ints">
                   <h5>数量(BTC)</h5>
                   <div class="its">
-                    <input type="text" maxlength="12" v-model="form1.qty"  placeholder="请输入卖出数量" ></div>
+                    <input type="text" maxlength="12" v-model="form1.qty" placeholder="请输入卖出数量"></div>
                 </div>
                 <div class="rate flexcenter">
-                  <a>可用<label>{{numFilter(accountList.balance)}}</label></a>
+                  <a>可用<label>{{numFor(accountList1.balance)}}</label></a>
                   <a>交易额：<label>{{form1.price*form1.qty}}</label></a>
                 </div>
                 <input type="button" value="卖出AUTT" class="lbtns lbtns1" @click="add(2,form1)">
@@ -109,54 +109,42 @@
 <script>
   import VueKline from "vue-kline"; //当前页引入vue-kline
   import data from "@/assets/js/data.js";
-  import { mapState } from 'vuex'
-  import { add } from '@/api'
-  import {numFilter} from '@/assets/js/time.js'
+  import { MARKET_ALL,USER_ORDER } from '@/store/mutation-types' // 存储深度 
+  import { coinList, getAccount }from '@/api'
   import {
-    getSocket
-  } from '@/assets/js/websocket.js'
+    mapState
+  } from 'vuex'
+  import {
+    add
+  } from '@/api'
+  import {numFor} from '@/assets/js/time.js'
   export default {
     components: {
       VueKline, //以子组件形式注册到当前页面中
     },
-  props: {
-    marketList: {
-      type: Object,
-      default: () => {}
-    },
-    market:{
-      type: Object,
-      default: () => {}
-    },
-    marketid:{
-      type: Number,
-      default: () => {}
-    },
-  },
     data() {
       return {
-        numFilter:numFilter,
-        options:[{
-          label:''
-        }],// 下拉数据
-        form:{
-          price:0,
-          qty:10000,
-          orderType:1,
+        numFor:numFor,
+        accountList:{}, // 币种信息
+        accountList1:{}, // 币种信息
+        form: {
+          price:null,
+          qty: 10000,
+          orderType: 1,
         },
-        form1:{
-          price:0,
-          qty:10000,
-          orderType:1,
+        form1: {
+          price:null,
+          qty: 0,
+          orderType: 1,
         },
         value: 0,
         activeName: 'tab1',
         dialogTableVisible: false,
-        marketIdlist:0, 
-        marketCoinId:0,
+        marketIdlist: null,
+        marketCoinId: 0,
         klineParams: {
-          width: '100%', // k线窗口宽
-          height: 500, // k线窗口高
+          width: 1490, // k线窗口宽
+          height: 490, // k线窗口高
           theme: "dark", // 主题颜色
           language: "zh-cn", //语言
           ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"], // 聚合选项
@@ -164,60 +152,142 @@
           symbolName: "AUTT/USDT", // 交易名称
           intervalTime: 5000, // k线更新周期 毫秒
           depthWidth: 200, // 深度图宽度
-          count: 2 //显示指标数量 默认两个  
+          count: 2, //显示指标数量 默认两个  
+          reverseColor:true, // 是否反色
         },
         arr: [],
-        klineData:{
-          depths:{},
-          lines:[]
-        } // 数据
+        idlist: 0, // 旧id
+        currency: {
+          title: '',
+          coinl: '',
+          cny: ''
+        },
+        klineData: {
+          depths: {},
+          lines: []
+        }, // 数据
+        timer: false,
+        screenWidth: document.body.clientWidth,
+        market:{} ,// 市场
+        marketList: {}, // 深度
       };
     },
+    watch: {
+      screenWidth: {
+        immediate: true,
+        handler: function(newVal) {
+          // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+          if (!this.timer) {
+            this.screenWidth = newVal;
+            this.timer = true;
+            let _this = this;
+            setTimeout(() => {
+              //在这里做有关浏览器变化时需要做的操作
+              _this.timer = false;
+              this.$refs.callMethods.resize(this.screenWidth * 0.622, 490);
+            }, 400);
+          }
+          // if(newVal)
+        }
+      }
+    },
     mounted() {
-      // this.getSocketData(60,this.market.id)
-      this.$refs.callMethods.resize(1325, 490)
-      this.options = this.marketAll 
-      let id = this.options[0]
-      this.refreshKlineData(60000,id.marketId);
+      // this.$refs.callMethods.resize(1490, 490)
+      let id = this.marketAll[0]
+      // this.getSocketData(1,this.marketIdlist,'add')
+      let name = id.coinName + '/' + id.marketCoinName
+      this.currency = {
+          title: name,
+          coinl: id.lastTradePrice,
+          cny: id.cnyPrice*id.lastTradePrice
+        }
+      this.form.price = id.lastTradePrice
       this.marketIdlist = id.marketId
+      this.refreshKlineData(60000);
       this.marketCoinId = id.marketCoinId
-      this.$store.dispatch('getAccountlist', id.marketCoinId)  
+      this.userOrder(id.marketId)
+      // this.$store.dispatch('getAccountlist', id.marketCoinId)
+      this.currencyMessage(id.fullCoinName,id.marketCoinId)
+      this.currencyMessage(id.marketCoinName,id.coinId)
+      const _this = this;
+      // 画echars
+      // 监听浏览器窗口变化
+      window.onresize = function() {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          _this.screenWidth = window.screenWidth;
+        })();
+      };
     },
     computed: {
       ...mapState({
         marketAll: state => state.websocket.marketAll,
-        accountList :state => state.property.accountList,
-        // sumListcny: state => state.property.sumlistcny,
+        user: state => state.user.user,
+        // accountList: state => state.property.accountList,
+        coinsForm: function(state) {
+          if (JSON.stringify(state.websocket.coinsForm) != '{}') {
+            let coinsForm = state.websocket.coinsForm
+            // debugger
+            // this.form.price = coinsForm.selling
+          }
+          return state.websocket.coinsForm
+        },
       })
     },
     methods: {
       // 名字切换
-      marketAllid(e){
-        this.options = this.marketAll
-        this.options.push(e)
-        this.value = 1
-        let name  = e.coinName+'/'+e.marketCoinName
+      marketAllid(e) {
+        this.value = e
+        let name = e.coinName + '/' + e.marketCoinName
         this.$refs.callMethods.setSymbol('BTC', name)
         this.marketIdlist = e.marketId
-        this.getSocketData(1,e.marketId);
+        this.getSocketData(1, e.marketId, 'remove');
+        this.form.price = e.lastTradePrice
+        this.currency = {
+            title: name,
+            coinl: e.lastTradePrice,
+            cny: e.cnyPrice*e.lastTradePrice
+          }
+      },
+      async currencyMessage(name,type){
+        let result = await getAccount (type)
+        if (result.code == 200) {
+          if(result.data.coinName =="USDT"){
+            this.accountList = result.data
+          }else if(result.data.coinName == "AUTT"){
+            this.accountList1 = result.data
+          }
+          // console.log('币种信息',result.data)
+          // commit(ACCOUNT_LIST, result.data)
+        }
       },
       // 买卖接口
-      async add(type,form) {
+      async add(type, form) {
         let marketId = this.marketIdlist
-        const { orderType, price, qty} = form
-        const result = await add({ marketId, orderType, price, qty,type})
+        const {
+          orderType,
+          price,
+          qty
+        } = form
+        const result = await add({
+          marketId,
+          orderType,
+          price,
+          qty,
+          type
+        })
         if (result.code == 200) {
           let message = ''
-          if(type==1){
+          if (type == 1) {
             message = '买入成功'
-          }else {
+          } else {
             message = '卖出成功'
           }
           this.$message({
             message: message,
             type: 'success'
           })
-          this.$store.dispatch('getAccountlist', this.marketCoinId)  
+          this.$store.dispatch('getAccountlist', this.marketCoinId)
         } else {
           this.$message({
             message: result.msg,
@@ -225,65 +295,97 @@
           })
         }
       },
-      // tab切换
-      selectchange(e){
-        this.options = this.marketAll
-      },
-      // tab切换
-      listchange(e){
-        let id = this.marketAll[e]
-        this.getSocketData(1,id.marketId)
+      // 当前委托订单
+      userOrder(ids) {
+        let params = {
+          channel: "userOrder", 
+          marketId:ids, 
+          userId: this.user.id
+        }
+        this.socketApi.sendSock(params, this.getConfigResult)
       },
       // k线图
-      getSocketData(time,id) {
+      async getSocketData(time, id, remove) {
         let params = {
           channel: "kline",
-          marketId:id,
-          minType: time
+          marketId: id,
+          minType: time,
+          event: remove,
         }
+     
+        this.idlist = id
+        let a = await this.socketApi.sendSock(params, this.getConfigResult)
+        if (remove == 'remove') {
+          this.getSocketData(time, this.marketIdlist, 'add')
+        }
+      },
+      // 所有回调
+      getConfigResult(data) {
         let datalist = []
-        this.arr= []
-        console.log('参数',params)
-        getSocket(JSON.stringify(params), (data, ws) => {
+        
+        // this.arr= []
+        if (data.channel == "kline") {
           datalist = data.klineList || []
           // this.klineData = a
           // K线图, 依次是: 时间(ms), 开盘价, 最高价, 最低价, 收盘价, 成交量
           // asks:一定比例的卖单列表, bids:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
           datalist.forEach(i => {
-            this.arr.push([i.id, i.open, i.high, i.low, i.close, i.qty])
+            this.arr.push([i.createTime, i.open, i.high, i.low, i.close, i.qty])
           })
-          this.$refs.callMethods.kline.chartMgr.getChart().updateDataAndDisplay(this.arr)
           let lista = this.marketList.sellList || []
-          let listb = this.marketList.buyList ||[]
-          this.form.price = listb[0].price|| 0
-          console.log('lisa',this.form.price)
-          let aa=[]
-          let bb =[]
-           lista.forEach(i =>{
-             aa.push([i.price,i.qty])
-           })
-           listb.forEach(i =>{
-             bb.push([i.price,i.qty])
-           })
+          let listb = this.marketList.buyList || []
+          // this.form.price = lista.length > 0 ? lista[0].price : 0
+          this.form1.price = listb.length > 0 ? listb[0].price : 0
+          let aa = []
+          let bb = []
+          lista.forEach(i => {
+            aa.push([i.price, i.qty])
+          })
+          listb.forEach(i => {
+            bb.push([i.price, i.qty])
+          })
+          let timelist = this.arr.reverse()
           this.klineData = {
             success: true,
-            data:{
-              depths:{
-                asks:aa,
-                bids:bb,
+            data: {
+              depths: {
+                asks: aa,
+                bids: bb,
               },
-              lines:this.arr
+              lines: this.arr
             }
-          }; // 进入页面时执行,默认聚合时间900000毫秒(15分钟)    
-        });
+          }; // 进入页面时执行,默认聚合时间900000毫秒(15分钟) 
+          
+          this.$refs.callMethods.kline.chartMgr.getChart().updateDataAndDisplay(timelist)
+        }else if(data.channel=="marketAll"){
+          this.$store.commit(MARKET_ALL, data.marketAll)
+        }else if(data.channel=="userOrder"){
+          this.$store.commit(USER_ORDER, data.orderList)
+          console.log('USER_ORDER',data.orderList)
+        }else if(data.channel=="marketById"){
+          this.$store.commit(CION_LIST, data)
+          this.marketList = data
+          this.market = data.market
+          let b = data.sellList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let c = data.buyList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let proportionList={
+                proportionred:b,
+                proportiongreen:c
+              }// 比例
+          this.$store.commit(PROPORTION_CION, proportionList)
+        }
       },
-      refreshKlineData(option,id) { //你点击页面上的周期会触发这个方法
-      option = option/1000/60
-      this.getSocketData(option,id,)
+      refreshKlineData(option) { //你点击页面上的周期会触发这个方法
+        option = option / 1000 / 60
+        if (this.marketIdlist) {
+          this.getSocketData(option, this.marketIdlist, 'add')
+        }
       },
-
     },
-
   }
 </script>
 
@@ -293,8 +395,18 @@
       color: #ffffffcc;
     }
 
+    .chart_container a.chart_icon_theme_dark {
+      background-color: #031937;
+    }
+
+    .chart_container.dark #chart_loading {
+      display: none!important;
+    }
+    .chart_container.light #chart_loading {
+      display: none!important;
+    }
     #chart_overlayCanvas {
-      overflow: hidden;
+      // overflow-x: hidden;
       position: absolute;
       z-index: 2;
       // background-color: #031937;
@@ -360,19 +472,24 @@
         // height: 63px;
         padding: 10px 20px;
         background: #002658;
+
         .el-input__inner {
-          height: 23px !important;
+          height: 35px !important;
           background: #002658;
           border-color: #002658;
-          color:#1476FE;
+          color: #1476FE;
+          padding: 0;
         }
-        .products .products-top span:last-of-type{
+
+        .products .products-top span:last-of-type {
           padding: 0px !important;
         }
-        .el-input__suffix-inner{
+
+        .el-input__suffix-inner {
           text-align: left;
         }
-        .el-table th>.cell{
+
+        .el-table th>.cell {
           width: 60%;
         }
       }
@@ -381,6 +498,7 @@
     .center-bottom {
       margin-top: 5px;
 
+      // height: 553px!important;
       .centerb-nav {
         display: flex;
         background: #031937;

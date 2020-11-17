@@ -1,9 +1,14 @@
+  let url = 'ws://47.242.81.154:8086/ws' // 第一个不行试试这个 测试
+  let socket;
+  // let di = 0
+  socket = new WebSocket(url);
+
 
 function getSocket(params, callback,down) {
   // let url = 'ws://120.25.153.148:8087/ws' // 测试
-  let url = 'ws://47.242.81.154:8086/ws' // 正式
+  let url = 'ws://47.242.81.154:8086/ws' // 第一个不行试试这个 测试
   let socket;
-  let di = 0
+  // let di = 0
   socket = new WebSocket(url);
   if (typeof(WebSocket) === 'undefined') {
     console.log('您的浏览器不支持WebSocket');

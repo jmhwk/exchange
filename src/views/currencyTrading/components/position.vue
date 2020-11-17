@@ -1,7 +1,7 @@
 <template>
   <div class="Tab1-subcontainer height678">
     <div class="subcontainer-bottom">
-      <el-table :data="tableData" style="width: 100%">
+      <el-table :data="tableData" style="width: 100%;height: 570px; background: #031937; overflow: auto;">
         <el-table-column prop="typesOfCurrency" label="币对" min-width="110" align="center">
           <template slot-scope="scope1" align="center">
             <span>{{scope1.row.leftCoinName}}&nbsp;/&nbsp;{{scope1.row.rightCoinName}}</span>
@@ -14,18 +14,27 @@
         </el-table-column>
         <el-table-column prop="typesOfCurrency" label="时间" min-width="100" align="center">
           <template slot-scope="scope1" align="center">
-          <span>{{timestampToTimes(scope1.row.updateTime)}}</span>
+          <span>{{timestampToTimes(scope1.row.createTime)}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="price" label="委托价" min-width="100" align="center">
+          <template slot="header" slot-scope="scope">
+            <span>委托价（{{name.rightCoinName}}）</span>
+          </template>
         </el-table-column>
         <el-table-column prop="qty" label="委托量" min-width="100" align="center">
+          <template slot="header" slot-scope="scope">
+            <span>委托量（{{name.leftCoinName}}）</span>
+          </template>
         </el-table-column>
         <el-table-column prop="tradeQty" label="成交量" min-width="100" align="center">
+          <template slot="header" slot-scope="scope">
+            <span>成交量（{{name.leftCoinName}}）</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="scope">
-            <el-button v-if="scope.row.status!= -1 && scope.row.status!=3" class="btn" @click="handleEdit(scope.row)">撤单</el-button>
+            <el-button v-if="scope.row.status!= -1 && scope.row.status!=3" class="btn" @click="handleEdit(scope.row,scope.column)">撤单</el-button>
             <span v-else>--</span>
           </template>
         </el-table-column>
@@ -40,19 +49,15 @@
     mapState
   } from 'vuex'
   import {timestampToTimes} from '@/assets/js/time.js'
-  import { getSocket } from '@/assets/js/websocket.js'
+  // import { getSocket } from '@/assets/js/websocket.js'
   
   // 交易账户tab页
   export default {
     data() {
       return {
         timestampToTimes:timestampToTimes,
-        value: true,
         tableData: [],
-        CoinName:{
-          leftCoinName:'',
-          rightCoinName:''
-        },
+        name:{},
         options: [{
           value: '1',
           label: '全部交易对'
@@ -99,36 +104,25 @@
     computed: {
       ...mapState({
         user: state => state.user.user,
-        allMarketList: state => state.websocket.allMarketList,
-        marketAll: state => state.websocket.marketAll
+        marketAll: state => state.websocket.marketAll,
+        // userOrder: state => state.websocket.userOrder,
+        userOrder: function(state) {
+          if (state.property.userOrder.length > 0) {
+            let ids = state.property.userOrder
+            this.tableData = ids
+            let a = this.tableData[0] || []
+              this.name={
+                leftCoinName:a.leftCoinName,
+                rightCoinName:a.rightCoinName
+              }
+            }
+          return state.property.userOrder
+        },
       })
     },
-    created() {
-      // this.orderList()
-      this.getSocketData()
-    },
     methods: {
-      selectchange(e,index,value){
-        if(index == 1){
-          this.orderList(e,value)
-        }else{
-          this.orderList(e,value)
-        }
-      },
-      // 当前委托订单
-      getSocketData() {
-        let id = this.marketAll[0]
-        let params = {
-          channel: "userOrder", 
-          marketId:id.marketId, 
-          userId: this.user.id
-        }
-        getSocket(JSON.stringify(params), (data, ws) => {
-          this.tableData= data.orderList
-        });
-      },
       // 调用撤单接口
-      async handleEdit(e){
+      async handleEdit(e,r){
         let pram = {
           id: e.id,
           orderType: 1
@@ -150,87 +144,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-  .Tab1-subcontainer {
-    display: flex;
-    flex-direction: column;
-    .pad{
-      padding: 0 10px;
-    }
-    .subcontainer-bottom {
-      flex: 1;
-
-      .el-table::before {
-        background-color: $blue;
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-      .el-input__inner {
-        height: 35px !important;
-        background: #031937;
-        border-color: #4d5c71;
-        color: #fff !important;
-      }
-      // .el-table__header {
-      //   background-color: $blue;
-      // }
-
-      .el-table th {
-        opacity: 0.61;
-      }
-
-      .el-table th,
-      .el-table tr {
-        color: #fff;
-        background-color: $blue;
-      }
-      // .el-table th>.cell{
-      //   width: 60%;
-      // }
-      .el-table td,
-      .el-table th.is-leaf {
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-      // .el-select__caret{
-      //   padding: 4px 0;
-      // }
-      .el-table--enable-row-hover .el-table__body tr:hover>td {
-        background-color: #002658 !important;
-        opacity: 1;
-      }
-      // .el-input__suffix{
-      //   top: px;
-      // }
-      .btn {
-        width: 46px;
-        height: 21px;
-        padding: unset;
-        font-size: 12px;
-        background-color: $blue;
-        color: $money-blue;
-        border-color: $money-blue;
-      }
-    }
-
-    .pagination {
-      margin-bottom: 27px;
-      display: flex;
-      justify-content: center;
-
-      .el-pagination {
-        background-color: $blue;
-        display: inline-block;
-
-        >button,
-        >ul li {
-          color: rgba($color: #fefefe, $alpha: 0.8);
-          background-color: $blue;
-        }
-
-        .active {
-          color: #1476FE;
-        }
-      }
-    }
-  }
-</style>

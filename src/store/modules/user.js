@@ -34,38 +34,36 @@ const mutations = {
 const actions = {
   //log登录
   async Login({ commit },params) {
-    const result = await reqTelLogin(params)
+    let $router = params.$router
+    let $message = params.$message
+    const {password, phone,phoneCode} = params
+    const result = await reqTelLogin({password, phone,phoneCode})
     if(result.code === 200) {
       const token = result.data.token
       const user = result.data.user
       setToken(token)
       commit(TOKEN_USER, token)
       commit(RECEIVE_USER, user)
+      $router.push('/index')
     }else{
-      
+      $message({
+        message: result.msg,
+        type: 'error'
+      })
     }
   },
   // 获取个人信息
   async usermessage({ commit }) {
     const result = await reqUser()
     if(result.code === 200) {
-      result.data.updateTime = timestampToTime(result.data.updateTime)
+      result.data.createTime = timestampToTime(result.data.createTime)
       const user = result.data
       commit(RECEIVE_USER, user)
+      
     }else{
       // alert(result.msg)
     }
   },
-  // 首页数据
-  // getSocketData({ commit }) {
-  //   let params = {
-  //     "channel": "homeMarket"
-  //   }
-  //   getSocket('ws://47.242.81.154:8087/ws', JSON.stringify(params), (data, ws) => {
-  //     commit(HOME_MARKET, data)
-  //     // this.$store.commit(HOME_MARKET, data)
-  //   });
-  // },
   
   // 前端 登出
   FedLogOut({ commit }) {

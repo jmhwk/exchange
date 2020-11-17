@@ -1,26 +1,24 @@
 <template>
   <div class="AssetDetailsTabs-container">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="我的持仓" name="tab1"><Tab1 /></el-tab-pane>
-      <el-tab-pane label="委托记录" name="tab2"><Tab2 /></el-tab-pane>
-      <el-tab-pane label="平仓记录" name="tab3"><Tab3 /></el-tab-pane>
-      <el-tab-pane label="划转记录" name="tab4"><Tab4 /></el-tab-pane>
+      <el-tab-pane label="当前持仓" name="tab1"><Tab1 /></el-tab-pane>
+      <el-tab-pane label="限价委托" name="tab2"><Tab2 /></el-tab-pane>
+      <el-tab-pane label="计划委托" name="tab3"><Tab3 /></el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import Tab1 from './position'
-import Tab2 from './entrust'
-import Tab3 from './tab3'
-import Tab4 from './tab4'
+import Tab1 from '@/views/assetManagement/holdOrder/tab1.vue'
+import Tab2 from './position'
+import Tab3 from './entrust'
+
 export default {
   name: 'AssetDetailsTabs',
   components: {
     Tab1,
     Tab2,
-    Tab3,
-    Tab4,
+    Tab3
   },
   data() {
     return {

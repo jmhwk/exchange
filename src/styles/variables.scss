@@ -3,3 +3,197 @@ $deep-blue:#010E20;
 $blue:#031937;
 $money-blue:#1476FE;
 $--color-primary: teal;
+
+.AssetDetailsTabs-container {
+  width: 100%;
+  height: 733px;
+  background-color: $blue;
+  .el-tabs {
+    .el-tabs__header {
+      margin: unset;
+      .el-tabs__nav-wrap {
+        .el-tabs__nav-scroll {
+          background-color: rgba($color: #1476FE, $alpha: 0.06);
+          .el-tabs__item{
+            height: 55px;
+            line-height: 55px;
+            text-align: center;
+            padding: unset;
+            width: 120px;
+            color: #fff;
+            opacity: 1;
+          }
+          .el-tabs__item.is-active{
+            background-color: $blue;
+          }
+        }
+      }
+      .el-tabs__nav-wrap::after{
+        background-color: $blue;
+      }
+    }
+  }
+}
+.subcontainer-bottom {
+  flex: 1;
+  .el-table::before {
+    background-color: $blue;
+    border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
+  }
+  .el-table__header {
+    background-color: $blue;
+  }
+  .el-table th {
+    opacity: 0.61;
+  }
+  .el-table th,
+  .el-table tr {
+    color: #fff;
+    background-color: $blue;
+  }
+  .el-table td,
+  .el-table th.is-leaf {
+    border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
+  }
+  .el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: #002658 !important;
+    opacity: 1;
+  }
+
+  .btn {
+    width: 46px;
+    height: 24px;
+    padding: unset;
+    font-size: 12px;
+    background-color: $blue;
+    color: $money-blue;
+    border-color: $money-blue;
+  }
+}
+.Tab2-subcontainer {
+  display: flex;
+  flex-direction: column;
+  .head{
+    line-height: 48px;
+    height: 48px;
+    border-bottom:1px solid #1f324d;
+    padding: 0 20px;
+    font-size: 12;
+    color: #59677b;
+  }
+  .el-col:hover{
+    color:#1476FE;
+  }
+  .pagination {
+    margin: 27px;
+    display: flex;
+    justify-content: center;
+    .el-pagination {
+      background-color: $blue;
+      display: inline-block;
+      > button,
+      > ul li {
+        color: rgba($color: #fefefe, $alpha: 0.8);
+        background-color: $blue;
+      }
+      .active{
+        color: #1476FE;
+      }
+    }
+  }
+}
+.Tab1-subcontainer {
+  display: flex;
+  flex-direction: column;
+  .pad{
+    padding: 0 10px;
+  }
+  .subcontainer-top {
+    padding: 15px 20px;
+    color: #fff;
+    // border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
+    font-size: 14px;
+    .el-input__inner {
+      height: 35px !important;
+      background: #031937;
+      border-color: #4d5c71;
+    }
+    .el-table th>.cell{
+      width: 60%;
+    }
+  }
+  .subcontainer-bottom {
+    flex: 1;
+
+    .el-table::before {
+      background-color: $blue;
+      border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
+    }
+    .el-input__inner {
+      height: 35px !important;
+      background: #031937;
+      border-color: #4d5c71;
+      color: #fff !important;
+    }
+    // .el-table__header {
+    //   background-color: $blue;
+    // }
+
+    .el-table th {
+      opacity: 0.61;
+    }
+
+    .el-table th,
+    .el-table tr {
+      color: #fff;
+      background-color: $blue;
+    }
+    // .el-table th>.cell{
+    //   width: 60%;
+    // }
+    .el-table td,
+    .el-table th.is-leaf {
+      border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
+    }
+    // .el-select__caret{
+    //   padding: 4px 0;
+    // }
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: #002658 !important;
+      opacity: 1;
+    }
+    // .el-input__suffix{
+    //   top: px;
+    // }
+    .btn {
+      width: 46px;
+      height: 24px;
+      padding: unset;
+      font-size: 12px;
+      background-color: $blue;
+      color: $money-blue;
+      border-color: $money-blue;
+    }
+  }
+
+  .pagination {
+    margin: 27px;
+    display: flex;
+    justify-content: center;
+
+    .el-pagination {
+      background-color: $blue;
+      display: inline-block;
+
+      >button,
+      >ul li {
+        color: rgba($color: #fefefe, $alpha: 0.8);
+        background-color: $blue;
+      }
+
+      .active {
+        color: #1476FE;
+      }
+    }
+  }
+}

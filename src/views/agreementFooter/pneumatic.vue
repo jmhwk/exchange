@@ -47,7 +47,7 @@
         <br>{{ $t('pneumatic.footer_agreementhgz_jy32') }}
         <br><br>{{ $t('pneumatic.footer_agreementhgz_jy33') }}
         <br>{{ $t('pneumatic.footer_agreementhgz_jy34') }}
-        <br>{{ $t('pneumatic.footer_agreementhgz_jy35') }}
+    <!--    <br>{{ $t('pneumatic.footer_agreementhgz_jy35') }} -->
         <br>{{ $t('pneumatic.footer_agreementhgz_jy36') }}
         <br>{{ $t('pneumatic.footer_agreementhgz_jy37') }}
         <br>{{ $t('pneumatic.footer_agreementhgz_jy38') }}

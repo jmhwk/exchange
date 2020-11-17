@@ -49,8 +49,30 @@ export function fmtLength(row, column){
   }
 }
 
+
+// 表格保留两位小数
+export function fmtLengthFloat(row, column){
+  const arr = row[column.property]
+  if(arr === null || arr === '' || arr === undefined){
+    return 0
+  } else {
+    let tempVal = parseFloat(arr).toFixed(3)
+    let realVal = tempVal.substring(0, tempVal.length - 1)
+    return realVal
+    // let realVal = parseFloat(arr).toFixed(2)
+    // return realVal
+  }
+}
+
+
+// 表格保留四位小数
+export function numFor (value) {
+  let tempVal = parseFloat(value).toFixed(5)
+  let realVal = tempVal.substring(0, tempVal.length - 1)
+  return realVal
+}
 export function numFilter (value) {
-  // 截取当前数据到小数点后两位
-  let realVal = parseFloat(value).toFixed(2)
+  let tempVal = parseFloat(value).toFixed(3)
+  let realVal = tempVal.substring(0, tempVal.length - 1)
   return realVal
 }

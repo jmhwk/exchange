@@ -41,14 +41,35 @@
         </el-table-column>
         <el-table-column prop="typesOfCurrency" label="时间" min-width="100" align="center">
           <template slot-scope="scope1" align="center">
-          <span>{{timestampToTimes(scope1.row.updateTime)}}</span>
+          <span>{{timestampToTimes(scope1.row.createTime)}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="price" label="委托价" min-width="100" align="center"/>
-        <el-table-column prop="qty" label="委托量" min-width="100" align="center"/>
-        <el-table-column prop="tradeQty" label="成交量" min-width="100" align="center"  :formatter="fmtLength" />
-        <el-table-column prop="price" label="成交均价" min-width="100" align="center" :formatter="fmtLength" />
-        <el-table-column prop="" label="成交总额" min-width="100" align="center">
+        <el-table-column prop="price" label="委托价" min-width="100" align="center">
+          <template slot="header" slot-scope="scope">
+            <span>委托价（{{name.rightCoinName}}）</span>
+          </template>
+        </el-table-column>
+         
+         <el-table-column prop="qty" label="委托量" min-width="100" align="center">
+           <template slot="header" slot-scope="scope">
+             <span>委托量（{{name.leftCoinName}}）</span>
+           </template>
+         </el-table-column>
+         <el-table-column prop="tradeQty" label="成交量" min-width="100" align="center" :formatter="fmtLength">
+           <template slot="header" slot-scope="scope">
+             <span>成交量（{{name.leftCoinName}}）</span>
+           </template>
+         </el-table-column>
+<!--        <el-table-column prop="price" label="成交均价" min-width="100" align="center" :formatter="fmtLength" /> -->
+        <el-table-column prop="price" label="委托价" min-width="120" align="center" :formatter="fmtLength">
+          <template slot="header" slot-scope="scope">
+            <span>成交均价（{{name.rightCoinName}}）</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="" label="成交额" min-width="100" align="center">
+          <template slot="header" slot-scope="scope">
+            <span>成交额（{{name.rightCoinName}}）</span>
+          </template>
           <template slot-scope="scope1" align="center">
             <span>{{scope1.row.tradeQty*scope1.row.qty||0}}</span>
           </template>
@@ -125,10 +146,7 @@
         currentPage:1,// 默认第一页
         total: 0,// 总页数
         pull:0, // 下拉菜单
-        CoinName:{
-          leftCoinName:'',
-          rightCoinName:''
-        },
+        name:{},
         tableData: [],
         options: [{
           value: '1',
@@ -186,9 +204,10 @@
           if(a.length!=0){
             this.tableData = result.data.records
             this.total = result.data.total
-            this.CoinName = {
-              leftCoinName:this.tableData[0].leftCoinName||'',
-              rightCoinName:this.tableData[0].rightCoinName||""
+            let b = this.tableData[0]
+            this.name={
+              leftCoinName:b.leftCoinName,
+              rightCoinName:b.rightCoinName
             }
           }
         } else {
@@ -205,89 +224,3 @@
     }
   }
 </script>
-
-<style lang="scss">
-  .Tab1-subcontainer {
-    display: flex;
-    flex-direction: column;
-
-    .subcontainer-top {
-      padding: 15px 20px;
-      color: #fff;
-      // border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      font-size: 14px;
-      .el-input__inner {
-        height: 35px !important;
-        background: #031937;
-        border-color: #4d5c71;
-      }
-      .el-table th>.cell{
-        width: 60%;
-      }
-    }
-
-    .subcontainer-bottom {
-      flex: 1;
-
-      .el-table::before {
-        background-color: $blue;
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-
-      .el-table__header {
-        background-color: $blue;
-      }
-
-      .el-table th {
-        opacity: 0.61;
-      }
-
-      .el-table th,
-      .el-table tr {
-        color: #fff;
-        background-color: $blue;
-      }
-
-      .el-table td,
-      .el-table th.is-leaf {
-        border-bottom: 1px solid rgba($color: #fff, $alpha: 0.11);
-      }
-
-      .el-table--enable-row-hover .el-table__body tr:hover>td {
-        background-color: #002658 !important;
-        opacity: 1;
-      }
-
-      .btn {
-        width: 46px;
-        height: 21px;
-        padding: unset;
-        font-size: 12px;
-        background-color: $blue;
-        color: $money-blue;
-        border-color: $money-blue;
-      }
-    }
-
-    .pagination {
-      margin-bottom: 27px;
-      display: flex;
-      justify-content: center;
-
-      .el-pagination {
-        background-color: $blue;
-        display: inline-block;
-
-        >button,
-        >ul li {
-          color: rgba($color: #fefefe, $alpha: 0.8);
-          background-color: $blue;
-        }
-
-        .active {
-          color: #1476FE;
-        }
-      }
-    }
-  }
-</style>

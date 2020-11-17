@@ -5,9 +5,9 @@
       <div class="subcontainer-mid-select">
         <div>币种</div>
         <el-select v-model="value" placeholder="请选择"  @change="fullName(value)">
-          <el-option v-for="(item,index) in serveOptions" :key="index" :label="item.shortName" :value="item.shortName" />
+          <el-option v-for="(item,index) in serveOptions" :key="index" :label="item.shortName" :value="item.id" />
         </el-select>
-        <div>可用：0.00</div>
+     <!--   <div>可用：0.00</div> -->
       </div>
       <div>
         <el-radio-group v-model="radio1">
@@ -18,12 +18,22 @@
         </el-radio-group>
       </div>
       <div class="image-box flexzxlist">
-        <img src="../../images/erweuna@2x(1).png" alt="">
+        <vue-qr :text="userInvite" :size="700"></vue-qr>
         <p>充币地址</p>
-      </div>
-      <div class="input-box">
-        <el-input v-model="input" placeholder="请输入内容" />
-        <el-button type="primary">复制</el-button>
+        <el-row>
+          <el-col :span="20">
+            <div class="invite-left">
+              {{userInvite}}
+            </div>
+          </el-col>
+          <el-col :span="4">
+            <el-button type="primary" class="jys-btns" style="width: 100px;"
+              v-clipboard:copy="userInvite" 
+              v-clipboard:success="onCopy" 
+              v-clipboard:error="onError"
+            >点击复制</el-button>
+          </el-col>
+        </el-row>
       </div>
     </div>
     <div class="subcontainer-bottom">
@@ -33,7 +43,7 @@
         2.您充值至上述地址后，需要整个网络路由器的确认，12次网络确认后到账，12次网络确认后可提币；
       </p>
       <p>
-        3.<span class="warn">最小充值金额：2</span>，最小充值金额将不会上账且无法退回;
+        3.<span class="warn">最小充值：{{minimum}}个</span>，最小充值金额将不会上账且无法退回;
       </p>
       <p>4.请官方确认电脑及浏览器安全，防止信息被纠正改正或替换；</p>
     </div>
@@ -42,14 +52,17 @@
 
 <script>
 import { mapState } from 'vuex'
+import { recharge } from '@/api'
 import { SERVE_OPTIONS } from '@/store/mutation-types.js'
+import vueQr from 'vue-qr'
 export default {
   data() {
     return {
       url:'../../images/erweuna@2x(1).png',
       value: 'USDT',
       radio1: 'ERC20',
-      input: '0xe16c0825cd324e7eacf915fe6803b10535308fcd'
+      userInvite: '0xe16c0825cd324e7eacf915fe6803b10535308fcd',
+      minimum :10,
     }
   },
   created() {
@@ -57,12 +70,44 @@ export default {
   },
   computed: {
     ...mapState({
-      serveOptions :state => state.property.serveOptions
+      serveOptions: function(state) {
+        if (state.property.serveOptions.length > 0) {
+          let ids = state.property.serveOptions[0].id
+          this.recharge(ids)
+        }
+        return state.property.serveOptions
+      },
     })
   },
+  // 二维码
+  components: { vueQr },
   methods: {
+    // 复制成功时的回调函数
+    onCopy (e) {
+       this.$message.success("内容已复制到剪切板！")
+    },
+    // 复制失败时的回调函数
+    onError (e) {
+       this.$message.error("抱歉，复制失败！")
+    },
     fullName(v){
-      
+      this.recharge(v)
+      if(v==70){
+        this.minimum = 10
+      }else {
+        this.minimum = 100
+      }
+    },
+    async recharge(type) {
+      const result = await recharge(type)
+      if (result.code == 200) {
+        this.userInvite = result.data.address
+      } else {
+        this.$message({
+          message: result.msg,
+          type: 'error'
+        })
+      }
     },
   }
 }
@@ -103,7 +148,7 @@ export default {
       .el-select {
         padding: 0px 15px;
         .el-input__inner {
-          height: 30px !important;
+          height: 35px !important;
           background-color: $blue;
           color: rgba($color: #fff, $alpha: 0.81);
         }
@@ -136,7 +181,8 @@ export default {
       }
     }
     .image-box {
-      padding-top: 15%;
+      padding-top: 10%;
+      height: 400px;
       img{
         width: 150px;
         height: 150px;
@@ -146,28 +192,23 @@ export default {
         color:#ffffffcc;
       }
     }
-    .input-box {
-      position: absolute;
-      bottom: 16%;
-      .el-input {
-        width: 350px;
-        margin-left: 228px;
-        input {
-          background-color: rgba($color: #243b5d, $alpha: 0.41);
-          border: none;
-          height: 45px !important;
-        }
-        i{
-          line-height: 30px;
-        }
-      }
-      .el-button {
-        margin-left: 30px;
-        width: 80px;
-        height: 45px;
-        font-size: 14px;
-      }
+    .invite-left{
+      // width: 100%;
+      padding: 20px 10px;
+      background-color: rgba($color: #243b5d, $alpha: 0.41);
+      border-radius: 4px;
+      text-align: center;
+      word-break: break-all;
+      color:#fff;
+      margin: 0 15px;
     }
+    .el-button {
+      margin-left: 30px;
+      width: 80px;
+      height: 45px;
+      font-size: 14px;
+    }
+    
   }
   .subcontainer-bottom {
     height: 110px;

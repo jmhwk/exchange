@@ -25,6 +25,11 @@
             <img src="../images/icon/ionc3.png" alt="">
             <span slot="title">更换手机</span>
           </el-menu-item>
+          <el-menu-item index="/userManagement/replacepemal">
+           <img src="../images/icon/emal.png" alt="">
+<!--           <svg t="1604543549646" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5517" width="200" height="200"><path d="M153.6 156.8h716.8c48 0 89.6 38.4 89.6 86.4L512 489.6 64 243.2c0-48 41.6-86.4 89.6-86.4zM64 339.2v435.2c0 48 38.4 89.6 89.6 89.6h716.8c51.2 0 89.6-38.4 89.6-89.6V339.2L524.8 576c-6.4 3.2-16 3.2-22.4 0L64 339.2z" p-id="5518" fill="#ffffff"></path></svg>
+ -->            <span slot="title">绑定邮箱</span>
+          </el-menu-item>
         </el-menu>
       </div>
       <div class="right-side">
@@ -82,8 +87,8 @@ export default {
         }
       }
       .right-side{
-        width: 916px;
         height: 100%;
+        width: 100%;
         margin-left: 4px;
         // background-color: $blue;
       }

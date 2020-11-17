@@ -15,7 +15,7 @@
         <div class="btns btns-dl"  @click="goTo('/log')">{{$t('navbar.Log')}}</div>
         <div class="btns btns-zc"  @click="goTo('/regist')">{{$t('navbar.Sign')}}</div>
       </div>
-      <div v-else-if="token !=undefined" class="flexcenterlist">
+      <div v-else class="flexcenterlist">
         <div>
           <el-dropdown @command="handleCommand">
             <span class="el-dropdown-link" style="color: #FFFFFF;">
@@ -57,16 +57,16 @@
                 <li>扫码下载App</li>
                 <li>IOS</li>
                 <li>Android</li>
-                <li><el-button type="primary" style="background: #1476fe;height: 30px;line-height: 2px;">查看更多</el-button></li>
+     <!--           <li><el-button type="primary" style="background: #1476fe;height: 30px;line-height: 2px;">查看更多</el-button></li> -->
               </ul>
             </el-col>
           </el-row>
           
           <img src="../assets/imgaes/xz.png" slot="reference" alt>
         </el-popover>
-      <div :class="{active:active}" @click="handlen(1)">{{ $t('navbar.Language') }}</div>
+    <!--  <div :class="{active:active}" @click="handlen(1)">{{ $t('navbar.Language') }}</div>
       <div class="xian" />
-      <div :class="{active:active1}" @click="handlen(2)">English</div>
+      <div :class="{active:active1}" @click="handlen(2)">English</div> -->
     </div>
   </div>
 </template>
@@ -87,7 +87,6 @@ export default {
       active: true,
       active1: false,
       active2: 0,
-      logtoken: '', // 是否登录
       phone:0,
     }
   },
@@ -101,7 +100,6 @@ export default {
     if(this.token){
       this.$store.dispatch('usermessage','')
     }
-
   },
   methods: {
     // 手机号省略
@@ -132,7 +130,7 @@ export default {
       }else{
          this.$store.dispatch('FedLogOut','').then(res => {
             this.$router.push('/log')
-            window.location.reload();
+            // window.location.reload();
           })
         
       }
@@ -145,6 +143,7 @@ export default {
         onComplete => {},
         onAbort => {}
       )
+      window.location.reload();
     }
   }
 }
@@ -161,6 +160,7 @@ export default {
   .head-left {
     padding: 0 30px;
     width: 600px;
+    cursor:pointer;
     ul {
       img {
         width: 114px;
@@ -169,6 +169,7 @@ export default {
       }
       li {
         padding: 10px 0;
+        // cursor:pointer;
       }
       li:hover {
         color: #1476fe;
@@ -183,6 +184,7 @@ export default {
   .head-right {
     padding: 0 30px;
     width: 400px;
+    cursor:pointer;
     .xian {
       width: 2px;
       height: 15px;
@@ -198,8 +200,9 @@ export default {
       color: #1476fe;
     }
     img {
-      width: 15px;
-      height: 15px;
+      width: 27px;
+      height: 27px;
+      cursor:pointer;
     }
     .btns-dl {
       color: #fff;

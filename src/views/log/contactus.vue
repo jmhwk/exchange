@@ -7,10 +7,10 @@
         <img src="../images/kf1.jpg" alt="">
         <h2>客服1号</h2>
       </div>
-      <div>
+<!--      <div>
         <img src="../images/kf2.png" alt="">
         <h2>客服2号</h2>
-      </div>
+      </div> -->
 
     </div>
 

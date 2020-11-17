@@ -19,18 +19,22 @@
           </el-menu-item>
           <el-menu-item index="/assetManagement/entrustOrder">
             <img src="../images/icon/zc2.png" alt="">
-            <span slot="title">委托订单</span>
+            <span slot="title">币币订单</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/positionOrder">
             <img src="../images/icon/zc3.png" alt="">
-            <span slot="title">持仓订单</span>
+            <span slot="title">合约订单</span>
+          </el-menu-item>
+          <el-menu-item index="/assetManagement/HoldOrder">
+            <img src="../images/icon/zc4.png" alt="">
+            <span slot="title">历史平仓</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/rechargeAndWithdrawRecord">
-            <img src="../images/icon/zc4.png" alt="">
+            <img src="../images/icon/zc5.png" alt="">
             <span slot="title">充提记录</span>
           </el-menu-item>
           <el-menu-item index="/assetManagement/fundsTransfer">
-            <img src="../images/icon/hz.png" alt="">
+            <img src="../images/icon/zc6.png" alt="">
             <span slot="title">划转记录</span>
           </el-menu-item>
         </el-menu>
@@ -42,12 +46,6 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AssetManagement'
-}
-</script>
-
 <style lang="scss" scoped>
   .container{
     height: 100%;
@@ -56,7 +54,7 @@ export default {
     display: flex;
     justify-content: center;
     .box{
-      width: 1200px;
+      width: 1600px;
       height: 961px;
       display: flex;
       .left-side{
@@ -89,8 +87,8 @@ export default {
         }
       }
       .right-side{
-        width: 1000px;
         height: 100%;
+        width: 100%;
         margin-left: 4px;
         background-color: $blue;
       }

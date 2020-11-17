@@ -9,7 +9,7 @@
         <el-select v-model="value" placeholder="请选择"  @change="fullName(value)">
           <el-option v-for="(item,index) in bringOptions" :key="index" :label="item.shortName" :value="index" />
         </el-select>
-        <div style="color: #ffffff99;">可用：{{accountList.walletBalance|numFilter}}</div>
+        <div style="color: #ffffff99;">可用：{{numFilter(accountList.walletBalance)}}</div>
       </div>
       <div>
         <el-radio-group v-model="radio1">
@@ -20,15 +20,15 @@
         </el-radio-group>
       </div>
       <div class="form">
-        <el-form ref="form" :model="form" label-width="96px">
+        <el-form ref="form" :model="form" label-width="120px" :label-position="labelPosition">
           <el-form-item label="提币地址">
-            <el-input v-model="form.toAddress" placeholder="仅支持USDT地址" />
+            <el-input v-model="form.toAddress" placeholder="请输入提币地址" />
           </el-form-item>
           <el-form-item label="提币数量">
-            <el-input v-model="form.amount" placeholder="请输入提币数量">
+            <el-input v-model="form.amount" :placeholder="text+least">
               <template slot="append">
-                <span>USDT |</span>
-                <span><a href="javascript:;">全部提出</a></span>
+                <span>{{username}} |</span>
+                <span><a href="javascript:;" @click="complete(accountList.walletBalance)">全部提出</a></span>
               </template>
             </el-input>
             <div class="number-warn">
@@ -36,15 +36,22 @@
            <!--   <span>实际到账：0.00</span> -->
             </div>
           </el-form-item>
-          <el-form-item label="交易密码">
-            <el-input v-model="form.txPassword" placeholder="请输入交易密码" />
-          </el-form-item>
-          <el-form-item label="验证码">
-            <el-input v-model="form.phoneCode" placeholder="请输入验证码" clearable>
+          <el-form-item label="手机验证码">
+            <el-input v-model="form.phoneCode" placeholder="请输入短信验证码" clearable>
               <template slot="append">
                 <span  @click.prevent="sendCode"><a href="javascript:;"> {{computeTime>0 ? `已发送(${computeTime}s)` : '获取验证码'}}</a></span>
               </template>
             </el-input>
+          </el-form-item>
+          <el-form-item label="邮箱验证码">
+            <el-input v-model="form.emailCode" placeholder="请输入邮箱验证码" clearable>
+              <template slot="append">
+                <span  @click.prevent="emailsendCode"><a href="javascript:;"> {{computeTime1>0 ? `已发送(${computeTime1}s)` : '获取验证码'}}</a></span>
+              </template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="交易密码">
+            <el-input v-model="form.txPassword" placeholder="请输入交易密码" />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="withDrawOut(form)">提交</el-button>
@@ -54,14 +61,14 @@
     </div>
     <div class="subcontainer-bottom">
       <p>温馨提示：</p>
-      <p>1.不要向上述地址充值任何非ERC20_USDT资产，否则资产将不可找回;</p>
+      <p>1.提币AUTT最少提100个数量，手续费是20</p>
       <p>
-        2.您充值至上述地址后，需要整个网络路由器的确认，12次网络确认后到账，12次网络确认后可提币；
+        2.USDT最少提币数量是10个，手续费是3
       </p>
       <p>
-        3.<span class="warn">最小充值金额：2</span>，最小充值金额将不会上账且无法退回;
+      <!--  3.<span class="warn">最小充值金额：2</span>，最小充值金额将不会上账且无法退回; -->
       </p>
-      <p>4.请官方确认电脑及浏览器安全，防止信息被纠正改正或替换；</p>
+      <p>3.请官方确认电脑及浏览器安全，防止信息被纠正改正或替换；</p>
     </div>
   </div>
 </template>
@@ -69,29 +76,30 @@
 <script>
 import { mapState } from 'vuex'
 // import { ACCOUNT_LIST } from '@/store/mutation-types.js'
-import { reqCode,withDrawOut } from '@/api'
+import { reqCode,withDrawOut,sendEmailCode } from '@/api' 
+import { numFilter } from '@/assets/js/time.js'
 export default {
   data() {
     return {
+      labelPosition: 'right',
+      numFilter:numFilter,
       computeTime: 0, // 倒计时剩余的时间
+      computeTime1: 0, // 邮箱倒计时剩余的时间
       options: [],
       value: 0,
+      username:'USDT',
       radio1: 'ERC20',
       withdrawFee:'',// 手续费
+      least:'',//最少几个币
       form: {
-        toAddress:'',
-        amount: '',
-        phoneCode:'',
-        txPassword:'',
-        coinName:''
-      }
-    }
-  },
-  filters: {
-    numFilter (value) {
-      // 截取当前数据到小数点后两位
-      let realVal = parseFloat(value).toFixed(2)
-      return realVal
+        toAddress:'', // 提币地址
+        amount: '', // 数量
+        emailCode:'', // 邮箱验证码
+        phoneCode:'', // 短信验证码
+        txPassword:'', // 资密码
+        coinName:'' // 币名
+      },
+      text:'最少提币数量'
     }
   },
   mounted() {
@@ -103,25 +111,48 @@ export default {
       bringOptions:function (state){
         let bringOptions = state.property.bringOptions
         if(bringOptions.length>0){
-          this.form.coinName=bringOptions.fullName
+          this.form.coinName=bringOptions[0].fullName 
           this.withdrawFee = bringOptions[0].withdrawFee
+          this.least =  bringOptions[0].minOutQty
           let id = bringOptions[0].id
          this.$store.dispatch('getAccountlist', id)   
         }
-        return bringOptions
+        return state.property.bringOptions
+        // return bringOptions
       },
       accountList :state => state.property.accountList,
       user:state => state.user.user
     })
   },
   methods: {
-    
+    // 全部提币
+    complete(num){
+      this.form.amount=this.numFilter(num)
+    },
     // 提币接口
     async withDrawOut(from) {
-      let fee = 1
-      const {amount,phoneCode,toAddress,coinName,txPassword} = this.form
-      let result = await withDrawOut ({amount,coinName,fee,phoneCode,toAddress,txPassword})
+      if(this.user.checkStatus !=2){
+        this.$message({
+          message: '请先进行KYC认证',
+        })
+        return
+      }else if(this.user.email =="" ){
+        this.$router.push('/userManagement/replacepemal')
+      }else if (this.least > this.form.amount){
+        this.$message({
+          message: this.text+this.least,
+        })
+        return
+      }
+      let fee = this.withdrawFee
+      const {amount,phoneCode,toAddress,coinName,txPassword,emailCode} = this.form
+      let result = await withDrawOut ({amount,coinName,fee,phoneCode,toAddress,txPassword,emailCode})
       if (result.code == 200) {
+        this.$message({
+          message: '提币成功',
+          type: 'success'
+        })
+        window.location.reload();
       } else {
         this.$message({
           message: result.msg,
@@ -159,10 +190,48 @@ export default {
         this.$message.error('发送短信验证码失败');
       }
     },
+    /*发送邮箱验证*/
+    async emailsendCode () {
+      let email = ''
+      if(this.user.email){
+          email = this.user.email
+      }else{
+        this.$message({ message: '还未绑定邮箱'});
+        return
+      }
+      // alert('----')
+      this.computeTime1 = 60
+      // 启动循环定时器, 每隔1s, 将计时减1
+      const intervalId1 = setInterval(() => {
+        // 一旦变为了0, 停止计时
+        if(this.computeTime1 === 0) {
+          clearInterval(intervalId1)
+        } else {
+          this.computeTime1--
+        }
+    
+      }, 1000)
+      
+      // 请求发送验证码
+      const result = await sendEmailCode(email)
+      if(result.code === 200) { // 成功
+        this.$message({
+        message: '发送邮箱验证码成功',
+        type: 'success'
+      });
+      } else { //失败
+        // 停止计时
+        clearInterval(this.intervalId1)
+        this.computeTim1e = 0
+        this.$message.error('发送邮箱验证码失败');
+      }
+    },
     fullName(v){
       let id = this.bringOptions[v].id
-      this.withdrawFee = this.bringOptions[0].withdrawFee
-      this.form.coinName =this.bringOptions[v].coinName
+      this.withdrawFee = this.bringOptions[v].withdrawFee  
+      this.least = this.bringOptions[v].minOutQty 
+      this.form.coinName =this.bringOptions[v].shortName
+      this.username=this.form.coinName
       this.$store.dispatch('getAccountlist', id)  
     },
   }
@@ -239,10 +308,10 @@ export default {
     .form {
       margin-top: 110px;
       margin-left: 141px;
-      width: 567px;
+      width: 700px;
       .el-form {
         .el-form-item {
-          margin-bottom: 20px;
+          margin-bottom: 30px;
           .el-input-group__append {
             background-color: #031937!important;
           }
@@ -253,7 +322,6 @@ export default {
             text-align-last: justify;
           }
           .el-form-item__content {
-            width: 470px;
             // .el-select {
             //   width: 100%;
             // }
@@ -294,7 +362,7 @@ export default {
           }
         }
         .number-warn {
-          height: 30px;
+          height: 10px;
           > span {
             padding: unset;
           }
@@ -304,9 +372,9 @@ export default {
         }
       }
       .el-form-item:nth-child(5) .el-form-item__content {
-        input {
-          border-right: none;
-        }
+        // input {
+        //   border-right: none;
+        // }
         .el-input-group__append {
           padding: unset;
           font-size: 14px;

@@ -8,11 +8,11 @@ import {
   SERVE_OPTIONS,
   BRING_OPTIONS,
   ACCOUNT_LIST,
-  ALL_OPTIONS
+  ALL_OPTIONS,
+  LATES_TCONTRACT,
+  BUYING_SELLING,
 } from '../mutation-types'
 import { coinList, getAccount }from '@/api'
-import { getSocket } from '../../assets/js/websocket.js'
-
 const state = {
   allowanceBalance:[], // 资金账户
   otcBalance:[],
@@ -26,7 +26,10 @@ const state = {
   serveOptions:[], // 充
   bringOptions:[], // 提
   allOptions:[], // 所有
-  accountList:{} // 币种信息
+  accountList:{} ,// 币种信息
+  latesTcontract:'',//最新价格
+  buyingTelling:'', // 买卖数据
+  // contractprice:'', // 合约价格
 }
 
 const mutations = {
@@ -57,14 +60,19 @@ const mutations = {
   [ALL_OPTIONS] (state, maeket) {
     state.allOptions = maeket
   },
-  
+  [LATES_TCONTRACT] (state, maeket) {
+    state.latesTcontract = maeket
+  },
+  [BUYING_SELLING] (state, maeket) {
+    state.buyingTelling = maeket
+  }, 
 }
 
 const actions = {
   // 充币列表
   async accountList({ commit },type) {
     let result = await coinList (type)
-    if (result.code == 200) {
+    if (result.code == 200) {  
       if(type==1){
         commit(SERVE_OPTIONS, result.data)
       }else if (type==2){
@@ -85,7 +93,11 @@ const actions = {
  }
 
 const getters = {
-
+  // Clickswitch (state) {
+  //   debugger
+  //   return contractprice = state
+  //   console.log(state)
+  // }
 
 }
 

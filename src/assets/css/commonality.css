@@ -1,4 +1,7 @@
 /* 两头 */
+#app{
+  overflow: hidden;
+}
 .flexcenter {
   display: flex;
   justify-content: space-between;
@@ -10,7 +13,11 @@
   justify-content: space-evenly;
   align-items: center;
 }
-
+.flexaround {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 .flexcentercenter {
   display: flex;
   justify-content: center;
@@ -68,7 +75,12 @@
 .el-input__inner {
   height: 50px !important;
 }
-
+    .chart_container.dark #chart_loading {
+      display: none!important;
+    }
+    .chart_container.light #chart_loading {
+      display: none!important;
+    }
 
 .el-tooltip__popper {
   max-width: 400px;
@@ -77,36 +89,38 @@
 .el-table__empty-block{
   background: #031937;
 }
-
-    /*漏洞*/
-    .statusSty{
-      color: #fff;
-      width: 50px;
-      display: inline-block;
-      text-align: center;
-      height: 20px;
-      line-height: 20px;
-      border-radius: 3px;
-      font-size: 12px;
-    }
-    .color_one{
-      background: #ffcd3c;
-    }
-    .color_two{
-      background: #1BAF82;
-    }
-    .color_three{
-      background: #F33E3F;
-    }
-    .color_four{
-      background: #ff8309;
-    }
-    .color_five{
-      background: #1296db;
-    }
-    .lsk-text{
-      vertical-align: middle;
-    }
+.el-form-item__error{
+  line-height: 0;
+}
+/*漏洞*/
+.statusSty{
+  color: #fff;
+  width: 50px;
+  display: inline-block;
+  text-align: center;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+.color_one{
+  background: #ffcd3c;
+}
+.color_two{
+  background: #1BAF82;
+}
+.color_three{
+  background: #F33E3F;
+}
+.color_four{
+  background: #ff8309;
+}
+.color_five{
+  background: #1296db;
+}
+.lsk-text{
+  vertical-align: middle;
+}
 /*媒体查询*/
 @media screen and (max-width:1366px) {
   .pro_screen {

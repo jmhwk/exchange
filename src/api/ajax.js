@@ -3,9 +3,10 @@ import store from '../store'
 import qs from 'qs'
 // 1创建axios实例
 const service = axios.create({
-  baseURL: process.env.BASE_API, // 接口地址
+  baseURL: '', // 接口地址
   // 超时时间 单位是ms，这里设置了3s的超时时间
-  timeout: 3 * 1000
+  timeout: 300 * 1000,
+  
 })
 
 // 2 axios的请求拦截
@@ -33,7 +34,7 @@ service.interceptors.request.use(function(config) {
   if (token) {
     // config.params = {'token':token} //如果要求携带在参数中
     config.headers.token = token // 如果要求携带在请求头中
-  }
+  } 
   config.headers.lang='lang'
   return config
 }, function(error) {
@@ -55,21 +56,27 @@ export default function ajax(url, data = {}, method = 'GET') {
     let promise
     // 执行异步ajax请求
     if (method === 'GET') {
-      promise = service.get(url, { params: data }) // params配置, 指定的是query参数
+        promise = service.get(url, { params: data }) // params配置, 指定的是query参数
     } else {
       if(data.index === 1){
         let params = qs.stringify(data.params)
         promise = service.post(url, params)
       }else{
+        // debugger
         promise = service.post(url, data)
       }
 
       
-    }
-
+    }  
     promise.then(
       response => { // 如果成功了, 调用resolve()
-        resolve(response.data)
+      // debugger
+      // console.log(response)
+        // if(response.status&&response.status===200){
+            resolve(response.data)
+        // }else{
+          // console.log(response)
+        // }
       },
       error => { // 如果失败了, 不调用reject(), 而是提示错误信息
         alert('请求异常: ' + error.message)

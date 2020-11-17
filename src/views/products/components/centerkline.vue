@@ -4,209 +4,424 @@
       <div class="centerk-nav">
         <el-row>
           <el-col :span="4">
-            <h1>BTC-永续-USDT</h1>
+            <!--    <el-select v-model="value" placeholder="请选择" @change="listchange(value)">
+             <el-option v-for="(item,index) in lendMaeketAll" :key="index" :label="(item.coinName+'/'+item.marketCoinName+'永续合约')" :value="index">
+             </el-option>
+           </el-select> -->
+            {{currency.title}}
           </el-col>
-          <el-col :span="4">开盘价</el-col>
-          <el-col :span="4">涨跌额</el-col>
+          <el-col :span="4">24H量</el-col>
           <el-col :span="4">24H最高</el-col>
           <el-col :span="4">24H最低</el-col>
         </el-row>
         <el-row class="center-row1">
-          <el-col :span="4">涨跌幅+0.50%</el-col>
-          <el-col :span="4">121212</el-col>
-          <el-col :span="4">58.4</el-col>
-          <el-col :span="4">423432</el-col>
-          <el-col :span="4">4234234234</el-col>
+          <el-col :span="4">
+            <span>{{numFilter(currency.coinl)}} ≈ {{numFilter(currency.cny)}} CNY</span></el-col>
+          <el-col :span="4">{{market.qty || '0.00'}}</el-col>
+          <el-col :span="4">{{market.maxPrice || '0.00'}}</el-col>
+          <el-col :span="4">{{market.closePrice || '0.00'}}</el-col>
         </el-row>
       </div>
       <div class="centerk-subject">
-
-
+        <!--把子组件放到想放的位置-->
+        <Vue-kline :klineParams="klineParams" :klineData="klineData" ref="callMethods" @refreshKlineData="refreshKlineData"></Vue-kline>
       </div>
     </div>
-    <div class="center-bottom">
-      <div class="centerb-nav">
-        <h1>全仓账户信息</h1>
-        <div class="centerb-left">
-          <el-row>
-            <el-col :span="4">
-              <el-tooltip class="item" effect="light" content="账户权益=可用资产+冻结保证金+未实现盈亏" placement="bottom">
-                <span>账户权益<i class="el-icon-question"></i> </span>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="4">可用资源</el-col>
-            <el-col :span="4">冻结保证金</el-col>
-            <el-col :span="4">
-              <el-tooltip class="item" effect="light" content="持仓合约的未实现盈利综合" placement="bottom">
-                <span>未实现盈亏<i class="el-icon-question"></i> </span>
-              </el-tooltip>
-            </el-col>
-            <el-col :span="4">
-              <el-tooltip class="item" effect="light" placement="bottom">
-                <div slot="content">
-                  1.保证金率=账户权益/冻结保证金100%；<br />
-                  2.保证金率≤100%时将无法买入合约，当全仓保证金率≤50%，逐仓保证金率≤5%时 ，系统将自动平仓；<br />
-                  3.合约产品为杠杆产品，有可能招致您大于本金的损失。请确保您充分理解其中风险和注意管理；<br />
-                  4.当价格触及限价委托价格时，如果保证金率≤100%，限价单将无法成交，系统会自动取消该限价单。
-                </div>
-                <span>保证金率<i class="el-icon-question"></i> </span>
-              </el-tooltip>
-            </el-col>
-          </el-row>
-          <el-row class="center-row1">
-            <el-col :span="4">0.00</el-col>
-            <el-col :span="4">0.00</el-col>
-            <el-col :span="4">0.00</el-col>
-            <el-col :span="4">0.00</el-col>
-            <el-col :span="4">0.00</el-col>
-          </el-row>
-        </div>
-
-      </div>
+    <div class="center-bottom" style="height: 650px">
       <div class="AssetDetailsTabs-container">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="市价交易" name="tab1">
-            <div class="deal flexcenterlist">
-              <div class="deal-top">
-                <div class="ints">
-                  <h5>价格(USDT)</h5>
-                  <div class="its">
-                    <input type="text" disabled="disabled">
-                    <div class="lever">
-                      <el-dropdown @command="handleCommand">
-                        <span class="el-dropdown-link">杠杆{{levername}}X<i class="el-icon-arrow-down el-icon--right"></i></span>
-                        <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item :command="item.num" v-for="(item,index) in lever" :key="index">{{item.num}}X</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </el-dropdown>
-                    </div>
-                  </div>
-                </div>
-                <div class="ints">
-                  <h5>数量(BTC)</h5>
-                  <div class="its">
-                    <input type="text" maxlength="12" placeholder="请输入数量"></div>
-                </div>
-                <div class="rate flexcenter">
-                  <a>预估保证金：<label>0.0000</label></a>
-                  <a>保证金率：<label>--</label></a>
-                </div>
-                <input type="button" value="买入开多" class="lbtns">
-              </div>
-
-              <div class="deal-top">
-                <div class="ints">
-                  <h5>价格(USDT)</h5>
-                  <div class="its">
-                    <input type="text" disabled="disabled">
-                    <div class="lever">
-                      <el-dropdown @command="handleCommand">
-                        <span class="el-dropdown-link">杠杆{{levername}}X<i class="el-icon-arrow-down el-icon--right"></i></span>
-                        <el-dropdown-menu slot="dropdown">
-                          <el-dropdown-item :command="item.num" v-for="(item,index) in lever" :key="index">{{item.num}}X</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </el-dropdown>
-                    </div>
-                  </div>
-                </div>
-                <div class="ints">
-                  <h5>数量(BTC)</h5>
-                  <div class="its">
-                    <input type="text" maxlength="12" placeholder="请输入数量"></div>
-                </div>
-                <div class="rate flexcenter">
-                  <a>预估保证金：<label>0.0000</label></a>
-                  <a>保证金率：<label>--</label></a>
-                </div>
-                <input type="button" value="买入开多" class="lbtns lbtns1">
-              </div>
-            </div>
+        <el-tabs v-model="activeName" @tab-click="changeTab" >
+          <el-tab-pane label="开仓" name="tab1">
+            <Tab1 :lendobj="lendobj" :formsell="formsell" v-if="flg"/>
           </el-tab-pane>
-          <el-tab-pane label="限价交易" name="tab2">
-
+          <el-tab-pane label="平仓" name="tab2">
+            <Tab2 :opneobj2="opneobj2" :formsell="formsell" :opneobj1="opneobj1" v-if="flg1" />
           </el-tab-pane>
         </el-tabs>
-        <div class="explain">
-          <span @click="dialogTableVisible = true">保证金率<i class="el-icon-question"></i> </span>
-          <el-dialog title="费率说明" :visible.sync="dialogTableVisible">
-            <table border="1" class="tables">
-              <tr>
-                <td>交易手续费率</td>
-                <td><span class="red">0.08%</span>(买入时收取，平仓不收取)</td>
-              </tr>
-              <tr>
-                <td>持仓利率</td>
-                <td><span class="red">0.02% </span>(当天买入不收取，过夜收取)</td>
-              </tr>
-              <tr>
-                <td>保证金</td>
-                <td>买入合约需要缴纳的保证金额 (开仓价 * 数量 / 杠杆比例)</td>
-              </tr>
-            </table>
-          </el-dialog>
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import VueKline from "vue-kline"; //当前页引入vue-kline
+  import data from "@/assets/js/data.js";
+  import {
+    mapState
+  } from 'vuex'
+  import {
+    add
+  } from '@/api'
+  import {
+    numFilter
+  } from '@/assets/js/time.js'
+  import { LENDMAEKET_ALL,LATES_TCONTRACT, LENDALL_LIST,PROPORTION_LIST,CONTRA_FORM,LENDUSER_ORDER,LENDUSER_HOLD} from '@/store/mutation-types' // 存储深度
+  import Tab1 from './tab1'
+  import Tab2 from './tab2'
   export default {
+    components: {
+      VueKline, //以子组件形式注册到当前页面中
+      Tab1,
+      Tab2,
+    },
     data() {
       return {
+        numFilter: numFilter,
+        market:{}, // 市场
+        marketList: {}, // 深度
+        timer: null, //定时器名称
+        formsell: {
+          buy: 0, // 买
+          sell: 0, // 卖
+          marketId: 0,
+          orderType: 0,
+        },
+        idlist: 0, // 旧id
+        flg: true,
+        flg1: false,
+        currency: {
+          title: '',
+          coinl: '',
+          cny: ''
+        },
+        // 币对数据
+        lendobj: {}, // 开仓
+        opneobj1: {}, // 平仓
+        opneobj2: {},
+        value: 0,
         activeName: 'tab1',
         dialogTableVisible: false,
-        levername: '100',
-        lever: [{
-            num: '100'
-          },
-          {
-            num: '5'
-          },
-          {
-            num: '10'
-          },
-          {
-            num: '20'
-          },
-          {
-            num: '30'
-          },
-          {
-            num: '50'
-          },
-          {
-            num: '150'
-          },
-        ]
+        marketIdlist: null,
+        marketCoinId: 0,
+        klineParams: {
+          width: '100%', // k线窗口宽
+          height: 500, // k线窗口高
+          theme: "dark", // 主题颜色
+          language: "zh-cn", //语言
+          ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"], // 聚合选项
+          symbol: "BTC", // 交易代号
+          symbolName: '', // 交易名称
+          intervalTime: 5000, // k线更新周期 毫秒
+          depthWidth: 200, // 深度图宽度
+          count: 2, //显示指标数量 默认两个  
+          reverseColor:true, // 是否反色
+        },
+        arr: [],
+        typelist: 0, //买入卖出
+        klineData: {
+          depths: {},
+          lines: []
+        }, // 数据
+        timer: false,
+        screenWidth: document.body.clientWidth,
       };
     },
-    created() {
-
+    watch: {
+      screenWidth: {
+        immediate: true,
+        handler: function(newVal) {
+          // 为了避免频繁触发resize函数导致页面卡顿，使用定时器
+          if (!this.timer) {
+            this.screenWidth = newVal;
+            this.timer = true;
+            let _this = this;
+            setTimeout(() => {
+              //在这里做有关浏览器变化时需要做的操作
+              _this.timer = false;
+              this.$refs.callMethods.resize(this.screenWidth * 0.622, 490);
+            }, 400);
+          }
+          // if(newVal)
+        }
+      }
+    },
+    mounted() {
+      this.$refs.callMethods.resize(1490, 490)
+      let id = this.lendMaeketAll[0]
+      let name = id.coinName + '/' + id.marketCoinName
+      this.currency = {
+          title: name + '永续合约',
+          coinl: id.lastTradePrice,
+          cny: id.cnyPrice
+        },
+      this.$refs.callMethods.setSymbol(this.market.marketName, this.market.symbol)
+      this.marketIdlist = id.marketId
+      this.marketCoinId = id.marketCoinId
+      this.refreshKlineData(60000);
+      this.$store.dispatch('getAccountlist', id.marketCoinId)
+      this.timer=setTimeout(()=>{
+        this.lendUserOrder(id.marketId)
+      }, 1000);
+      this.timer = setTimeout(() => {
+        this.lendAccount(id.marketId)
+      }, 2000);
+      window.setInterval(() => {
+        setTimeout(this.lendUserHold(this.marketIdlist), 0)
+      }, 3000)
+      const _this = this;
+      // 画echars
+      // 监听浏览器窗口变化
+      window.onresize = function() {
+        return (() => {
+          window.screenWidth = document.body.clientWidth;
+          _this.screenWidth = window.screenWidth;
+        })();
+      };
+    },
+    computed: {
+      ...mapState({
+        lendMaeketAll: state => state.websocket.lendMaeketAll,
+        user: state => state.user.user,
+        accountList: state => state.property.accountList,
+        // sumListcny: state => state.property.sumlistcny,
+      })
+    },
+    beforeDestroy() {
+      clearInterval(this.timer); // 清除定时器
+      this.timer = null;
     },
     methods: {
-      handleClick(tab, event) {
-        console.log(tab, event)
+      // tab切换
+      changeTab(tab){
+        if( tab.name ===  'tab1') {
+            this. activeName =  'tab1'
+            this.flg= true
+            this.flg1 = false
+          } else if ( tab.name ===  'tab2') {
+            this. activeName =  'tab2'
+            this.openLendAccount(this.marketIdlist, 1)
+            this.openLendAccount(this.marketIdlist, 2)
+            // this.timer=setTimeout(()=>{
+            //   this.openLendAccount(this.marketIdlist, 2)
+            // }, 2000);
+            this.flg= false
+            // this.flg1 = true
+          }
       },
-      handleCommand(command) {
-        this.levername = command
-        console.log(command)
+      // 左侧合约名字切换
+      marketAllid(e, i) {
+        this.value = i
+        let name = e.coinName + '/' + e.marketCoinName
+        // debugger
+        this.currency = {
+            title: name + '永续合约',
+            coinl: e.lastTradePrice,
+            cny: e.cnyPrice
+          },
+          this.$refs.callMethods.setSymbol('BTC', name)
+        this.marketIdlist = e.marketId
+        // console.log('id是',e.marketId)
+        this.getSocketData(1, this.idlist, 'remove');
+        this.lendAccount(e.marketId)
+        this.lendUserHold(e.marketId)
+        this.lendAccount(e.marketId)
       },
+      // 所有回调数据都在这里
+      getConfigResult(data) {
+        let datalist = []
+        this.arr = []
+        // console.log('实时数据12121',data.channel)
+        if (data.channel == "lendAccount") {
+          this.lendobj = data
+          // this.flg = true
+        }else if(data.channel == "lendUserOrder"){
+           // this.tableData= data.orderList
+          this.$store.commit(LENDUSER_ORDER, data)
+        }else if(data.channel=="lendUserHold"){
+          this.$store.commit(LENDUSER_HOLD, data.data)
+          
+        }else if(data.channel== "lendMarketAll"){
+          this.$store.commit(LENDMAEKET_ALL, data.marketAll)
+        }else if (data.channel== "lendMarketById"){
+          this.$store.commit(LENDALL_LIST, data)
+          this.market = data.market ||{}
+          this.marketList = data 
+          let b = data.sellList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let c = data.buyList.reduce(function(prev, i) {
+            return i.qty + prev
+          }, 0);
+          let proportionList={
+                proportionred:b,
+                proportiongreen:c
+              }// 比例
+          this.$store.commit(PROPORTION_LIST, proportionList)
+        }else if (data.channel == "openLendAccount") {
+          this.flg1 = true
+          if (data.type == 1) {
+            this.opneobj1 = data ||{}
+          } else if (data.type == 2) {
+            this.opneobj2 = data || {}
+          }
+        } else if (data.channel == "lendKline") {
+          // K线图, 依次是: 时间(ms), 开盘价, 最高价, 最低价, 收盘价, 成交量
+          // asks:一定比例的卖单列表, bids:一定比例的买单列表, 其中每项的值依次是 成交价, 成交量
+          // console.log('k线数据',data.channel)
+          datalist = data.klineList || []
+          datalist.forEach(i => {
+            this.arr.push([i.createTime, i.open, i.high, i.low, i.close, i.qty])
+          })
+          let lista = this.marketList.sellList || [] // 卖
+          let listb = this.marketList.buyList || [] // 买
+          this.formsell = {
+            buy: listb.length > 0 ? listb[0].price : 0, // 卖
+            sell: lista.length > 0 ? lista[0].price : 0, // 卖
+            marketId: this.marketIdlist,
+          }
+          let contraForm = {
+            selling:this.formsell.sell,
+            Buying:this.formsell.buy
+          }
+          this.$store.commit(CONTRA_FORM, contraForm)
+          
+          // this.form={
+          //   price:this.formsell.sell, //价格
+          //   qty:0, // 数量
+          //   triggerPrice:'', // 触发
+          //   stopPrice:'' // 委托
+          // },
+          // this.form1 ={
+          //   price:this.formsell.buy, //价格
+          //   qty:0, // 数量
+          //   triggerPrice:'', // 触发
+          //   stopPrice:'' // 委托
+          // },
+          // console.log('shihsi',this.formsell)
+          // this.flg = true
+          let aa = []
+          let bb = []
+          lista.forEach(i => {
+            aa.push([i.price, i.qty])
+          })
+          listb.forEach(i => {
+            bb.push([i.price, i.qty])
+          })
+          let timelist = this.arr.reverse()
+          this.klineData = {
+            data: {
+              depths: {
+                'asks': aa,
+                'bids': bb,
+              },
+              'lines': timelist
+            }
+          }; // 进入页面时执行,默认聚合时间900000毫秒(15分钟) 
+          
+          this.$refs.callMethods.kline.chartMgr.getChart().updateDataAndDisplay(timelist)
+        }
+      },
+      // 持仓
+      lendUserOrder(id){
+        let params = {
+          channel: "lendUserOrder", 
+          marketId:id, 
+          userId: this.user.id
+        }
+        this.socketApi.sendSock(params, this.getConfigResult);
+      },
+      // 限价委托
+      lendUserHold(id){
+        let list = {
+          channel: "lendUserHold", 
+          marketId:id, 
+          userId: this.user.id
+        }
+        this.socketApi.sendSock(list, this.getConfigResult);
+      },
+      // 开仓余额数据
+      lendAccount(marketId) {
+        let params = {
+          channel: "lendAccount",
+          // type:2,
+          userId: this.user.id,
+          marketId: marketId,
+        };
+        this.socketApi.sendSock(params, this.getConfigResult);
+      },
+      // 平仓可用余额数据
+      openLendAccount(marketId, type) {
+        this.typelist = type
+        let params = {
+          channel: "openLendAccount",
+          type: type, // 1开多 2开空
+          userId: this.user.id,
+          marketId: marketId,
+        }
+        console.log('呼呼呼',params)
+        this.socketApi.sendSock(params, this.getConfigResult);
+      },
+      // k线图
+      getSocketData(time, id, remove) {
+        let params = {
+          channel: "lendKline",
+          marketId: id,
+          minType: time,
+          event: remove,
+        }
+        // console.log('k线图传递参数', params)
+        // let datalist = []
+        // this.arr= []
+        this.idlist = id
+        this.socketApi.sendSock(params, this.getConfigResult,2);
+
+        if (remove == 'remove') {
+          this.getSocketData(time, this.marketIdlist, 'add')
+        }
+      },
+      refreshKlineData(option) { //你点击页面上的时间会触发这个方法
+        option = option / 1000 / 60
+        if (this.marketIdlist) {
+          this.getSocketData(option, this.marketIdlist, 'add')
+        }
+
+      },
+
     },
+
   }
 </script>
 
 <style lang="scss">
   .centerkline {
-      input::-webkit-input-placeholder {
-          color: #ffffffcc;
-        }
-        input::-moz-input-placeholder {
-          color: #ffffffcc;
-        }
-        input::-ms-input-placeholder {
-          color: #ffffffcc;
-        }
+    input::-webkit-input-placeholder {
+      color: #ffffffcc;
+    }
+
+    .chart_container a.chart_icon_theme_dark {
+      background-color: #031937;
+    }
+
+    .chart_container.dark #chart_loading {
+      display: none!important;
+    }
+    .chart_container.light #chart_loadin{
+      display: none!important;
+    }
+    #chart_overlayCanvas {
+      // overflow-x: hidden;
+      position: absolute;
+      z-index: 2;
+      // background-color: #031937;
+    }
+
+    .chart_container.dark #chart_toolbar {
+      background-color: #031937;
+      border-top-color: #031937;
+    }
+
+    .chart_container.dark #chart_tabbar {
+      background-color: #031937;
+      border-top-color: #031937;
+    }
+
+    input::-moz-input-placeholder {
+      color: #ffffffcc;
+    }
+
+    input::-ms-input-placeholder {
+      color: #ffffffcc;
+    }
+
     .lbtns {
       width: 100%;
       border-radius: 2px;
@@ -216,13 +431,16 @@
       padding: 10px 0;
       border: 0;
     }
+
     .el-row {
       padding: 7px 0;
       font-size: 12px;
       color: #bfc5cd;
+
       span {
-        padding-left:0!important;
-        i{
+        padding-left: 0 !important;
+
+        i {
           padding-left: 3px;
         }
       }
@@ -239,22 +457,50 @@
         height: 500px;
         background: #031937;
         width: 100%;
+        overflow: auto;
       }
 
       .centerk-nav {
         // height: 63px;
-        padding: 10px 20px;
+        padding: 10px;
         background: #002658;
 
-        h1 {
+        .el-input__inner {
+          height: 35px !important;
+          background: #002658;
+          border-color: #002658;
           color: #1476FE;
-          font-size: 14px;
+          padding: 0;
+        }
+
+        .products .products-top span:last-of-type {
+          padding: 0px !important;
+        }
+
+        .el-input__suffix-inner {
+          text-align: left;
+        }
+
+        .el-table th>.cell {
+          width: 60%;
         }
       }
     }
 
     .center-bottom {
+      // height: 629px!important;
       margin-top: 5px;
+
+      .el-select {
+        padding: 0px 0px;
+
+        .el-input__inner {
+          height: 35px !important;
+          background-color: $blue;
+          color: rgba($color: #fff, $alpha: 0.81);
+        }
+      }
+
       .centerb-nav {
         display: flex;
         background: #031937;
@@ -281,64 +527,85 @@
         margin: 5px 0;
         position: relative;
 
-        .deal {
-          background: #031937;
-          padding: 43px;
+        .intsnav {
+          padding: 20px 43px 0;
+        }
 
-          .deal-top {
-            width: 40%;
-            h5 {
-              font-size: 12px;
-              display: block;
-              margin-bottom: 5px;
-              color: #ffffff99;
-            }
+        .lever {
+          cursor: pointer;
+          display: flex;
 
-            .ints {
-              margin-bottom: 40px;
+          li {
+            border: 1px solid #383f66;
+            border-radius: 5px;
+            padding: 8px 10px;
+            margin-right: 20px;
+          }
 
-              .its {
-                border-bottom: 1px solid #383f66;
-                padding: 10px 0;
-                display: flex;
-                position: relative;
+          .active {
+            border: 1px solid #1476FE;
+            color: #1476FE;
+          }
 
-                input {
-                  width: 70%;
-                  background: none;
-                  border: 0;
-                  font-size: 12px;
-                  color: #d2d6ec;
-                }
-
-                .lever {
-                  position: absolute;
-                  right: 0;
-                  cursor: pointer;
-
-                  span {
-                    color: #708ad5;
-                  }
-                }
-              }
-            }
-            
-            .rate{
-              margin-bottom: 35px;
-              a {
-                  color: #ffffff99;
-                  font-size: 12px;
-                  cursor: none;
-              }
-            }
-            .lbtns{
-              background: #13ad8f;
-            }
-            .lbtns1{
-              background: #db465f;
-            }
+          span {
+            color: #708ad5;
           }
         }
+
+        .deal {
+          background: #031937;
+          padding: 10px 43px;
+
+          h5 {
+            font-size: 12px;
+            display: block;
+            margin-bottom: 5px;
+            color: #ffffff99;
+          }
+
+          .ints {
+            margin-bottom: 28px;
+
+            // .el-input__suffix{
+            //   text-align: left;
+            // }
+            .its {
+              border-bottom: 1px solid #383f66;
+              padding: 10px 0;
+              // display: flex;
+              // position: relative;
+
+              input {
+                width: 70%;
+                height: 24px !important;
+                background: none;
+                border: 0;
+                font-size: 12px;
+                color: #d2d6ec;
+                padding: 0 0;
+              }
+            }
+          }
+
+          .rate {
+            margin-bottom: 35px;
+
+            a {
+              color: #ffffff99;
+              font-size: 12px;
+              cursor: none;
+            }
+          }
+
+          .lbtns {
+            background: #13ad8f;
+          }
+
+          .lbtns1 {
+            background: #db465f;
+          }
+        }
+
         .explain {
           // padding: 20px 30px;
           font-size: 12px;
@@ -346,9 +613,11 @@
           left: 240px;
           top: 20px;
           color: #495c77;
-          i{
+
+          i {
             padding-left: 3px;
           }
+
           .el-dialog {
             background: #e6e9ed;
             width: 480px;
@@ -377,6 +646,7 @@
 
         .el-tabs {
           width: 100%;
+
           .el-tabs__header {
             margin: unset;
 

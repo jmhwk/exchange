@@ -7,7 +7,7 @@
 
 <script>
 const AssetDetailsPanel = () => import('./components/AssetDetailsPanel')
-import AssetDetailsTabs from './components/AssetDetailsTabs'
+const AssetDetailsTabs = () => import('./components/AssetDetailsTabs')
 export default {
   name: 'AssetDetails',
   components: {

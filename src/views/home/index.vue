@@ -1,49 +1,59 @@
 <template>
   <div class="dashboard">
-    <div class="dashboard-head">
-      <div class="dash-center flexzxlist">
-        <h1>{{ $t('dashboard.dashboard_title') }}</h1>
-        <p>{{ $t('dashboard.dashboard_h1') }}</p>
-        <div class="aure-btns">{{ $t('dashboard.dashboard_app') }}</div>
-        <!--        <el-button type="primary" size="medium" class="aure-btns"></el-button> -->
-      </div>
-      <div class="dash-bottom flexcentercenter">
-        <div class="dashb-1" v-for="(item,index) in recommendMarketList" :key='index'>
-          <div>{{item.marketCoin.coinName}}/{{item.marketCoin.marketCoinName}}</div>
-          <p>{{item.marketCoin.lastTradePrice.toFixed(2)}}</p>
-          <div class="isred" v-if="item.marketCoin.incRate<0">{{item.marketCoin.incRate.toFixed(2)}}%</div>
-          <div class="isgreen" v-else>+{{item.marketCoin.incRate.toFixed(2)}}%</div>
+    <div style="background-image: linear-gradient(180deg,#102c7a,#0a1d57);">
+      <div class="dashboard-head">
+        <div class="dash-center flexzxlist">
+          <h1>AUTEX数字资产交易平台</h1>
+          <p>链启货币，数智未来</p>
+    <!--      <div class="aure-btns">{{ $t('dashboard.dashboard_app') }}</div> -->
+          <!--        <el-button type="primary" size="medium" class="aure-btns"></el-button> -->
+        </div>
+        <div class="dash-bottom flexcentercenter">
+          <div class="dashb-1" v-for="(item,index) in recommendMarketList" :key='index'>
+            <div>{{item.marketCoin.coinName}}/{{item.marketCoin.marketCoinName}}</div>
+            <p>{{item.marketCoin.lastTradePrice.toFixed(2)}}</p>
+            <div class="isred" v-if="item.marketCoin.incRate<0">{{item.marketCoin.incRate.toFixed(2)}}%</div>
+            <div class="isgreen" v-else>+{{item.marketCoin.incRate.toFixed(2)}}%</div>
+          </div>
+        </div>
+        <div class="dash-lb">
+          <ul class="flexcentercenter">
+            <i />
+            <li v-for="(i,n) in articlelist" :key="n"><span style="padding: 0 30px;" v-if="n!=0">/</span>
+            <router-link :to="{path:'/footer/announcement',query:{n}}">
+              {{i.cnTitle}} 
+            </router-link>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="dash-lb">
-        <i />
-        <span>{{articlelist.cnTitle}}</span>
-        <!--  <span></span> -->
-      </div>
     </div>
+
     <div class="dashboard-center flexzxlist">
-      <h1>{{ $t('dashboard.dashboard_scale') }}</h1>
-      <p>{{ $t('dashboard.dashboard_scale1') }}</p>
+<!--      <h1>{{ $t('dashboard.dashboard_scale') }}</h1>
+      <p>{{ $t('dashboard.dashboard_scale1') }}</p> -->
+      <h1>100%助力数字财富增长</h1>
+      <p>为全球交易用户提供安全、可信赖的数字资产交易及资产管理服务</p>
       <div class="dasc-flex flexcentercenter">
         <div class="dasc-flexliet">
           <img src="../images/flex2.png" alt="">
-          <p>{{ $t('dashboard.dashboard_list1') }}</p>
-          <div>{{ $t('dashboard.dashboard_p1') }}</div>
+          <p>硬核实力</p>
+          <div>金融创新基因，世界顶级管理团队。安全稳定可信赖</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex3.png" alt="">
-          <p>{{ $t('dashboard.dashboard_list2') }}</p>
-          <div>{{ $t('dashboard.dashboard_p2') }}</div>
+          <p>安全体系</p>
+          <div> 一流团队打造专业安全多重防御 让您资产无忧</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex1.png" alt="">
-          <p>{{ $t('dashboard.dashboard_list3') }}</p>
-          <div>{{ $t('dashboard.dashboard_p3') }}</div>
+          <p>交易系统</p>
+          <div>自主研发高速交易撮合引擎，可承载巨量交易，妥善完成每一份委托</div>
         </div>
         <div class="dasc-flexliet">
           <img src="../images/flex4.png" alt="">
-          <p>{{ $t('dashboard.dashboard_list4') }}</p>
-          <div>{{ $t('dashboard.dashboard_p4') }}</div>
+          <p>品质服务</p>
+          <div>7*24h全天候专业客服，快速响应。极致体验源于客户至上的崇高理念</div>
         </div>
       </div>
     </div>
@@ -58,12 +68,12 @@
         <div class="dash-icon">
           <div class="dashi-left">
             <i />
-            <span>{{ $t('dashboard.anzhuo') }}</span>
+            <span>Android下载</span>
 
           </div>
           <div class="dashi-left">
             <i class="ios" />
-            <span>{{ $t('dashboard.ios') }}</span>
+            <span>iPhone下载</span>
 
           </div>
         </div>
@@ -72,9 +82,9 @@
     <div class="dashboard-input flexzxlist">
       <h1>{{ $t('dashboard.dashboard_p8') }}</h1>
       <div class="inp flexcenterlist">
-        <input v-model="searchkey" type="text" :placeholder="$t('dashboard.dashboard_table_search')">
+         <el-input v-model="searchkey" :placeholder="$t('dashboard.dashboard_table_search')" clearable />
         <div class="btns">
-          <router-link to="/regist">{{ $t('dashboard.dashboard_p9') }}</router-link>
+          <router-link :to="{path:'/regist',query:{searchkey}}">{{ $t('dashboard.dashboard_p9') }}</router-link>
         </div>
       </div>
     </div>
@@ -93,15 +103,12 @@
       return {
         searchkey: '',
         websock: null,
-        articlelist: {} // 公告
+        articlelist: [] // 公告
       }
     },
     created() {
-      this.getSocketData();
+      this.$store.dispatch('getSocketData')
       this.article()
-    },
-    destroyed() {
-      this.websock.close() //离开路由之后断开websocket连接
     },
     computed: {
       ...mapState({
@@ -114,22 +121,18 @@
         let type = 2
         const result = await article(type)
         if (result.code == 200) {
-          this.articlelist = result.data[0]
+          this.articlelist = result.data.slice(0,5)
         }
-      },
-      getSocketData() {
-        this.$store.dispatch('getSocketData')
       },
     },
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .dashboard {
     width: 100%;
     height: 100%;
     color: #fff;
-
     h1 {
       font-size: 34px;
     }
@@ -157,14 +160,16 @@
     .dashboard-head {
       box-sizing: border-box;
       width: 100%;
-      height: 1080px;
+      // height: 1080px;
+      height: 700px;
       // margin:0;
       position: relative;
-      background: url(../images/home_banner_bg@3x.png) no-repeat center;
+      // background: url(../images/home_banner_bg@3x.png) no-repeat center;
+      background: url(../images/bgxian.png);
       background-size: cover;
-
+      // background-image: linear-gradient(180deg,#102c7a,#0a1d57);
       .dash-center {
-        padding: 270px 0;
+        padding: 180px 0 111px 0;
 
         h1 {
           font-size: 56px;
@@ -173,7 +178,7 @@
 
         p {
           font-size: 24px;
-          padding: 20px 0;
+          padding-top: 60px;
         }
       }
 
@@ -208,8 +213,20 @@
       position: absolute;
       bottom: 0;
       width: 100%;
+        ul{
+          li{
+            a{
+              color: #fff;
+            }
+            a:hover{
+              color: #1476fe;
+            }
+          }
+
+        }
 
       i {
+        margin-right: 30px;
         vertical-align: middle;
         display: inline-block;
         width: 22px;
@@ -354,15 +371,20 @@
       }
 
       .inp {
-        input {
+        .el-input{
           width: 510px;
-          height: 72px;
+        }
+        .el-input__inner {
+          width: 100%;
+          height: 72px!important;
           background: rgba(255, 255, 255, 1);
-          border: 1px solid rgba(165, 165, 165, 1);
-          opacity: 1;
+          // border: 1px solid rgba(165, 165, 165, 1);
           border-radius: 4px;
           font-size: 20px;
           padding: 0 30px;
+            // input{
+            //  height: 72px; 
+            // }
         }
       }
     }
